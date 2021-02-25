@@ -1,6 +1,6 @@
 package UserInterface.Component.Panel;
 
-import UserInterface.Component.Enum.TransacTYPE;
+import UserInterface.Component.Enum.TransactionTYPE;
 import UserInterface.STATIC.GraphicalTheme;
 
 import javax.swing.*;
@@ -11,14 +11,14 @@ import java.math.RoundingMode;
 import java.sql.Time;
 import java.sql.Date;
 
-public class TransacPanel extends JPanel {
+public class TransactionPanel extends JPanel {
 
     /* Values */
     private final String IDENTIFIER;
     private String asset = "MSFT";
     private String currency = "EUR";
 
-    private TransacTYPE type = TransacTYPE.BUY;
+    private TransactionTYPE type = TransactionTYPE.BUY;
     private Date date = new Date(System.currentTimeMillis());
     private Time time = new Time(System.currentTimeMillis());
 
@@ -26,7 +26,7 @@ public class TransacPanel extends JPanel {
     private double fees = 3.00;
     private double price = 300.00;
 
-    public TransacPanel(String IDENTIFIER, String asset, String currency, TransacTYPE type, Date date, Time time, double quantity, double fees, double price) {
+    public TransactionPanel(String IDENTIFIER, String asset, String currency, TransactionTYPE type, Date date, Time time, double quantity, double fees, double price) {
 
         setBounds(0, 0, 766, 100);
         setOpaque(false);
@@ -45,7 +45,7 @@ public class TransacPanel extends JPanel {
         init();
     }
 
-    public void update (String asset, String currency, TransacTYPE type, Date date, Time time, double quantity, double fees, double price) {
+    public void update (String asset, String currency, TransactionTYPE type, Date date, Time time, double quantity, double fees, double price) {
 
         this.asset = asset;
         this.currency = currency;
@@ -81,10 +81,10 @@ public class TransacPanel extends JPanel {
         int x = 20;
         int y = (int ) (h*0.47) - 30;
 
-        if (type == TransacTYPE.BUY){
+        if (type == TransactionTYPE.BUY){
             g2d.setPaint(GraphicalTheme.primary_color);
             g2d.fillPolygon(new int[] {15+x, x, 30+x}, new int[] {y, 30+y, 30+y}, 3);
-        } else if (type == TransacTYPE.SELL){
+        } else if (type == TransactionTYPE.SELL){
             g2d.setPaint(GraphicalTheme.secondary_color);
             g2d.fillPolygon(new int[] {x, 15+x, 30+x}, new int[] {y, 30+y, y}, 3);
         }

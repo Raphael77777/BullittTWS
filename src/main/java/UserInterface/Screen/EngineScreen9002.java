@@ -1,7 +1,8 @@
 package UserInterface.Screen;
 
+import DataHandling.StrategyData;
 import UserInterface.Component.ImageLabel;
-import UserInterface.Component.Panel.InfoButtonPanel;
+import UserInterface.Component.Panel.ButtonPanel;
 import UserInterface.Component.Panel.InfoPanel;
 import UserInterface.Component.Enum.InfoTYPE;
 
@@ -10,28 +11,38 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
-public class EngineScreen9002 extends AbstractScreen {
-
-    private MouseListener mouseListener = new startAndStop();
-    private String state = "stop";
+public class EngineScreen9002 extends AbstractScreen implements Observer {
 
     private InfoPanel[] infoPanels = new InfoPanel[9];
-    private InfoButtonPanel [] infoButtonPanels = new InfoButtonPanel[2];
+    private ButtonPanel[] buttonPanels = new ButtonPanel[2];
 
-    private String [] texts = new String[]{"Asset", "Strategy", "Accuracy", "Timescale", "Exposure", "Order", "Take profit", "Stop loss", "Auto-kill"};
-    private String [] values = new String[]{"JPY/USD", "RSI(2)", "0.7", "60 sec", "90%", "Limit", "7.5%", "5%", "Active"};
+    private StrategyData strategyData;
+    private final MouseListener mouseListener = new startAndStop();
+    private String state = "stop";
 
-    public EngineScreen9002() {}
+    private final String [] IP_texts = new String[]{"Asset", "Strategy", "Accuracy", "Timescale", "Exposure", "Order", "Take profit", "Stop loss", "Auto-kill"};
+    private String [] IP_values = new String[]{"JPY/USD", "RSI(2)", "0.7", "60 sec", "90%", "Limit", "7.5%", "5%", "Active"};
+    private final InfoTYPE [] IP_types = new InfoTYPE[]{InfoTYPE.NO_ICON, InfoTYPE.NO_ICON, InfoTYPE.NEUTRAL, InfoTYPE.NEUTRAL, InfoTYPE.NEUTRAL, InfoTYPE.NEUTRAL, InfoTYPE.POSITIVE, InfoTYPE.NEGATIVE, InfoTYPE.NO_ICON };
+
+    private final String [] BT_Header = new String[]{"1. STRATEGY", "2. MONITOR"};
+    private final String [] BT_Description = new String[]{"Modify or view the strategy", "View live data"};
+    private final String [] BT_Target = new String[]{"SETTINGS", "MONITOR"};
+
+    public EngineScreen9002(StrategyData strategyData) {
+        this.strategyData = strategyData;
+        this.strategyData.registerObserver(this);
+    }
 
     @Override
     public void init() {
+
         removeAll();
 
         int idx = 0;
         for (int i = 0; i < 3; i++){
             for (int j = 0; j < 3; j++){
                 if (idx < infoPanels.length){
-                    infoPanels[idx] = new InfoPanel("MA"+idx, InfoTYPE.NO_ICON, texts[idx], values[idx]);
+                    infoPanels[idx] = new InfoPanel("IP"+idx, IP_types[idx], IP_texts[idx], IP_values[idx]);
                     infoPanels[idx].setBounds(20+(i*263), 20+j*113, 260, 110);
                     add(infoPanels[idx]);
                     idx++;
@@ -39,10 +50,10 @@ public class EngineScreen9002 extends AbstractScreen {
             }
         }
 
-        for (int i = 0; i<infoButtonPanels.length; i++){
-            infoButtonPanels[i] = new InfoButtonPanel("MI"+i, InfoTYPE.NO_ICON, "1. STRATEGY", "Modify or view the strategy", "HOME");
-            infoButtonPanels[i].setBounds(20, 359+i*113, 523, 110);
-            add(infoButtonPanels[i]);
+        for (int i = 0; i< buttonPanels.length; i++){
+            buttonPanels[i] = new ButtonPanel("BT"+i, InfoTYPE.NO_ICON, BT_Header[i], BT_Description[i], BT_Target[i]);
+            buttonPanels[i].setBounds(20, 359+i*113, 523, 110);
+            add(buttonPanels[i]);
         }
 
         ImageLabel logoImg = new ImageLabel(state+".png");
@@ -53,15 +64,11 @@ public class EngineScreen9002 extends AbstractScreen {
         repaint();
     }
 
-    public InfoPanel getInfoPanel (String IDENTIFIER){
-        for (InfoPanel infoPanel : infoPanels){
-            if (infoPanel != null){
-                if (infoPanel.getIDENTIFIER().equals(IDENTIFIER)){
-                    return infoPanel;
-                }
-            }
-        }
-        return null;
+    @Override
+    public void update() {
+        //TODO : CALL METHOD OF strategyData to update IP_values
+
+        init();
     }
 
     private class startAndStop extends MouseAdapter {

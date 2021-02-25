@@ -16,6 +16,7 @@ import java.io.IOException;
 public class BackgroundScreen extends JPanel {
 
     private JButton [] jButtons = new JButton[5];
+    private final String[] label = new String[]{"HOME", "ENGINE", "MONITOR", "SETTINGS", "HISTORY"};
 
     public void paintComponent(Graphics g) {
         try {
@@ -37,7 +38,8 @@ public class BackgroundScreen extends JPanel {
         setBounds(0, 0, 1100, 600);
         setLayout(null);
 
-        String[] label = new String[]{"HOME", "ENGINE", "MONITOR", "SETTINGS", "HISTORY"};
+        removeAll();
+
         for (int i = 0; i< label.length; i++){
             jButtons[i] = new JButton(label[i]);
             jButtons[i].setBackground(GraphicalTheme.primary_color);
@@ -62,6 +64,8 @@ public class BackgroundScreen extends JPanel {
         ImageLabel logoImg = new ImageLabel("LOGO-1750.png");
         logoImg.setBounds(16, 0, 240, 240);
         add(logoImg);
+
+        repaint();
     }
 
     private class closeAction extends MouseAdapter {
@@ -71,7 +75,6 @@ public class BackgroundScreen extends JPanel {
             System.exit(0);
         }
     }
-
     private class minimizeAction extends MouseAdapter {
         @Override
         public void mouseClicked(MouseEvent e) {
@@ -83,30 +86,32 @@ public class BackgroundScreen extends JPanel {
         @Override
         public void actionPerformed(ActionEvent e) {
 
-            for (JButton jButton : jButtons) jButton.setBackground(GraphicalTheme.primary_color);
+            String target = ((JButton)e.getSource()).getText();
+            JFrameBTWS.getInstance().changeScreen(target);
+            changeScreen(target);
 
-            switch (((JButton)e.getSource()).getText()){
-                case "HOME":
-                    jButtons[0].setBackground(GraphicalTheme.secondary_color);
-                    JFrameBTWS.getInstance().showHomeScreen();
-                    break;
-                case "ENGINE":
-                    jButtons[1].setBackground(GraphicalTheme.secondary_color);
-                    JFrameBTWS.getInstance().showEngineScreen();
-                    break;
-                case "MONITOR":
-                    jButtons[2].setBackground(GraphicalTheme.secondary_color);
-                    JFrameBTWS.getInstance().showMonitorScreen();
-                    break;
-                case "SETTINGS":
-                    jButtons[3].setBackground(GraphicalTheme.secondary_color);
-                    JFrameBTWS.getInstance().showSettingsScreen();
-                    break;
-                case "HISTORY":
-                    jButtons[4].setBackground(GraphicalTheme.secondary_color);
-                    JFrameBTWS.getInstance().showTransactionsScreen();
-                    break;
-            }
+        }
+    }
+    public void changeScreen(String target) {
+
+        for (JButton jButton : jButtons) jButton.setBackground(GraphicalTheme.primary_color);
+
+        switch (target){
+            case "HOME":
+                jButtons[0].setBackground(GraphicalTheme.secondary_color);
+                break;
+            case "ENGINE":
+                jButtons[1].setBackground(GraphicalTheme.secondary_color);
+                break;
+            case "MONITOR":
+                jButtons[2].setBackground(GraphicalTheme.secondary_color);
+                break;
+            case "SETTINGS":
+                jButtons[3].setBackground(GraphicalTheme.secondary_color);
+                break;
+            case "HISTORY":
+                jButtons[4].setBackground(GraphicalTheme.secondary_color);
+                break;
         }
     }
 }

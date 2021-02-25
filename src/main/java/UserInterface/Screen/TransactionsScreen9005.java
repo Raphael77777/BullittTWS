@@ -1,19 +1,33 @@
 package UserInterface.Screen;
 
-import UserInterface.Component.Panel.TransacPanel;
-import UserInterface.Component.Enum.TransacTYPE;
+import DataHandling.TranactionData;
+import UserInterface.Component.Panel.TransactionPanel;
+import UserInterface.Component.Enum.TransactionTYPE;
 
 import javax.swing.*;
 import java.awt.*;
 import java.sql.Date;
 import java.sql.Time;
+import java.util.ArrayList;
 
-public class TransactionsScreen9005 extends AbstractScreen {
+public class TransactionsScreen9005 extends AbstractScreen implements Observer{
 
-    private TransacPanel [] transacPanels = new TransacPanel[10];
-    private TransacTYPE [] transacTYPES = new TransacTYPE[]{TransacTYPE.BUY, TransacTYPE.SELL};
+    private TransactionPanel[] transactionPanels;
 
-    public TransactionsScreen9005() {
+    private TranactionData tranactionData;
+
+    private ArrayList<String> assets;
+    private ArrayList<String> currencies;
+    private ArrayList<TransactionTYPE> types;
+    private ArrayList<Date> dates;
+    private ArrayList<Time> times;
+    private ArrayList<Double> quantities;
+    private ArrayList<Double> fees;
+    private ArrayList<Double> prices;
+
+    public TransactionsScreen9005(TranactionData tranactionData) {
+        this.tranactionData = tranactionData;
+        this.tranactionData.registerObserver(this);
     }
 
     @Override
@@ -21,14 +35,19 @@ public class TransactionsScreen9005 extends AbstractScreen {
 
         removeAll();
 
+        if (assets == null || assets.size() == 0){
+            return;
+        }
+
         JPanel transactions = new JPanel();
         transactions.setLayout(null);
-        transactions.setPreferredSize(new Dimension(766,transacPanels.length*105+5));
+        transactions.setPreferredSize(new Dimension(766,assets.size()*105+5));
 
-        for (int i = 0; i<transacPanels.length; i++){
-            TransacPanel transacPanel = new TransacPanel("MA", "EUR/USD", "USD", transacTYPES[i%2], new Date(System.currentTimeMillis()), new Time(System.currentTimeMillis()), 1.9872, 32.02, 1.07672);
-            transacPanel.setBounds(16, 5+(i*105), 766, 100);
-            transactions.add(transacPanel);
+        transactionPanels = new TransactionPanel[assets.size()];
+        for (int i = 0; i< transactionPanels.length; i++){
+            TransactionPanel transactionPanel = new TransactionPanel("TR"+i, assets.get(i), currencies.get(i), types.get(i), dates.get(i), times.get(i), quantities.get(i), fees.get(i), prices.get(i));
+            transactionPanel.setBounds(16, 5+(i*105), 766, 100);
+            transactions.add(transactionPanel);
         }
 
         transactions.setOpaque(false);
@@ -47,6 +66,12 @@ public class TransactionsScreen9005 extends AbstractScreen {
         add(scrollPane);
         scrollPane.repaint();
         scrollPane.revalidate();
+    }
 
+    @Override
+    public void update() {
+        //TODO : CALL METHOD OF tranactionData to update arraylist
+
+        init();
     }
 }

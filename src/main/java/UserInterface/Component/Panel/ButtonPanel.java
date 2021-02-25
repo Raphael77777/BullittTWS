@@ -1,23 +1,25 @@
 package UserInterface.Component.Panel;
 
 import UserInterface.Component.Enum.InfoTYPE;
+import UserInterface.JFrameBTWS;
 import UserInterface.STATIC.GraphicalTheme;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.geom.Line2D;
 
-public class InputLargePanel extends JPanel {
+public class ButtonPanel extends JPanel {
 
     /* Values */
     private final String IDENTIFIER;
-    private InfoTYPE type = InfoTYPE.POSITIVE;
+    private InfoTYPE type = InfoTYPE.NEUTRAL;
+    private String header = "";
     private String text = "";
-    private String desc = "";
+    private String target = "HOME";
 
-    private JTextField jTextField;
-
-    public InputLargePanel(String IDENTIFIER, InfoTYPE type, String text, String desc) {
+    public ButtonPanel(String IDENTIFIER, InfoTYPE type, String header, String text, String target) {
 
         setBounds(0, 0, 523, 110);
         setOpaque(false);
@@ -25,18 +27,18 @@ public class InputLargePanel extends JPanel {
 
         this.IDENTIFIER = IDENTIFIER;
         this.type = type;
+        this.header = header;
         this.text = text;
-        this.desc = desc;
-
-        jTextField = new JTextField("0.00");
+        this.target = target;
 
         init();
     }
 
-    public void update (InfoTYPE type, String text, String desc) {
+    public void update (InfoTYPE type, String header, String text, String target) {
         this.type = type;
+        this.header = header;
         this.text = text;
-        this.desc = desc;
+        this.target = target;
 
         init();
     }
@@ -61,39 +63,36 @@ public class InputLargePanel extends JPanel {
         g2d.draw(new Line2D.Float(523, 0, 523, 30));
 
         if (type == InfoTYPE.POSITIVE){
-            g.setColor(GraphicalTheme.primary_color);
-        }else if (type == InfoTYPE.NEGATIVE){
-            g.setColor(GraphicalTheme.secondary_color);
-        }else {
-            g.setColor(GraphicalTheme.light_color);
+            g2d.setPaint(GraphicalTheme.primary_color);
+        } else if (type == InfoTYPE.NEGATIVE){
+            g2d.setPaint(GraphicalTheme.secondary_color);
+        } else if (type == InfoTYPE.NEUTRAL || type == InfoTYPE.NO_ICON){
+            g2d.setPaint(GraphicalTheme.light_color);
         }
 
         g.setFont(GraphicalTheme.font_header1);
-        g.drawString(text, 20, (int ) (h*0.47));
+        g.drawString(header, 20, (int ) (h*0.47));
 
         g.setFont(GraphicalTheme.font_header2);
-        g.drawString(desc, 20, (int ) (h*0.85));
+        g.drawString(text, 20, (int ) (h*0.85));
     }
 
     private void init (){
 
-            jTextField.setFont(GraphicalTheme.font_header2);
-            jTextField.setForeground(GraphicalTheme.light_color);
-            jTextField.setOpaque(false);
-            /**jTextField.addKeyListener(new java.awt.event.KeyAdapter() {
-             public void keyReleased(java.awt.event.KeyEvent evt) {
-             try {
-             double number = Long.parseLong(jTextField.getText());
-             } catch (Exception e) {
-             JOptionPane.showMessageDialog(getRootPane(), "Only Numbers Allowed");
-             jTextField.setText("");
-             }
-             }
-             });*/
-            //jTextField.setBorder(BorderFactory.createEmptyBorder());
-            jTextField.setBounds(283, 10, 220, 50);
-            add(jTextField);
-
+        if (!target.equals("NO BUTTON")){
+            JButton jButton = new JButton("GO");
+            jButton.setBackground(GraphicalTheme.primary_color);
+            jButton.setFont(GraphicalTheme.font_header1);
+            jButton.setForeground(GraphicalTheme.light_color);
+            jButton.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    JFrameBTWS.getInstance().changeScreen(target);
+                }
+            });
+            jButton.setBounds(428, 15, 80, 80);
+            add(jButton);
+        }
     }
 
     public String getIDENTIFIER() {

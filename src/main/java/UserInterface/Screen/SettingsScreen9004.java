@@ -1,20 +1,35 @@
 package UserInterface.Screen;
 
+import DataHandling.StrategyData;
 import UserInterface.Component.Enum.InfoTYPE;
-import UserInterface.Component.Enum.InputTYPE;
-import UserInterface.Component.Panel.InfoButtonPanel;
+import UserInterface.Component.Input.*;
+import UserInterface.Component.Panel.ButtonPanel;
 import UserInterface.Component.Panel.InfoPanel;
-import UserInterface.Component.Panel.InputLargePanel;
-import UserInterface.Component.Panel.InputPanel;
 
-public class SettingsScreen9004 extends AbstractScreen {
+import javax.swing.*;
 
-    private InputPanel[] inputPanels = new InputPanel[3];
-    private String[] strings = new String[]{"Accuracy", "Timescale", "Exposure"};
-    private InputTYPE[] inputTYPES = new InputTYPE[] {InputTYPE.DOUBLE, InputTYPE.DROPDOWN, InputTYPE.INTEGER};
-    private String [][] dropdowns = new String[][]{null, new String[]{"60 seconds", "120 seconds", "180 seconds", "240 seconds"}, null};
+public class SettingsScreen9004 extends AbstractScreen implements Observer {
 
-    public SettingsScreen9004() {
+    private StrategyData strategyData;
+
+    private JPanel[] inputs = new JPanel[7];
+    private final String[] IN_Description = new String[]{"Asset", "Accuracy", "Timescale", "Exposure", "% Take Profit", "% Stop Loss", "Order"};
+
+    private String [] IN_DropV0 = new String[]{"USD/EUR", "CAD/EUR", "CHF/JPY"};
+    private String [] IN_DropV2 = new String[]{"60 seconds", "120 seconds", "180 seconds", "240 seconds"};
+    private String [] IN_DropV6 = new String[]{"Market", "Limit"};
+
+    private InputCombo asset;
+    private InputCombo order;
+    private InputCombo timescale;
+    private InputDouble accuracy;
+    private InputInteger exposure;
+    private InputDoubleL take_profit;
+    private InputDoubleL stop_loss;
+
+    public SettingsScreen9004(StrategyData strategyData) {
+        this.strategyData = strategyData;
+        this.strategyData.registerObserver(this);
     }
 
     @Override
@@ -22,42 +37,85 @@ public class SettingsScreen9004 extends AbstractScreen {
 
         removeAll();
 
-        InfoButtonPanel strategy = new InfoButtonPanel("MI"+1, InfoTYPE.NO_ICON, "RSI (2)", "Strategy", "NO BUTTON");
+        /* STATIC */
+        ButtonPanel strategy = new ButtonPanel("STY", InfoTYPE.NO_ICON, "RSI (2)", "Strategy", "NO BUTTON");
         strategy.setBounds(20, 20, 523, 110);
         add(strategy);
 
-        InputPanel asset = new InputPanel("MA1", InputTYPE.DROPDOWN, "Asset", new String[]{"USD/EUR", "CAD/EUR", "CHF/JPY"});
+        asset = new InputCombo("VA0", IN_Description[0], IN_DropV0);
         asset.setBounds(546, 20, 260, 110);
         add(asset);
 
-        for (int i = 0; i<inputPanels.length; i++){
-            inputPanels[i] = new InputPanel("MA"+i, inputTYPES[i], strings[i], dropdowns[i]);
-            inputPanels[i].setBounds(20+(i*263), 133, 260, 110);
-            add(inputPanels[i]);
-        }
+        accuracy = new InputDouble("VA1", IN_Description[1]);
+        accuracy.setBounds(20, 133, 260, 110);
+        add(accuracy);
 
-        InputLargePanel take_profit = new InputLargePanel("MA1", InfoTYPE.POSITIVE, "% Take Profit", "Select a limit for take profit order");
+        timescale = new InputCombo("VA2", IN_Description[2], IN_DropV2);
+        timescale.setBounds(283, 133, 260, 110);
+        add(timescale);
+
+        exposure = new InputInteger("VA3", IN_Description[3]);
+        exposure.setBounds(546, 133, 260, 110);
+        add(exposure);
+
+        take_profit = new InputDoubleL("VA4", InfoTYPE.POSITIVE, IN_Description[4], "Select a limit for take profit order");
         take_profit.setBounds(20, 246, 523, 110);
         add(take_profit);
 
-        InfoPanel infoPanel1 = new InfoPanel("MA3", InfoTYPE.NO_ICON, "RMS", "Active");
-        infoPanel1.setBounds(546, 246, 260, 110);
-        add(infoPanel1);
+        /* STATIC */
+        InfoPanel infoPanelRMS = new InfoPanel("RMS", InfoTYPE.NO_ICON, "RMS", "Active");
+        infoPanelRMS.setBounds(546, 246, 260, 110);
+        add(infoPanelRMS);
 
-        InputLargePanel stop_loss = new InputLargePanel("MA1", InfoTYPE.NEGATIVE, "% Stop Loss", "Select a limit for stop loss order");
+        stop_loss = new InputDoubleL("VA5", InfoTYPE.NEGATIVE, IN_Description[5], "Select a limit for stop loss order");
         stop_loss.setBounds(20, 359, 523, 110);
         add(stop_loss);
 
-        InfoPanel infoPanel2 = new InfoPanel("MA3", InfoTYPE.NO_ICON, "Auto-kill", "Active");
-        infoPanel2.setBounds(546, 359, 260, 110);
-        add(infoPanel2);
+        /* STATIC */
+        InfoPanel infoPanelAKI = new InfoPanel("AKI", InfoTYPE.NO_ICON, "Auto-kill", "Active");
+        infoPanelAKI.setBounds(546, 359, 260, 110);
+        add(infoPanelAKI);
 
-        InputPanel order = new InputPanel("MA1", InputTYPE.DROPDOWN, "Order", new String[]{"Market", "Limit"});
+        order = new InputCombo("VA6", IN_Description[6], IN_DropV6);
         order.setBounds(20, 472, 260, 110);
         add(order);
 
-        InfoButtonPanel save = new InfoButtonPanel("MI"+1, InfoTYPE.NO_ICON, "COMPILATION", "Save and update the strategy", "COMPIL");
+        /* STATIC */
+        ButtonPanel save = new ButtonPanel("COMPIL", InfoTYPE.NO_ICON, "COMPILATION", "Save and update the strategy", "COMPIL");
         save.setBounds(283, 472, 523, 110);
         add(save);
+
+        repaint();
+    }
+
+    @Override
+    public void update() {
+        //TODO : CALL METHOD OF strategyData to update following :
+
+        asset.setSelected("");
+        order.setSelected("");
+        timescale.setSelected("");
+        accuracy.setNumber(0.0);
+        exposure.setNumber(20);
+
+        take_profit.setNumber(2.00);
+        stop_loss.setNumber(1.0);
+
+        init();
+    }
+
+    public void changeStrategy() {
+        //TODO : UPDATE STRATEGY WITHIN strategyData with data following :
+
+        String a = asset.getSelected();
+        String o = order.getSelected();
+        String t = timescale.getSelected();
+        double ac = accuracy.getNumber();
+        int ex = exposure.getNumber();
+
+        double tp = take_profit.getNumber();
+        double sl = stop_loss.getNumber();
+
+        init();
     }
 }

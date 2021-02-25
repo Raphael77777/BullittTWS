@@ -1,5 +1,8 @@
 package UserInterface;
 
+import DataHandling.LiveData;
+import DataHandling.StrategyData;
+import DataHandling.TranactionData;
 import UserInterface.Component.Panel.InfoPanel;
 import UserInterface.STATIC.GraphicalTheme;
 import UserInterface.Screen.*;
@@ -11,13 +14,18 @@ public class JFrameBTWS extends JFrame {
     private static JFrameBTWS jFrameBTWS = new JFrameBTWS();
     private static BackgroundScreen backgroundScreen;
 
+    /* DATA */
+    private TranactionData tranactionData;
+    private StrategyData strategyData;
+    private LiveData liveData = new LiveData();
+
     /* Screen 900X */
     private WelcomeScreen9000 welcomeScreen9000 = new WelcomeScreen9000();
-    private HomeScreen9001 homeScreen9001 = new HomeScreen9001();
-    private EngineScreen9002 engineScreen9002 = new EngineScreen9002();
-    private MonitorScreen9003 monitorScreen9003 = new MonitorScreen9003();
-    private SettingsScreen9004 settingsScreen9004 = new SettingsScreen9004();
-    private TransactionsScreen9005 transactionsScreen9005 = new TransactionsScreen9005();
+    private HomeScreen9001 homeScreen9001;
+    private EngineScreen9002 engineScreen9002;
+    private MonitorScreen9003 monitorScreen9003 = new MonitorScreen9003(liveData);
+    private SettingsScreen9004 settingsScreen9004;
+    private TransactionsScreen9005 transactionsScreen9005;
 
     private JFrameBTWS (){
         setLayout(null);
@@ -31,6 +39,18 @@ public class JFrameBTWS extends JFrame {
         ImageIcon img = new ImageIcon(getClass().getResource("/FAV-512.png"));
         setIconImage(img.getImage());
         setVisible(true);
+
+        /* GET DATA FROM DISK */
+        //TODO : DESERIALIZE TRANSACTION_DATA
+        tranactionData = new TranactionData();
+        //TODO : DESERIALIZE STRATEGY_DATA
+        strategyData = new StrategyData();
+
+        /* CREATE SCREEN WITH DATA */
+        homeScreen9001 = new HomeScreen9001(tranactionData);
+        engineScreen9002 = new EngineScreen9002(strategyData);
+        settingsScreen9004 = new SettingsScreen9004(strategyData);
+        transactionsScreen9005 = new TransactionsScreen9005(tranactionData);
 
         /* INIT BACKGROUND, MENU, LOGO */
         backgroundScreen = new BackgroundScreen();
@@ -136,11 +156,31 @@ public class JFrameBTWS extends JFrame {
         repaint();
     }
 
-    public InfoPanel getInfoPanel (String IDENTIFIER){
-        return monitorScreen9003.getInfoPanel(IDENTIFIER);
-    }
-
     public void changeScreen(String target) {
-        System.out.println("Change to "+target);
+
+        switch (target){
+            case "HOME":
+                showHomeScreen();
+                break;
+            case "ENGINE":
+                showEngineScreen();
+                break;
+            case "MONITOR":
+                showMonitorScreen();
+                break;
+            case "SETTINGS":
+                showSettingsScreen();
+                break;
+            case "HISTORY":
+                showTransactionsScreen();
+                break;
+        }
+
+        if (target.equals("COMPIL")){
+            settingsScreen9004.changeStrategy();
+            return;
+        }
+
+        backgroundScreen.changeScreen(target);
     }
 }

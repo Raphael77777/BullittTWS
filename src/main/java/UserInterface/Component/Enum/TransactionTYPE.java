@@ -1,8 +1,8 @@
 package UserInterface.Component.Enum;
 
-public enum TransacTYPE {
+public enum TransactionTYPE {
     BUY ("BUY"),
     SELL ("SELL");
 
-    TransacTYPE(String s) {}
+    TransactionTYPE(String s) {}
 }
