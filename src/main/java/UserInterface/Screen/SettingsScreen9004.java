@@ -16,7 +16,7 @@ public class SettingsScreen9004 extends AbstractScreen implements Observer {
     private final String[] IN_Description = new String[]{"Asset", "Accuracy", "Timescale", "Exposure", "% Take Profit", "% Stop Loss", "Order"};
 
     private String [] IN_DropV0 = new String[]{"USD/EUR", "CAD/EUR", "CHF/JPY"};
-    private String [] IN_DropV2 = new String[]{"60 seconds", "120 seconds", "180 seconds", "240 seconds"};
+    private String [] IN_DropV2 = new String[]{"60 sec", "120 sec", "180 sec", "240 sec"};
     private String [] IN_DropV6 = new String[]{"Market", "Limit"};
 
     private InputCombo asset;

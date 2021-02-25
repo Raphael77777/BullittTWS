@@ -16,7 +16,7 @@ public class HomeScreen9001 extends AbstractScreen implements Observer{
     private final String [] BT_Description = new String[]{"Modify or view the strategy", "Launching the engine with the strategy", "View live data", "Stopping the engine with the strategy", "View transaction history"};
     private final String [] BT_Target = new String[]{"SETTINGS", "ENGINE", "MONITOR", "ENGINE", "HISTORY"};
 
-    private final String [] IP_texts = new String[]{"#BUY", "#SELL", "#OPEN", "Exposition", "Position"};
+    private final String [] IP_texts = new String[]{"#BUY", "#SELL", "DELTA", "Exposition", "Position"};
     private String [] IP_values = new String[]{"5", "4", "1", "1000 USD", "LONG"};
     private InfoTYPE [] IP_types = new InfoTYPE[]{InfoTYPE.POSITIVE, InfoTYPE.NEGATIVE, InfoTYPE.POSITIVE, InfoTYPE.NO_ICON, InfoTYPE.POSITIVE};
 

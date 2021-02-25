@@ -73,6 +73,10 @@ public class InfoPanel extends JPanel {
             g2d.fillPolygon(new int[] {x, x, 30+x}, new int[] {y, 30+y, 15+y}, 3);
         } else if (type == InfoTYPE.NO_ICON){
             g2d.setPaint(GraphicalTheme.light_color);
+        }else if (type == InfoTYPE.GREEN){
+            g2d.setPaint(GraphicalTheme.primary_color);
+        }else if (type == InfoTYPE.RED){
+            g2d.setPaint(GraphicalTheme.secondary_color);
         }
 
         g.drawString(value, (w-width)/2, (int ) (h*0.47));

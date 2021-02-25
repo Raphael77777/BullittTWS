@@ -1,6 +1,7 @@
 package UserInterface;
 
 import DataHandling.LiveData;
+import DataHandling.SimulatorLiveData;
 import DataHandling.StrategyData;
 import DataHandling.TransactionData;
 import UserInterface.STATIC.GraphicalTheme;
@@ -63,6 +64,8 @@ public class JFrameBTWS extends JFrame {
 
         //TODO : TO REMOVE
         //transactionData.addTransactions("MSFT", "EUR", TransactionTYPE.BUY, new Date(System.currentTimeMillis()), new Time(System.currentTimeMillis()), 5, 3.45, 342.10);
+        SimulatorLiveData simulatorLiveData = new SimulatorLiveData(liveData);
+        simulatorLiveData.start();
 
         /* SHOW WelcomeScreen9001 */
         showWelcomeScreen();

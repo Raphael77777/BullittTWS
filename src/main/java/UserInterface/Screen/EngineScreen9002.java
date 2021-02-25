@@ -31,6 +31,8 @@ public class EngineScreen9002 extends AbstractScreen implements Observer {
     public EngineScreen9002(StrategyData strategyData) {
         this.strategyData = strategyData;
         this.strategyData.registerObserver(this);
+
+        update();
     }
 
     @Override
