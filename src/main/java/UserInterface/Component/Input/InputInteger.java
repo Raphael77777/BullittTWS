@@ -28,9 +28,9 @@ public class InputInteger extends JPanel implements InputInterface {
         init();
     }
 
-    public void setNumber (int d){
+    public void setNumber (int i){
         if (jTextField != null){
-            jTextField.setText(String.valueOf(d));
+            jTextField.setText(String.valueOf(i));
         }
     }
 

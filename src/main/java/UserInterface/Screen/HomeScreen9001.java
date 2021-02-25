@@ -1,6 +1,6 @@
 package UserInterface.Screen;
 
-import DataHandling.TranactionData;
+import DataHandling.TransactionData;
 import UserInterface.Component.Panel.ButtonPanel;
 import UserInterface.Component.Panel.InfoPanel;
 import UserInterface.Component.Enum.InfoTYPE;
@@ -10,7 +10,7 @@ public class HomeScreen9001 extends AbstractScreen implements Observer{
     private InfoPanel[] infoPanels = new InfoPanel[5];
     private ButtonPanel[] buttonPanels = new ButtonPanel[5];
 
-    private TranactionData tranactionData;
+    private TransactionData transactionData;
 
     private final String [] BT_Header = new String[]{"1. STRATEGY", "2. START", "3. MONITOR", "4. STOP", "5. HISTORY"};
     private final String [] BT_Description = new String[]{"Modify or view the strategy", "Launching the engine with the strategy", "View live data", "Stopping the engine with the strategy", "View transaction history"};
@@ -20,9 +20,11 @@ public class HomeScreen9001 extends AbstractScreen implements Observer{
     private String [] IP_values = new String[]{"5", "4", "1", "1000 USD", "LONG"};
     private InfoTYPE [] IP_types = new InfoTYPE[]{InfoTYPE.POSITIVE, InfoTYPE.NEGATIVE, InfoTYPE.POSITIVE, InfoTYPE.NO_ICON, InfoTYPE.POSITIVE};
 
-    public HomeScreen9001(TranactionData tranactionData) {
-        this.tranactionData = tranactionData;
-        this.tranactionData.registerObserver(this);
+    public HomeScreen9001(TransactionData transactionData) {
+        this.transactionData = transactionData;
+        this.transactionData.registerObserver(this);
+
+        update();
     }
 
     @Override
@@ -47,7 +49,43 @@ public class HomeScreen9001 extends AbstractScreen implements Observer{
 
     @Override
     public void update() {
-        //TODO : CALL METHOD OF tranactionData to update IP_values and IP_types
+
+        /* CALL METHOD OF tranactionData to update IP_values and IP_types */
+        /* #BUY */
+        int numberBuy = transactionData.getNumberBuy();
+        IP_values[0] = (String.valueOf(numberBuy));
+
+        /* #SELL */
+        int numberSell = transactionData.getNumberSell();
+        IP_values[1] = (String.valueOf(numberSell));
+
+        /* #OPEN */
+        int open = (numberBuy - numberSell);
+        InfoTYPE type = InfoTYPE.NEUTRAL;
+        if (open > 0){
+            type = InfoTYPE.POSITIVE;
+        } else if (open < 0){
+            type = InfoTYPE.NEGATIVE;
+        }
+        IP_values[2] = (String.valueOf(Math.abs(open)));
+        IP_types[2] = (type);
+
+        /* EXPOSITION */
+        double exposition = transactionData.getExposition();
+        IP_values[3] = (exposition +" USD");
+
+        /* POSITION */
+        InfoTYPE expo = InfoTYPE.NEUTRAL;
+        String value = "NEUTRAL";
+        if (exposition > 0){
+            expo = InfoTYPE.POSITIVE;
+            value = "LONG";
+        } else if (exposition < 0){
+            expo = InfoTYPE.NEGATIVE;
+            value = "SHORT";
+        }
+        IP_values[4] = (value);
+        IP_types[4] = (expo);
 
         init();
     }

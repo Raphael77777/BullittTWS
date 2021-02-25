@@ -66,7 +66,16 @@ public class EngineScreen9002 extends AbstractScreen implements Observer {
 
     @Override
     public void update() {
-        //TODO : CALL METHOD OF strategyData to update IP_values
+
+        /* TODO : CALL METHOD OF strategyData to update IP_values */
+
+        IP_values[0] = strategyData.getAsset();
+        IP_values[2] = String.valueOf(strategyData.getAccuracy());
+        IP_values[3] = strategyData.getTimescale();
+        IP_values[4] = String.valueOf(strategyData.getExposure());
+        IP_values[5] = strategyData.getOrder();
+        IP_values[6] = String.valueOf(strategyData.getTake_profit());
+        IP_values[7] = String.valueOf(strategyData.getStop_loss());
 
         init();
     }

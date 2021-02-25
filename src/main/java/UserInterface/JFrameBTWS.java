@@ -2,12 +2,15 @@ package UserInterface;
 
 import DataHandling.LiveData;
 import DataHandling.StrategyData;
-import DataHandling.TranactionData;
-import UserInterface.Component.Panel.InfoPanel;
+import DataHandling.TransactionData;
 import UserInterface.STATIC.GraphicalTheme;
 import UserInterface.Screen.*;
 
 import javax.swing.*;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
 
 public class JFrameBTWS extends JFrame {
 
@@ -15,7 +18,7 @@ public class JFrameBTWS extends JFrame {
     private static BackgroundScreen backgroundScreen;
 
     /* DATA */
-    private TranactionData tranactionData;
+    private TransactionData transactionData;
     private StrategyData strategyData;
     private LiveData liveData = new LiveData();
 
@@ -42,21 +45,24 @@ public class JFrameBTWS extends JFrame {
 
         /* GET DATA FROM DISK */
         //TODO : DESERIALIZE TRANSACTION_DATA
-        tranactionData = new TranactionData();
+        transactionData = loadTransactions();
         //TODO : DESERIALIZE STRATEGY_DATA
-        strategyData = new StrategyData();
+        strategyData = loadStrategy();
 
         /* CREATE SCREEN WITH DATA */
-        homeScreen9001 = new HomeScreen9001(tranactionData);
+        homeScreen9001 = new HomeScreen9001(transactionData);
         engineScreen9002 = new EngineScreen9002(strategyData);
         settingsScreen9004 = new SettingsScreen9004(strategyData);
-        transactionsScreen9005 = new TransactionsScreen9005(tranactionData);
+        transactionsScreen9005 = new TransactionsScreen9005(transactionData);
 
         /* INIT BACKGROUND, MENU, LOGO */
         backgroundScreen = new BackgroundScreen();
         backgroundScreen.setVisible(true);
         add(backgroundScreen);
         repaint();
+
+        //TODO : TO REMOVE
+        //transactionData.addTransactions("MSFT", "EUR", TransactionTYPE.BUY, new Date(System.currentTimeMillis()), new Time(System.currentTimeMillis()), 5, 3.45, 342.10);
 
         /* SHOW WelcomeScreen9001 */
         showWelcomeScreen();
@@ -135,7 +141,6 @@ public class JFrameBTWS extends JFrame {
         monitorScreen9003.setVisible(false);
         transactionsScreen9005.setVisible(false);
 
-        settingsScreen9004.init();
         settingsScreen9004.setVisible(true);
         backgroundScreen.add(settingsScreen9004);
 
@@ -182,5 +187,55 @@ public class JFrameBTWS extends JFrame {
         }
 
         backgroundScreen.changeScreen(target);
+    }
+
+    public TransactionData loadTransactions () {
+        TransactionData transactionData = null;
+
+        FileInputStream in = null;
+        ObjectInputStream ois = null;
+        try {
+            String home = System.getProperty("user.home");
+            File file = new File(home+"/transactions.bullitt");
+            in = new FileInputStream(file);
+            ois = new ObjectInputStream( in );
+            transactionData = (TransactionData) ois.readObject();
+        } catch(IOException | ClassNotFoundException w) {
+            w.printStackTrace();
+        }finally {
+            try {
+                ois.close();
+                in.close();
+            } catch (IOException r) {
+                r.printStackTrace();
+            }
+        }
+
+        return transactionData;
+    }
+
+    public StrategyData loadStrategy () {
+        StrategyData strategyData = null;
+
+        FileInputStream in = null;
+        ObjectInputStream ois = null;
+        try {
+            String home = System.getProperty("user.home");
+            File file = new File(home+"/strategy.bullitt");
+            in = new FileInputStream(file);
+            ois = new ObjectInputStream( in );
+            strategyData = (StrategyData) ois.readObject();
+        } catch(IOException | ClassNotFoundException w) {
+            w.printStackTrace();
+        }finally {
+            try {
+                ois.close();
+                in.close();
+            } catch (IOException r) {
+                r.printStackTrace();
+            }
+        }
+
+        return strategyData;
     }
 }

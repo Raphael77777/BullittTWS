@@ -30,6 +30,8 @@ public class SettingsScreen9004 extends AbstractScreen implements Observer {
     public SettingsScreen9004(StrategyData strategyData) {
         this.strategyData = strategyData;
         this.strategyData.registerObserver(this);
+
+        update();
     }
 
     @Override
@@ -90,32 +92,32 @@ public class SettingsScreen9004 extends AbstractScreen implements Observer {
 
     @Override
     public void update() {
-        //TODO : CALL METHOD OF strategyData to update following :
-
-        asset.setSelected("");
-        order.setSelected("");
-        timescale.setSelected("");
-        accuracy.setNumber(0.0);
-        exposure.setNumber(20);
-
-        take_profit.setNumber(2.00);
-        stop_loss.setNumber(1.0);
 
         init();
+
+        /* CALL METHOD OF strategyData to update following */
+        asset.setSelected(strategyData.getAsset());
+        order.setSelected(strategyData.getOrder());
+        timescale.setSelected(strategyData.getTimescale());
+        accuracy.setNumber(strategyData.getAccuracy());
+        exposure.setNumber(strategyData.getExposure());
+        take_profit.setNumber(strategyData.getTake_profit());
+        stop_loss.setNumber(strategyData.getStop_loss());
+
+        repaint();
     }
 
     public void changeStrategy() {
-        //TODO : UPDATE STRATEGY WITHIN strategyData with data following :
 
-        String a = asset.getSelected();
-        String o = order.getSelected();
-        String t = timescale.getSelected();
-        double ac = accuracy.getNumber();
-        int ex = exposure.getNumber();
+        /* UPDATE STRATEGY WITHIN strategyData with data following */
+        strategyData.setAsset(asset.getSelected());
+        strategyData.setOrder(order.getSelected());
+        strategyData.setTimescale(timescale.getSelected());
+        strategyData.setAccuracy(accuracy.getNumber());
+        strategyData.setExposure(exposure.getNumber());
+        strategyData.setTake_profit(take_profit.getNumber());
+        strategyData.setStop_loss(stop_loss.getNumber());
 
-        double tp = take_profit.getNumber();
-        double sl = stop_loss.getNumber();
-
-        init();
+        strategyData.compil();
     }
 }

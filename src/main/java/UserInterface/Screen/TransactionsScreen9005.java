@@ -1,6 +1,6 @@
 package UserInterface.Screen;
 
-import DataHandling.TranactionData;
+import DataHandling.TransactionData;
 import UserInterface.Component.Panel.TransactionPanel;
 import UserInterface.Component.Enum.TransactionTYPE;
 
@@ -14,7 +14,7 @@ public class TransactionsScreen9005 extends AbstractScreen implements Observer{
 
     private TransactionPanel[] transactionPanels;
 
-    private TranactionData tranactionData;
+    private TransactionData transactionData;
 
     private ArrayList<String> assets;
     private ArrayList<String> currencies;
@@ -25,9 +25,11 @@ public class TransactionsScreen9005 extends AbstractScreen implements Observer{
     private ArrayList<Double> fees;
     private ArrayList<Double> prices;
 
-    public TransactionsScreen9005(TranactionData tranactionData) {
-        this.tranactionData = tranactionData;
-        this.tranactionData.registerObserver(this);
+    public TransactionsScreen9005(TransactionData transactionData) {
+        this.transactionData = transactionData;
+        this.transactionData.registerObserver(this);
+
+        update();
     }
 
     @Override
@@ -70,7 +72,16 @@ public class TransactionsScreen9005 extends AbstractScreen implements Observer{
 
     @Override
     public void update() {
-        //TODO : CALL METHOD OF tranactionData to update arraylist
+
+        /* CALL METHOD OF tranactionData to update arraylist */
+        assets = transactionData.getAssets();
+        currencies = transactionData.getCurrencies();
+        types = transactionData.getTypes();
+        dates = transactionData.getDates();
+        times = transactionData.getTimes();
+        quantities = transactionData.getQuantities();
+        fees = transactionData.getFees();
+        prices = transactionData.getPrices();
 
         init();
     }
