@@ -1,0 +1,15 @@
+package DataHandling;
+
+public class TransactionData {
+    public int getNumberBuy() {
+        return 0;
+    }
+
+    public int getNumberSell() {
+        return 0;
+    }
+
+    public double getExposition() {
+        return 0.0;
+    }
+}

@@ -1,0 +1,98 @@
+package DataHandling;
+
+import UserInterface.Component.Enum.InfoTYPE;
+import UserInterface.Screen.Observer;
+
+import java.util.ArrayList;
+
+public class HomeData implements Subject, Observer {
+
+    private ArrayList<Observer> observers;
+    private TransactionData transactionData;
+
+    private String [] header = new String[]{"#BUY", "#SELL", "#OPEN", "Exposition", "Position"};
+    private String [] value;
+    private InfoTYPE [] type = new InfoTYPE[]{InfoTYPE.POSITIVE, InfoTYPE.NEGATIVE, null, InfoTYPE.NEUTRAL, null};
+
+    public HomeData(TransactionData transactionData) {
+        observers = new ArrayList<>();
+        this.transactionData = transactionData;
+        update();
+    }
+
+    @Override
+    public void registerObserver(Observer o) {
+        observers.add(o);
+    }
+
+    @Override
+    public void removeObserver(Observer o) {
+        observers.remove(o);
+    }
+
+    @Override
+    public void notifyObservers() {
+        for(Observer o : observers){
+            o.update();
+        }
+    }
+
+    private void setValue(int index, String v) {
+        this.value[index] = v;
+    }
+    private void setType(int index, InfoTYPE t) {
+        this.type[index] = t;
+    }
+
+    public String[] getHeader() {
+        return header;
+    }
+    public String[] getValue() {
+        return value;
+    }
+    public InfoTYPE[] getType() {
+        return type;
+    }
+
+    @Override
+    public void update() {
+
+        /* #BUY */
+        int numberBuy = transactionData.getNumberBuy();
+        setValue(0, String.valueOf(numberBuy));
+
+        /* #SELL */
+        int numberSell = transactionData.getNumberSell();
+        setValue(1, String.valueOf(numberSell));
+
+        /* #OPEN */
+        int open = (numberBuy - numberSell);
+        InfoTYPE type = InfoTYPE.NEUTRAL;
+         if (open > 0){
+            type = InfoTYPE.POSITIVE;
+        } else if (open < 0){
+            type = InfoTYPE.NEGATIVE;
+        }
+        setValue(2, String.valueOf(Math.abs(open)));
+        setType(2, type);
+
+        /* EXPOSITION */
+        double exposition = transactionData.getExposition();
+        setValue(3, exposition +" USD");
+
+        /* POSITION */
+        InfoTYPE expo = InfoTYPE.NEUTRAL;
+        String value = "NEUTRAL";
+         if (exposition > 0){
+            expo = InfoTYPE.POSITIVE;
+            value = "LONG";
+        } else if (exposition < 0){
+            expo = InfoTYPE.NEGATIVE;
+            value = "SHORT";
+        }
+        setValue(4, value);
+        setType(4, expo);
+
+        notifyObservers();
+    }
+}
