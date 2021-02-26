@@ -1,11 +1,13 @@
 package UserInterface.Screen;
 
+import DataHandling.AlphaVantageData;
 import DataHandling.StrategyData;
 import UserInterface.Component.ImageLabel;
 import UserInterface.Component.Panel.ButtonPanel;
 import UserInterface.Component.Panel.InfoPanel;
 import UserInterface.Component.Enum.InfoTYPE;
 
+import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -17,20 +19,25 @@ public class EngineScreen9002 extends AbstractScreen implements Observer {
     private ButtonPanel[] buttonPanels = new ButtonPanel[2];
 
     private StrategyData strategyData;
+    private AlphaVantageData alphaVantageData;
     private final MouseListener mouseListener = new startAndStop();
     private String state = "stop";
+    private boolean apiKeyAvailable = false;
 
-    private final String [] IP_texts = new String[]{"Asset", "Strategy", "Accuracy", "Timescale", "Exposure", "Order", "Take profit", "Stop loss", "Auto-kill"};
-    private String [] IP_values = new String[]{"JPY/USD", "RSI(2)", "0.7", "60 sec", "90%", "Limit", "7.5%", "5%", "Active"};
-    private final InfoTYPE [] IP_types = new InfoTYPE[]{InfoTYPE.NO_ICON, InfoTYPE.NO_ICON, InfoTYPE.NEUTRAL, InfoTYPE.NEUTRAL, InfoTYPE.NEUTRAL, InfoTYPE.NEUTRAL, InfoTYPE.POSITIVE, InfoTYPE.NEGATIVE, InfoTYPE.NO_ICON };
+    private final String [] IP_texts = new String[]{"Asset", "Strategy", "Accuracy", "Timescale", "Exposure", "Order", "Take profit", "Stop loss", "APIs key"};
+    private String [] IP_values = new String[]{"JPY/USD", "RSI(2)", "0.7", "60 sec", "90%", "Limit", "7.5%", "5%", "Inactive"};
+    private InfoTYPE [] IP_types = new InfoTYPE[]{InfoTYPE.NO_ICON, InfoTYPE.NO_ICON, InfoTYPE.NEUTRAL, InfoTYPE.NEUTRAL, InfoTYPE.NEUTRAL, InfoTYPE.NEUTRAL, InfoTYPE.POSITIVE, InfoTYPE.NEGATIVE, InfoTYPE.NO_ICON };
 
     private final String [] BT_Header = new String[]{"1. STRATEGY", "2. MONITOR"};
     private final String [] BT_Description = new String[]{"Modify or view the strategy", "View live data"};
     private final String [] BT_Target = new String[]{"SETTINGS", "MONITOR"};
 
-    public EngineScreen9002(StrategyData strategyData) {
+    public EngineScreen9002(StrategyData strategyData, AlphaVantageData alphaVantageData) {
         this.strategyData = strategyData;
         this.strategyData.registerObserver(this);
+
+        this.alphaVantageData = alphaVantageData;
+        this.alphaVantageData.registerObserver(this);
 
         update();
     }
@@ -69,7 +76,7 @@ public class EngineScreen9002 extends AbstractScreen implements Observer {
     @Override
     public void update() {
 
-        /* TODO : CALL METHOD OF strategyData to update IP_values */
+        /* CALL METHOD OF strategyData to update IP_values */
 
         IP_values[0] = strategyData.getAsset();
         IP_values[2] = String.valueOf(strategyData.getAccuracy());
@@ -79,12 +86,28 @@ public class EngineScreen9002 extends AbstractScreen implements Observer {
         IP_values[6] = String.valueOf(strategyData.getTake_profit());
         IP_values[7] = String.valueOf(strategyData.getStop_loss());
 
+        if (!alphaVantageData.getAPI_KEY_1().equals("")){
+            IP_values[8] = "Active";
+            IP_types[8] = InfoTYPE.GREEN;
+            apiKeyAvailable = true;
+        }else {
+            IP_values[8] = "Inactive";
+            IP_types[8] = InfoTYPE.RED;
+            apiKeyAvailable = false;
+        }
+
         init();
     }
 
     private class startAndStop extends MouseAdapter {
         @Override
         public void mouseClicked(MouseEvent e) {
+
+            if (!apiKeyAvailable){
+                JOptionPane.showMessageDialog(getRootPane(), "APIs key missing !");
+                return;
+            }
+
             if (state.equals("stop")){
                 state = "start";
                 display("ENGINE STARTED! Please do not switch off the computer and check the strategy settings.");

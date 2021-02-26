@@ -11,7 +11,6 @@ public class AlphaVantageData implements Subject, Serializable {
     private transient ArrayList<Observer> observers;
 
     private String API_KEY_1 = "";
-    private String API_KEY_2 = "";
 
     public AlphaVantageData() {
         observers = new ArrayList<>();
@@ -74,17 +73,6 @@ public class AlphaVantageData implements Subject, Serializable {
 
     public void setAPI_KEY_1(String API_KEY_1) {
         this.API_KEY_1 = API_KEY_1;
-
-        notifyObservers();
-        serialize();
-    }
-
-    public String getAPI_KEY_2() {
-        return API_KEY_2;
-    }
-
-    public void setAPI_KEY_2(String API_KEY_2) {
-        this.API_KEY_2 = API_KEY_2;
 
         notifyObservers();
         serialize();

@@ -10,9 +10,9 @@ public class StrategyData implements Subject, Serializable {
     private static final long serialVersionUID = -7985850416102010819L;
     private transient ArrayList<Observer> observers;
 
-    private String asset;
-    private String order;
-    private String timescale;
+    private String asset ="--";
+    private String order ="--";
+    private String timescale ="--";
     private double accuracy;
     private int exposure;
     private double take_profit;

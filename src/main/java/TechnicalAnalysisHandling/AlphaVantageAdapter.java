@@ -136,6 +136,5 @@ public class AlphaVantageAdapter implements Observer {
     @Override
     public void update() {
         API_KEY_1 = alphaVantageData.getAPI_KEY_1();
-        API_KEY_2 = alphaVantageData.getAPI_KEY_2();
     }
 }

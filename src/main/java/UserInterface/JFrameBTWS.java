@@ -5,10 +5,7 @@ import UserInterface.STATIC.GraphicalTheme;
 import UserInterface.Screen.*;
 
 import javax.swing.*;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.ObjectInputStream;
+import java.io.*;
 
 public class JFrameBTWS extends JFrame {
 
@@ -43,16 +40,28 @@ public class JFrameBTWS extends JFrame {
         setVisible(true);
 
         /* GET DATA FROM DISK */
-        //TODO : DESERIALIZE TRANSACTION_DATA
-        transactionData = loadTransactions();
-        //TODO : DESERIALIZE STRATEGY_DATA
-        strategyData = loadStrategy();
-        //TODO : DESERIALIZE ALPHA_VANTAGE_DATA
-        alphaVantageData = loadAlphaVantage();
+        /* DESERIALIZE TRANSACTION_DATA */
+        try {
+            transactionData = loadTransactions();
+        }catch (IOException e){
+            transactionData = new TransactionData();
+        }
+        /* DESERIALIZE STRATEGY_DATA */
+        try {
+            strategyData = loadStrategy();
+        }catch (IOException e){
+            strategyData = new StrategyData();
+        }
+        /* DESERIALIZE ALPHA_VANTAGE_DATA */
+        try {
+            alphaVantageData = loadAlphaVantage();
+        }catch (IOException e){
+            alphaVantageData = new AlphaVantageData();
+        }
 
         /* CREATE SCREEN WITH DATA */
         homeScreen9001 = new HomeScreen9001(transactionData);
-        engineScreen9002 = new EngineScreen9002(strategyData);
+        engineScreen9002 = new EngineScreen9002(strategyData, alphaVantageData);
         settingsScreen9004 = new SettingsScreen9004(strategyData);
         transactionsScreen9005 = new TransactionsScreen9005(transactionData);
 
@@ -194,7 +203,7 @@ public class JFrameBTWS extends JFrame {
         backgroundScreen.changeScreen(target);
     }
 
-    public TransactionData loadTransactions () {
+    public TransactionData loadTransactions () throws IOException {
         TransactionData transactionData = null;
 
         FileInputStream in = null;
@@ -205,12 +214,16 @@ public class JFrameBTWS extends JFrame {
             in = new FileInputStream(file);
             ois = new ObjectInputStream( in );
             transactionData = (TransactionData) ois.readObject();
-        } catch(IOException | ClassNotFoundException w) {
+        } catch(ClassNotFoundException w) {
             w.printStackTrace();
         }finally {
             try {
-                ois.close();
-                in.close();
+                if (ois != null) {
+                    ois.close();
+                }
+                if (in != null) {
+                    in.close();
+                }
             } catch (IOException r) {
                 r.printStackTrace();
             }
@@ -219,7 +232,7 @@ public class JFrameBTWS extends JFrame {
         return transactionData;
     }
 
-    public StrategyData loadStrategy () {
+    public StrategyData loadStrategy () throws IOException {
         StrategyData strategyData = null;
 
         FileInputStream in = null;
@@ -230,12 +243,16 @@ public class JFrameBTWS extends JFrame {
             in = new FileInputStream(file);
             ois = new ObjectInputStream( in );
             strategyData = (StrategyData) ois.readObject();
-        } catch(IOException | ClassNotFoundException w) {
+        } catch(ClassNotFoundException w) {
             w.printStackTrace();
         }finally {
             try {
-                ois.close();
-                in.close();
+                if (ois != null) {
+                    ois.close();
+                }
+                if (in != null) {
+                    in.close();
+                }
             } catch (IOException r) {
                 r.printStackTrace();
             }
@@ -244,7 +261,7 @@ public class JFrameBTWS extends JFrame {
         return strategyData;
     }
 
-    public AlphaVantageData loadAlphaVantage () {
+    public AlphaVantageData loadAlphaVantage() throws IOException {
         AlphaVantageData alphaVantageData = null;
 
         FileInputStream in = null;
@@ -255,12 +272,16 @@ public class JFrameBTWS extends JFrame {
             in = new FileInputStream(file);
             ois = new ObjectInputStream( in );
             alphaVantageData = (AlphaVantageData) ois.readObject();
-        } catch(IOException | ClassNotFoundException w) {
+        } catch(ClassNotFoundException w) {
             w.printStackTrace();
         }finally {
             try {
-                ois.close();
-                in.close();
+                if (ois != null) {
+                    ois.close();
+                }
+                if (in != null) {
+                    in.close();
+                }
             } catch (IOException r) {
                 r.printStackTrace();
             }
@@ -269,8 +290,24 @@ public class JFrameBTWS extends JFrame {
         return alphaVantageData;
     }
 
-    //TODO : Implement BOX to enter api key
     public void setAPIKEY() {
-        System.out.println("SHOW BOX TO ENTER API KEY");
+
+        String key = JOptionPane.showInputDialog(
+                this,
+                "Enter the secret API key",
+                "AlphaVantage APIs",
+                JOptionPane.INFORMATION_MESSAGE
+        );
+
+        if (key == null){
+            return;
+        }
+
+        if (key.length() != 16){
+            JOptionPane.showMessageDialog(getRootPane(), "Wrong APIs key !");
+            return;
+        }
+
+        alphaVantageData.setAPI_KEY_1(key);
     }
 }
