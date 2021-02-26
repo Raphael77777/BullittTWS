@@ -1,13 +1,17 @@
 package UserInterface.Component.Panel;
 
 import UserInterface.Component.Enum.InfoTYPE;
+import UserInterface.Component.ImageLabel;
 import UserInterface.JFrameBTWS;
 import UserInterface.STATIC.GraphicalTheme;
+import UserInterface.Screen.BackgroundScreen;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.awt.geom.Line2D;
 
 public class ButtonPanel extends JPanel {
@@ -92,10 +96,23 @@ public class ButtonPanel extends JPanel {
             });
             jButton.setBounds(428, 15, 80, 80);
             add(jButton);
+        }if (!target.equals("API BUTTONS")){
+            ImageLabel infoLabel = new ImageLabel("info.png");
+            infoLabel.setBounds(463,10, 50,50);
+            infoLabel.addMouseListener(new updateAPIKEY());
+            add(infoLabel);
         }
     }
 
     public String getIDENTIFIER() {
         return IDENTIFIER;
     }
+
+    private class updateAPIKEY extends MouseAdapter {
+        @Override
+        public void mouseClicked(MouseEvent e) {
+            JFrameBTWS.getInstance().setAPIKEY();
+        }
+    }
+
 }

@@ -1,9 +1,6 @@
 package UserInterface;
 
-import DataHandling.LiveData;
-import DataHandling.SimulatorLiveData;
-import DataHandling.StrategyData;
-import DataHandling.TransactionData;
+import DataHandling.*;
 import UserInterface.STATIC.GraphicalTheme;
 import UserInterface.Screen.*;
 
@@ -21,6 +18,7 @@ public class JFrameBTWS extends JFrame {
     /* DATA */
     private TransactionData transactionData;
     private StrategyData strategyData;
+    private AlphaVantageData alphaVantageData;
     private LiveData liveData = new LiveData();
 
     /* Screen 900X */
@@ -49,6 +47,8 @@ public class JFrameBTWS extends JFrame {
         transactionData = loadTransactions();
         //TODO : DESERIALIZE STRATEGY_DATA
         strategyData = loadStrategy();
+        //TODO : DESERIALIZE ALPHA_VANTAGE_DATA
+        alphaVantageData = loadAlphaVantage();
 
         /* CREATE SCREEN WITH DATA */
         homeScreen9001 = new HomeScreen9001(transactionData);
@@ -64,6 +64,8 @@ public class JFrameBTWS extends JFrame {
 
         //TODO : TO REMOVE
         //transactionData.addTransactions("MSFT", "EUR", TransactionTYPE.BUY, new Date(System.currentTimeMillis()), new Time(System.currentTimeMillis()), 5, 3.45, 342.10);
+        //alphaVantageData.setAPI_KEY_1("Q0QIVTR31CWPFT62");
+        //alphaVantageData.setAPI_KEY_2("2L5CKCXQNF3JLODF");
         SimulatorLiveData simulatorLiveData = new SimulatorLiveData(liveData);
         simulatorLiveData.start();
 
@@ -240,5 +242,35 @@ public class JFrameBTWS extends JFrame {
         }
 
         return strategyData;
+    }
+
+    public AlphaVantageData loadAlphaVantage () {
+        AlphaVantageData alphaVantageData = null;
+
+        FileInputStream in = null;
+        ObjectInputStream ois = null;
+        try {
+            String home = System.getProperty("user.home");
+            File file = new File(home+"/alpha.bullitt");
+            in = new FileInputStream(file);
+            ois = new ObjectInputStream( in );
+            alphaVantageData = (AlphaVantageData) ois.readObject();
+        } catch(IOException | ClassNotFoundException w) {
+            w.printStackTrace();
+        }finally {
+            try {
+                ois.close();
+                in.close();
+            } catch (IOException r) {
+                r.printStackTrace();
+            }
+        }
+
+        return alphaVantageData;
+    }
+
+    //TODO : Implement BOX to enter api key
+    public void setAPIKEY() {
+        System.out.println("SHOW BOX TO ENTER API KEY");
     }
 }
