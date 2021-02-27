@@ -77,8 +77,13 @@ public class InputDouble extends JPanel implements InputInterface {
             public void keyReleased(java.awt.event.KeyEvent evt) {
                 try {
                     double number = Double.parseDouble(jTextField.getText());
+
+                    if (number < 0 || number > 1){
+                        throw new Exception();
+                    }
+
                 } catch (Exception e) {
-                    JOptionPane.showMessageDialog(getRootPane(), "Only Numbers Allowed");
+                    JOptionPane.showMessageDialog(getRootPane(), "Only numbers between 0 and 1 are allowed");
                     jTextField.setText("");
                 }
             }

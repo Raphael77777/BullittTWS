@@ -79,15 +79,15 @@ public class JFrameBTWS extends JFrame {
         //alphaVantageData.setAPI_KEY_1("Q0QIVTR31CWPFT62");
         //alphaVantageData.setAPI_KEY_2("2L5CKCXQNF3JLODF");
         //AlphaVantageAdapter ava = new AlphaVantageAdapter(alphaVantageData);
-        AdapterSMA adapterSMA = new AdapterSMA(alphaVantageData);
-        AdapterRSI adapterRSI = new AdapterRSI(alphaVantageData);
-        try {
+        //AdapterSMA adapterSMA = new AdapterSMA(alphaVantageData);
+        //AdapterRSI adapterRSI = new AdapterRSI(alphaVantageData);
+        /*try {
             System.out.println("SMA200 : "+ adapterSMA.get("USDEUR", "1min", "200", "open"));
-            System.out.println("SMA50 : "+adapterSMA.get("USDEUR", "1min", "50", "open"));
+            System.out.println("SMA5 : "+adapterSMA.get("USDEUR", "1min", "5", "open"));
             System.out.println("RSI2 : "+adapterRSI.get("USDEUR", "1min", "10", "open"));
         } catch (Exception e) {
             e.printStackTrace();
-        }
+        }*/
         SimulatorLiveData simulatorLiveData = new SimulatorLiveData(liveData);
         simulatorLiveData.start();
 

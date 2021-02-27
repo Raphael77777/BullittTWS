@@ -77,8 +77,13 @@ public class InputInteger extends JPanel implements InputInterface {
             public void keyReleased(java.awt.event.KeyEvent evt) {
                 try {
                     int number = Integer.parseInt(jTextField.getText());
+
+                    if (number <= 0 || number > 100){
+                        throw new Exception();
+                    }
+
                 } catch (Exception e) {
-                    JOptionPane.showMessageDialog(getRootPane(), "Only Numbers Allowed");
+                    JOptionPane.showMessageDialog(getRootPane(), "Only numbers between 0 and 100 are allowed");
                     jTextField.setText("");
                 }
             }
