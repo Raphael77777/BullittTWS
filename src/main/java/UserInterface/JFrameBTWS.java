@@ -1,6 +1,9 @@
 package UserInterface;
 
 import DataHandling.*;
+import TechnicalAnalysisHandling.AdapterRSI;
+import TechnicalAnalysisHandling.AdapterSMA;
+import TechnicalAnalysisHandling.AlphaVantageAdapter;
 import UserInterface.STATIC.GraphicalTheme;
 import UserInterface.Screen.*;
 
@@ -75,6 +78,16 @@ public class JFrameBTWS extends JFrame {
         //transactionData.addTransactions("MSFT", "EUR", TransactionTYPE.BUY, new Date(System.currentTimeMillis()), new Time(System.currentTimeMillis()), 5, 3.45, 342.10);
         //alphaVantageData.setAPI_KEY_1("Q0QIVTR31CWPFT62");
         //alphaVantageData.setAPI_KEY_2("2L5CKCXQNF3JLODF");
+        //AlphaVantageAdapter ava = new AlphaVantageAdapter(alphaVantageData);
+        AdapterSMA adapterSMA = new AdapterSMA(alphaVantageData);
+        AdapterRSI adapterRSI = new AdapterRSI(alphaVantageData);
+        try {
+            System.out.println("SMA200 : "+ adapterSMA.get("USDEUR", "1min", "200", "open"));
+            System.out.println("SMA50 : "+adapterSMA.get("USDEUR", "1min", "50", "open"));
+            System.out.println("RSI2 : "+adapterRSI.get("USDEUR", "1min", "10", "open"));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         SimulatorLiveData simulatorLiveData = new SimulatorLiveData(liveData);
         simulatorLiveData.start();
 
@@ -308,6 +321,6 @@ public class JFrameBTWS extends JFrame {
             return;
         }
 
-        alphaVantageData.setAPI_KEY_1(key);
+        alphaVantageData.setAPI_KEY(key);
     }
 }

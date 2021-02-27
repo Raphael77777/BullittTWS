@@ -10,7 +10,7 @@ public class AlphaVantageData implements Subject, Serializable {
     private static final long serialVersionUID = -7238850416677010319L;
     private transient ArrayList<Observer> observers;
 
-    private String API_KEY_1 = "";
+    private String API_KEY = "";
 
     public AlphaVantageData() {
         observers = new ArrayList<>();
@@ -67,12 +67,12 @@ public class AlphaVantageData implements Subject, Serializable {
 
     /* ALPHA VANTAGE METHOD */
 
-    public String getAPI_KEY_1() {
-        return API_KEY_1;
+    public String getAPI_KEY() {
+        return API_KEY;
     }
 
-    public void setAPI_KEY_1(String API_KEY_1) {
-        this.API_KEY_1 = API_KEY_1;
+    public void setAPI_KEY(String API_KEY) {
+        this.API_KEY = API_KEY;
 
         notifyObservers();
         serialize();

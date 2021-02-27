@@ -86,14 +86,14 @@ public class EngineScreen9002 extends AbstractScreen implements Observer {
         IP_values[6] = String.valueOf(strategyData.getTake_profit());
         IP_values[7] = String.valueOf(strategyData.getStop_loss());
 
-        if (!alphaVantageData.getAPI_KEY_1().equals("")){
-            IP_values[8] = "Active";
-            IP_types[8] = InfoTYPE.GREEN;
-            apiKeyAvailable = true;
-        }else {
+        if (alphaVantageData.getAPI_KEY() == null || alphaVantageData.getAPI_KEY().equals("")){
             IP_values[8] = "Inactive";
             IP_types[8] = InfoTYPE.RED;
             apiKeyAvailable = false;
+        }else if (alphaVantageData.getAPI_KEY().length() == 16){
+            IP_values[8] = "Active";
+            IP_types[8] = InfoTYPE.GREEN;
+            apiKeyAvailable = true;
         }
 
         init();

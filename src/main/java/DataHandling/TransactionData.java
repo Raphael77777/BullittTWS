@@ -141,11 +141,7 @@ public class TransactionData implements Subject, Serializable {
     public double getExposition() {
         double sum = 0;
         for (int i = 0; i<types.size(); i++){
-            if (types.get(i) == TransactionTYPE.BUY){
-                sum += (1.*quantities.get(i)*prices.get(i)+fees.get(i));
-            } else if (types.get(i) == TransactionTYPE.SELL){
-                sum -= (1.*quantities.get(i)*prices.get(i)+fees.get(i));
-            }
+            sum += Math.abs((1.*quantities.get(i)*prices.get(i)+fees.get(i)));
         }
         return sum;
     }
