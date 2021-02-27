@@ -1,19 +1,23 @@
 package UserInterface;
 
+import ConnectionHandling.TWS;
 import DataHandling.*;
-import TechnicalAnalysisHandling.AdapterRSI;
-import TechnicalAnalysisHandling.AdapterSMA;
-import TechnicalAnalysisHandling.AlphaVantageAdapter;
 import UserInterface.STATIC.GraphicalTheme;
 import UserInterface.Screen.*;
 
 import javax.swing.*;
-import java.io.*;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
 
 public class JFrameBTWS extends JFrame {
 
     private static JFrameBTWS jFrameBTWS = new JFrameBTWS();
     private static BackgroundScreen backgroundScreen;
+
+    /* THREAD TWS */
+    private Thread threadTWS;
 
     /* DATA */
     private TransactionData transactionData;
@@ -88,8 +92,10 @@ public class JFrameBTWS extends JFrame {
         } catch (Exception e) {
             e.printStackTrace();
         }*/
+
         SimulatorLiveData simulatorLiveData = new SimulatorLiveData(liveData);
-        simulatorLiveData.start();
+        Thread t = new Thread(simulatorLiveData);
+        t.start();
 
         /* SHOW WelcomeScreen9001 */
         showWelcomeScreen();
@@ -322,5 +328,25 @@ public class JFrameBTWS extends JFrame {
         }
 
         alphaVantageData.setAPI_KEY(key);
+    }
+
+    public void start() {
+
+        //TODO : START TWS
+        System.out.println("> TWS HAS BEEN STARTED !");
+
+        TWS tws = new TWS(strategyData, transactionData, liveData, alphaVantageData);
+        threadTWS = new Thread(tws);
+        threadTWS.start();
+    }
+
+    public void stop() {
+
+        //TODO : STOP TWS
+        System.out.println("> TWS HAS BEEN STOPPED !");
+
+        if (threadTWS != null) {
+            threadTWS.interrupt();
+        }
     }
 }

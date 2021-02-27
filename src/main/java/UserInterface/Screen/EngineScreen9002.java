@@ -6,6 +6,7 @@ import UserInterface.Component.ImageLabel;
 import UserInterface.Component.Panel.ButtonPanel;
 import UserInterface.Component.Panel.InfoPanel;
 import UserInterface.Component.Enum.InfoTYPE;
+import UserInterface.JFrameBTWS;
 
 import javax.swing.*;
 import java.awt.*;
@@ -111,11 +112,16 @@ public class EngineScreen9002 extends AbstractScreen implements Observer {
             if (state.equals("stop")){
                 state = "start";
                 display("ENGINE STARTED! Please do not switch off the computer and check the strategy settings.");
+
                 //TODO: START ENGINE IN ANOTHER THREAD
+                JFrameBTWS.getInstance().start();
+
             } else if (state.equals("start")){
                 state = "stop";
                 display("ENGINE STOPPED! You can turn off the computer and check the results of the strategy.");
+
                 //TODO: STOP ENGINE IN ANOTHER THREAD
+                JFrameBTWS.getInstance().stop();
             }
 
             init();

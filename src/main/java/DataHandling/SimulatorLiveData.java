@@ -3,7 +3,7 @@ package DataHandling;
 import java.sql.Time;
 import java.time.LocalTime;
 
-public class SimulatorLiveData extends Thread {
+public class SimulatorLiveData implements Runnable {
 
     private LiveData liveData;
 

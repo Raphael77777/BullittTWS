@@ -1,5 +1,10 @@
 package MarketDataHandling;
 
+import ConnectionHandling.TWS;
+import CustomException.MarketClosedException;
+import CustomException.MissingApiKeyException;
+import CustomException.NoNetworkException;
+import CustomException.OverloadApiUseException;
 import ExecutionHandling.EntrySignalA;
 import com.ib.client.TickAttrib;
 import com.ib.client.TickType;
@@ -17,7 +22,21 @@ public class TopMktDataHandlerImplementation implements ApiController.ITopMktDat
         if(tickType.equals(TickType.ASK)) {
             prices.add(0, v);
             System.out.println("Current Price: "+v);
-            new EntrySignalA(prices, prices.size()+200); //Check for signal
+
+            //TODO : Only launch signal every 60sec or others using strategy_data
+            String timescale = TWS.strategyData.getTimescale();
+
+            try {
+                new EntrySignalA(prices, prices.size()+200); //Check for signal
+            } catch (MissingApiKeyException e) {
+                e.printStackTrace();
+            } catch (NoNetworkException e) {
+                e.printStackTrace();
+            } catch (OverloadApiUseException e) {
+                e.printStackTrace();
+            } catch (MarketClosedException e) {
+                e.printStackTrace();
+            }
         }
     }
 

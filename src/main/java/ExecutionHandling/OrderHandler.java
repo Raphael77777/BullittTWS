@@ -1,6 +1,6 @@
 package ExecutionHandling;
 
-import ConnectionHandling.Run;
+import ConnectionHandling.TWS;
 import com.ib.client.*;
 import com.ib.controller.ApiController;
 
@@ -16,6 +16,10 @@ public class OrderHandler implements ApiController.ILiveOrderHandler, ApiControl
         Order parent = new Order();
         parent.orderId(parentOrderId);
         parent.action(action);
+
+        //TODO : Adapt order type using strategy_data
+        String orderType = TWS.strategyData.getOrder();
+
         parent.orderType(OrderType.LMT);
         parent.totalQuantity(quantity);
         parent.lmtPrice(limitPrice);
@@ -53,6 +57,10 @@ public class OrderHandler implements ApiController.ILiveOrderHandler, ApiControl
 
     //Contract initializer for simplicity
     static Contract initializeContract(){
+
+        //TODO : Get contract from strategy_data
+        String asset = TWS.strategyData.getAsset();
+
         Contract nq = new Contract();
         nq.symbol("EUR");
         nq.secType("CASH");
@@ -65,7 +73,7 @@ public class OrderHandler implements ApiController.ILiveOrderHandler, ApiControl
     public void placeBracketOrder(int parentOrderId, Types.Action action, int quantity, double limitPrice, double takeProfitLimitPrice, double stopLossPrice){
         List<Order> bracketOrder = BracketOrder(parentOrderId,action,quantity,limitPrice,takeProfitLimitPrice,stopLossPrice);
         for(Order o : bracketOrder) {
-            Run.apiController.placeOrModifyOrder(initializeContract(), o,this);
+            TWS.apiController.placeOrModifyOrder(initializeContract(), o,this);
         }
     }
 
