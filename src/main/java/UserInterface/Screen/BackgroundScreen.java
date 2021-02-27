@@ -15,8 +15,8 @@ import java.io.IOException;
 
 public class BackgroundScreen extends JPanel {
 
-    private JButton [] jButtons = new JButton[5];
-    private final String[] label = new String[]{"HOME", "ENGINE", "MONITOR", "SETTINGS", "HISTORY"};
+    private JButton [] jButtons = new JButton[7];
+    private final String[] label = new String[]{"HOME", "ENGINE", "MONITOR", "SETTINGS", "HISTORY", "ACCOUNTS", "POSITIONS"};
 
     public void paintComponent(Graphics g) {
         try {
@@ -46,7 +46,7 @@ public class BackgroundScreen extends JPanel {
             Font policeHeader = new Font("police", Font.BOLD, 22);
             jButtons[i].setFont(policeHeader);
             jButtons[i].setForeground(Color.white);
-            jButtons[i].setBounds(13, 240+(i*70), 240, 65);
+            jButtons[i].setBounds(13, 100+(i*70), 240, 65);
             jButtons[i].addActionListener(new buttonAction());
             add(jButtons[i]);
         }
@@ -61,8 +61,18 @@ public class BackgroundScreen extends JPanel {
         closeImg.addMouseListener(new closeAction());
         add(closeImg);
 
-        ImageLabel logoImg = new ImageLabel("LOGO-1750.png");
-        logoImg.setBounds(16, 0, 240, 240);
+        ImageLabel logoImg = new ImageLabel("TITLE-1750.png");
+        logoImg.setBounds(16, 20, 240, 69);
+        logoImg.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+
+                String target = "WELCOME";
+                JFrameBTWS.getInstance().changeScreen(target);
+                changeScreen(target);
+
+            }
+        });
         add(logoImg);
 
         repaint();
@@ -111,6 +121,12 @@ public class BackgroundScreen extends JPanel {
                 break;
             case "HISTORY":
                 jButtons[4].setBackground(GraphicalTheme.secondary_color);
+                break;
+            case "ACCOUNTS":
+                jButtons[5].setBackground(GraphicalTheme.secondary_color);
+                break;
+            case "POSITIONS":
+                jButtons[6].setBackground(GraphicalTheme.secondary_color);
                 break;
         }
     }

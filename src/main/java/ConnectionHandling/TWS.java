@@ -34,7 +34,7 @@ public class TWS implements Runnable{
     static TopMktDataHandlerImplementation mktDataHandler = new TopMktDataHandlerImplementation();
 
     //We also need to initialize our contract
-    static Contract initializeContract(){
+    public static Contract initializeContract(){
 
         //TODO : Get contract from strategy_data
         String asset = TWS.strategyData.getAsset();

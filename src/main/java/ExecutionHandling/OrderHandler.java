@@ -1,6 +1,7 @@
 package ExecutionHandling;
 
 import ConnectionHandling.TWS;
+import RiskHandling.RiskManagementSystem;
 import com.ib.client.*;
 import com.ib.controller.ApiController;
 
@@ -55,25 +56,16 @@ public class OrderHandler implements ApiController.ILiveOrderHandler, ApiControl
         return bracketOrder;
     }
 
-    //Contract initializer for simplicity
-    static Contract initializeContract(){
-
-        //TODO : Get contract from strategy_data
-        String asset = TWS.strategyData.getAsset();
-
-        Contract nq = new Contract();
-        nq.symbol("EUR");
-        nq.secType("CASH");
-        nq.currency("USD");
-        nq.exchange("IDEALPRO");
-        return nq;
-    }
-
     //Implementation of the method to create bracket orders
     public void placeBracketOrder(int parentOrderId, Types.Action action, int quantity, double limitPrice, double takeProfitLimitPrice, double stopLossPrice){
         List<Order> bracketOrder = BracketOrder(parentOrderId,action,quantity,limitPrice,takeProfitLimitPrice,stopLossPrice);
-        for(Order o : bracketOrder) {
-            TWS.apiController.placeOrModifyOrder(initializeContract(), o,this);
+
+        if (RiskManagementSystem.verifyOrder(bracketOrder)){
+            for(Order o : bracketOrder) {
+                TWS.apiController.placeOrModifyOrder(TWS.initializeContract(), o,this);
+            }
+        }else {
+            System.out.println("> The risk management system blocked a transaction.");
         }
     }
 

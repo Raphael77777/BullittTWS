@@ -18,6 +18,7 @@ public class JFrameBTWS extends JFrame {
 
     /* THREAD TWS */
     private Thread threadTWS;
+    private boolean twsStarted = false;
 
     /* DATA */
     private TransactionData transactionData;
@@ -32,6 +33,8 @@ public class JFrameBTWS extends JFrame {
     private MonitorScreen9003 monitorScreen9003 = new MonitorScreen9003(liveData);
     private SettingsScreen9004 settingsScreen9004;
     private TransactionsScreen9005 transactionsScreen9005;
+    private AccountsScreen9006 accountsScreen9006 = new AccountsScreen9006(liveData);
+    private PositionsScreen9007 positionsScreen9007;
 
     private JFrameBTWS (){
         setLayout(null);
@@ -71,6 +74,7 @@ public class JFrameBTWS extends JFrame {
         engineScreen9002 = new EngineScreen9002(strategyData, alphaVantageData);
         settingsScreen9004 = new SettingsScreen9004(strategyData);
         transactionsScreen9005 = new TransactionsScreen9005(transactionData);
+        positionsScreen9007 = new PositionsScreen9007(transactionData);
 
         /* INIT BACKGROUND, MENU, LOGO */
         backgroundScreen = new BackgroundScreen();
@@ -113,6 +117,8 @@ public class JFrameBTWS extends JFrame {
         monitorScreen9003.setVisible(false);
         settingsScreen9004.setVisible(false);
         transactionsScreen9005.setVisible(false);
+        accountsScreen9006.setVisible(false);
+        positionsScreen9007.setVisible(false);
 
         welcomeScreen9000.init();
         welcomeScreen9000.setVisible(true);
@@ -128,6 +134,8 @@ public class JFrameBTWS extends JFrame {
         monitorScreen9003.setVisible(false);
         settingsScreen9004.setVisible(false);
         transactionsScreen9005.setVisible(false);
+        accountsScreen9006.setVisible(false);
+        positionsScreen9007.setVisible(false);
 
         homeScreen9001.init();
         homeScreen9001.setVisible(true);
@@ -143,6 +151,8 @@ public class JFrameBTWS extends JFrame {
         monitorScreen9003.setVisible(false);
         settingsScreen9004.setVisible(false);
         transactionsScreen9005.setVisible(false);
+        accountsScreen9006.setVisible(false);
+        positionsScreen9007.setVisible(false);
 
         engineScreen9002.init();
         engineScreen9002.setVisible(true);
@@ -158,6 +168,8 @@ public class JFrameBTWS extends JFrame {
         engineScreen9002.setVisible(false);
         settingsScreen9004.setVisible(false);
         transactionsScreen9005.setVisible(false);
+        accountsScreen9006.setVisible(false);
+        positionsScreen9007.setVisible(false);
 
         monitorScreen9003.init();
         monitorScreen9003.setVisible(true);
@@ -173,6 +185,8 @@ public class JFrameBTWS extends JFrame {
         engineScreen9002.setVisible(false);
         monitorScreen9003.setVisible(false);
         transactionsScreen9005.setVisible(false);
+        accountsScreen9006.setVisible(false);
+        positionsScreen9007.setVisible(false);
 
         settingsScreen9004.setVisible(true);
         backgroundScreen.add(settingsScreen9004);
@@ -186,6 +200,8 @@ public class JFrameBTWS extends JFrame {
         engineScreen9002.setVisible(false);
         monitorScreen9003.setVisible(false);
         settingsScreen9004.setVisible(false);
+        accountsScreen9006.setVisible(false);
+        positionsScreen9007.setVisible(false);
 
         transactionsScreen9005.init();
         transactionsScreen9005.setVisible(true);
@@ -194,9 +210,46 @@ public class JFrameBTWS extends JFrame {
         repaint();
     }
 
+    public void showAccountsScreen() {
+        /* Disable others screens */
+        welcomeScreen9000.setVisible(false);
+        homeScreen9001.setVisible(false);
+        engineScreen9002.setVisible(false);
+        monitorScreen9003.setVisible(false);
+        settingsScreen9004.setVisible(false);
+        transactionsScreen9005.setVisible(false);
+        positionsScreen9007.setVisible(false);
+
+        accountsScreen9006.init();
+        accountsScreen9006.setVisible(true);
+        backgroundScreen.add(accountsScreen9006);
+
+        repaint();
+    }
+
+    public void showPositionsScreen() {
+        /* Disable others screens */
+        welcomeScreen9000.setVisible(false);
+        homeScreen9001.setVisible(false);
+        engineScreen9002.setVisible(false);
+        monitorScreen9003.setVisible(false);
+        settingsScreen9004.setVisible(false);
+        transactionsScreen9005.setVisible(false);
+        accountsScreen9006.setVisible(false);
+
+        positionsScreen9007.init();
+        positionsScreen9007.setVisible(true);
+        backgroundScreen.add(positionsScreen9007);
+
+        repaint();
+    }
+
     public void changeScreen(String target) {
 
         switch (target){
+            case "WELCOME":
+                showWelcomeScreen();
+                break;
             case "HOME":
                 showHomeScreen();
                 break;
@@ -212,10 +265,20 @@ public class JFrameBTWS extends JFrame {
             case "HISTORY":
                 showTransactionsScreen();
                 break;
+            case "ACCOUNTS":
+                showAccountsScreen();
+                break;
+            case "POSITIONS":
+                showPositionsScreen();
+                break;
         }
 
         if (target.equals("COMPIL")){
-            settingsScreen9004.changeStrategy();
+            if (twsStarted){
+                JOptionPane.showMessageDialog(getRootPane(), "Cannot change the strategy while it is running. Stop the engine before making any changes.");
+            }else {
+                settingsScreen9004.changeStrategy();
+            }
             return;
         }
 
@@ -338,6 +401,8 @@ public class JFrameBTWS extends JFrame {
         TWS tws = new TWS(strategyData, transactionData, liveData, alphaVantageData);
         threadTWS = new Thread(tws);
         threadTWS.start();
+
+        twsStarted = true;
     }
 
     public void stop() {
@@ -348,5 +413,7 @@ public class JFrameBTWS extends JFrame {
         if (threadTWS != null) {
             threadTWS.interrupt();
         }
+
+        twsStarted = false;
     }
 }

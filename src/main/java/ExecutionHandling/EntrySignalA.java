@@ -60,7 +60,7 @@ public class EntrySignalA {
                 double stopLossPrice = 0.5;
 
                 orderHandler.placeBracketOrder(parentOrderId+5000, Types.Action.BUY, quantity, limitPrice, takeProfitLimitPrice, stopLossPrice);
-                System.out.println("BUY ORDER HAS BEEN PLACED NOW");
+                System.out.println("> BUY ORDER HAS BEEN PLACED NOW");
             }
 
             // TODO: price < SMA(200) && RSI(2) > 90
@@ -86,7 +86,7 @@ public class EntrySignalA {
                 double stopLossPrice = 0.5;
 
                 orderHandler.placeBracketOrder(parentOrderId+5000, Types.Action.SELL, quantity, limitPrice, takeProfitLimitPrice, stopLossPrice);
-                System.out.println("SELL ORDER HAS BEEN PLACED NOW");
+                System.out.println("> SELL ORDER HAS BEEN PLACED NOW");
             }
         }
     }
