@@ -100,31 +100,34 @@ public class EngineScreen9002 extends AbstractScreen implements Observer {
         init();
     }
 
+    public void startAndStop () {
+        if (!apiKeyAvailable){
+            JOptionPane.showMessageDialog(getRootPane(), "APIs key missing !");
+            return;
+        }
+
+        if (state.equals("stop")){
+            state = "start";
+            display("ENGINE STARTED! Please do not switch off the computer and check the strategy settings.");
+
+            //TODO: START ENGINE IN ANOTHER THREAD
+            JFrameBTWS.getInstance().start();
+
+        } else if (state.equals("start")){
+            state = "stop";
+            display("ENGINE STOPPED! You can turn off the computer and check the results of the strategy.");
+
+            //TODO: STOP ENGINE IN ANOTHER THREAD
+            JFrameBTWS.getInstance().stop();
+        }
+
+        init();
+    }
+
     private class startAndStop extends MouseAdapter {
         @Override
         public void mouseClicked(MouseEvent e) {
-
-            if (!apiKeyAvailable){
-                JOptionPane.showMessageDialog(getRootPane(), "APIs key missing !");
-                return;
-            }
-
-            if (state.equals("stop")){
-                state = "start";
-                display("ENGINE STARTED! Please do not switch off the computer and check the strategy settings.");
-
-                //TODO: START ENGINE IN ANOTHER THREAD
-                JFrameBTWS.getInstance().start();
-
-            } else if (state.equals("start")){
-                state = "stop";
-                display("ENGINE STOPPED! You can turn off the computer and check the results of the strategy.");
-
-                //TODO: STOP ENGINE IN ANOTHER THREAD
-                JFrameBTWS.getInstance().stop();
-            }
-
-            init();
+            startAndStop();
         }
     }
 
@@ -134,12 +137,12 @@ public class EngineScreen9002 extends AbstractScreen implements Observer {
                 SystemTray tray = SystemTray.getSystemTray();
                 Image image = Toolkit.getDefaultToolkit().createImage("FAV-512.png");
 
-                TrayIcon trayIcon = new TrayIcon(image, "BULLITT TWS");
+                TrayIcon trayIcon = new TrayIcon(image, "BULLITT OLDTWS");
                 trayIcon.setImageAutoSize(true);
-                trayIcon.setToolTip("BULLITT TWS");
+                trayIcon.setToolTip("BULLITT OLDTWS");
 
                 tray.add(trayIcon);
-                trayIcon.displayMessage("BULLITT TWS ALERT", message, TrayIcon.MessageType.NONE);
+                trayIcon.displayMessage("BULLITT OLDTWS ALERT", message, TrayIcon.MessageType.NONE);
             } catch (AWTException e) {
                 e.printStackTrace();
             }

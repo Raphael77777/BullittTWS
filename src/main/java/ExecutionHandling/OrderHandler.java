@@ -1,6 +1,6 @@
 package ExecutionHandling;
 
-import ConnectionHandling.TWS;
+import IbAccountDataHandling.TwsThread;
 import RiskHandling.RiskManagementSystem;
 import com.ib.client.*;
 import com.ib.controller.ApiController;
@@ -19,7 +19,7 @@ public class OrderHandler implements ApiController.ILiveOrderHandler, ApiControl
         parent.action(action);
 
         //TODO : Adapt order type using strategy_data
-        String orderType = TWS.strategyData.getOrder();
+        String orderType = TwsThread.strategyData.getOrder();
 
         parent.orderType(OrderType.LMT);
         parent.totalQuantity(quantity);
@@ -62,7 +62,8 @@ public class OrderHandler implements ApiController.ILiveOrderHandler, ApiControl
 
         if (RiskManagementSystem.verifyOrder(bracketOrder)){
             for(Order o : bracketOrder) {
-                TWS.apiController.placeOrModifyOrder(TWS.initializeContract(), o,this);
+                //TODO : placeOrder();
+                //TWS.apiController.placeOrModifyOrder(TWS_Old.initializeContract(), o,this);
             }
         }else {
             System.out.println("> The risk management system blocked a transaction.");

@@ -10,7 +10,7 @@ import TechnicalAnalysisHandling.AdapterSMA;
 import com.ib.client.Contract;
 import com.ib.controller.ApiController;
 
-public class TWS implements Runnable{
+public class TWS_Old implements Runnable{
 
     public static StrategyData strategyData;
     public static TransactionData transactionData;
@@ -37,7 +37,7 @@ public class TWS implements Runnable{
     public static Contract initializeContract(){
 
         //TODO : Get contract from strategy_data
-        String asset = TWS.strategyData.getAsset();
+        String asset = TWS_Old.strategyData.getAsset();
 
         Contract nq = new Contract();
         nq.symbol("EUR");
@@ -47,11 +47,11 @@ public class TWS implements Runnable{
         return nq;
     }
 
-    public TWS(StrategyData strategyData, TransactionData transactionData, LiveData liveData, AlphaVantageData alphaVantageData) {
-        TWS.strategyData = strategyData;
-        TWS.transactionData = transactionData;
-        TWS.liveData = liveData;
-        TWS.alphaVantageData = alphaVantageData;
+    public TWS_Old(StrategyData strategyData, TransactionData transactionData, LiveData liveData, AlphaVantageData alphaVantageData) {
+        TWS_Old.strategyData = strategyData;
+        TWS_Old.transactionData = transactionData;
+        TWS_Old.liveData = liveData;
+        TWS_Old.alphaVantageData = alphaVantageData;
 
         adapterSMA = new AdapterSMA(alphaVantageData);
         adapterRSI = new AdapterRSI(alphaVantageData);
@@ -61,5 +61,7 @@ public class TWS implements Runnable{
     public void run() {
         apiController.connect("localhost", 7497, 7, "@Raphael");
         apiController.reqTopMktData(initializeContract(), "221",false, false, mktDataHandler);
+
+        //apiController.reqPnL(17, "DU229537", "");
     }
 }

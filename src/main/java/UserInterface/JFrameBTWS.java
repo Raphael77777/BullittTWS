@@ -1,7 +1,7 @@
 package UserInterface;
 
-import ConnectionHandling.TWS;
 import DataHandling.*;
+import IbAccountDataHandling.TwsThread;
 import UserInterface.STATIC.GraphicalTheme;
 import UserInterface.Screen.*;
 
@@ -25,6 +25,8 @@ public class JFrameBTWS extends JFrame {
     private StrategyData strategyData;
     private AlphaVantageData alphaVantageData;
     private LiveData liveData = new LiveData();
+    private AccountData accountData = new AccountData();
+    private PositionData positionData = new PositionData();
 
     /* Screen 900X */
     private WelcomeScreen9000 welcomeScreen9000 = new WelcomeScreen9000();
@@ -33,8 +35,8 @@ public class JFrameBTWS extends JFrame {
     private MonitorScreen9003 monitorScreen9003 = new MonitorScreen9003(liveData);
     private SettingsScreen9004 settingsScreen9004;
     private TransactionsScreen9005 transactionsScreen9005;
-    private AccountsScreen9006 accountsScreen9006 = new AccountsScreen9006(liveData);
-    private PositionsScreen9007 positionsScreen9007;
+    private AccountsScreen9006 accountsScreen9006 = new AccountsScreen9006(accountData);
+    private PositionsScreen9007 positionsScreen9007 = new PositionsScreen9007(positionData, accountData);
 
     private JFrameBTWS (){
         setLayout(null);
@@ -74,7 +76,6 @@ public class JFrameBTWS extends JFrame {
         engineScreen9002 = new EngineScreen9002(strategyData, alphaVantageData);
         settingsScreen9004 = new SettingsScreen9004(strategyData);
         transactionsScreen9005 = new TransactionsScreen9005(transactionData);
-        positionsScreen9007 = new PositionsScreen9007(transactionData);
 
         /* INIT BACKGROUND, MENU, LOGO */
         backgroundScreen = new BackgroundScreen();
@@ -271,6 +272,9 @@ public class JFrameBTWS extends JFrame {
             case "POSITIONS":
                 showPositionsScreen();
                 break;
+            case "EMERGENCY":
+                engineScreen9002.startAndStop();
+                return;
         }
 
         if (target.equals("COMPIL")){
@@ -397,8 +401,9 @@ public class JFrameBTWS extends JFrame {
 
         //TODO : START TWS
         System.out.println("> TWS HAS BEEN STARTED !");
+        backgroundScreen.engineStarted();
 
-        TWS tws = new TWS(strategyData, transactionData, liveData, alphaVantageData);
+        TwsThread tws = new TwsThread(strategyData, transactionData, liveData, alphaVantageData, accountData, positionData);
         threadTWS = new Thread(tws);
         threadTWS.start();
 
@@ -409,6 +414,7 @@ public class JFrameBTWS extends JFrame {
 
         //TODO : STOP TWS
         System.out.println("> TWS HAS BEEN STOPPED !");
+        backgroundScreen.engineStopped();
 
         if (threadTWS != null) {
             threadTWS.interrupt();

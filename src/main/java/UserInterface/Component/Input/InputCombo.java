@@ -72,16 +72,8 @@ public class InputCombo extends JPanel implements InputInterface {
     @Override
     public void init(){
         jComboBox.setFont(GraphicalTheme.font_header2);
-        jComboBox.setForeground(GraphicalTheme.light_color);
+        jComboBox.setForeground(GraphicalTheme.dark_color);
         jComboBox.setOpaque(false);
-        jComboBox.setRenderer(new DefaultListCellRenderer(){
-            @Override
-            public Component getListCellRendererComponent(JList list, Object value,
-                                                          int index, boolean isSelected, boolean cellHasFocus) {
-                JComponent result = (JComponent)super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
-                result.setOpaque(false);
-                return result;
-            }});
         jComboBox.setBorder(BorderFactory.createEmptyBorder());
         jComboBox.setBounds(20, 10, 220, 50);
         add(jComboBox);

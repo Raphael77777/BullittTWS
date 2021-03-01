@@ -1,7 +1,13 @@
 package UserInterface.Screen;
 
+import DataHandling.AccountData;
+import DataHandling.PositionData;
 import DataHandling.TransactionData;
+import UserInterface.Component.Enum.InfoTYPE;
 import UserInterface.Component.Enum.TransactionTYPE;
+import UserInterface.Component.Panel.AccountPanel;
+import UserInterface.Component.Panel.InfoPanel;
+import UserInterface.Component.Panel.InfoPanelL;
 import UserInterface.Component.Panel.TransactionPanel;
 
 import javax.swing.*;
@@ -12,22 +18,27 @@ import java.util.ArrayList;
 
 public class PositionsScreen9007 extends AbstractScreen implements Observer{
 
-    private TransactionPanel[] transactionPanels;
+    private AccountPanel accountPanel;
+    private InfoPanel[] infoPanels = new InfoPanel[4];
+    private InfoPanelL[] infoPanelLS = new InfoPanelL[4];
 
-    private TransactionData transactionData;
+    private PositionData positionData;
+    private AccountData accountData;
 
-    private ArrayList<String> assets;
-    private ArrayList<String> currencies;
-    private ArrayList<TransactionTYPE> types;
-    private ArrayList<Date> dates;
-    private ArrayList<Time> times;
-    private ArrayList<Double> quantities;
-    private ArrayList<Double> fees;
-    private ArrayList<Double> prices;
+    private String accountId = "DU985632";
+    private String currency = "USD";
 
-    public PositionsScreen9007(TransactionData transactionData) {
-        this.transactionData = transactionData;
-        this.transactionData.registerObserver(this);
+    private final String [] IP_texts = new String[]{"Position", "Average Cost", "Value", "Type", "Symbol", "Daily P&L", "Unrealized P&L", "Realized P&L"};
+    private String [] IP_values = new String[]{"--", "--", "--", "--", "--", "--", "--", "--"};
+    private InfoTYPE[] IP_types = new InfoTYPE[]{InfoTYPE.NO_ICON, InfoTYPE.NO_ICON, InfoTYPE.NO_ICON, InfoTYPE.NO_ICON, InfoTYPE.NO_ICON, InfoTYPE.NO_ICON, InfoTYPE.NO_ICON, InfoTYPE.NO_ICON};
+
+
+    public PositionsScreen9007(PositionData positionData, AccountData accountData) {
+        this.positionData = positionData;
+        this.positionData.registerObserver(this);
+
+        this.accountData = accountData;
+        this.accountData.registerObserver(this);
 
         update();
     }
@@ -37,51 +48,64 @@ public class PositionsScreen9007 extends AbstractScreen implements Observer{
 
         removeAll();
 
-        if (assets == null || assets.size() == 0){
-            return;
+        accountPanel = new AccountPanel("ACC", accountId, currency);
+        accountPanel.setBounds(20, 20, 786, 110);
+        add(accountPanel);
+
+        for (int i = 0; i<infoPanelLS.length; i++){
+            infoPanelLS[i] = new InfoPanelL("IPL"+i, IP_types[i], IP_texts[i], IP_values[i]);
+            infoPanelLS[i].setBounds(20, 133+i*113, 523, 110);
+            add(infoPanelLS[i]);
         }
 
-        JPanel transactions = new JPanel();
-        transactions.setLayout(null);
-        transactions.setPreferredSize(new Dimension(766,assets.size()*105+5));
-
-        transactionPanels = new TransactionPanel[assets.size()];
-        for (int i = 0; i< transactionPanels.length; i++){
-            TransactionPanel transactionPanel = new TransactionPanel("TR"+i, assets.get(i), currencies.get(i), types.get(i), dates.get(i), times.get(i), quantities.get(i), fees.get(i), prices.get(i));
-            transactionPanel.setBounds(16, 5+(i*105), 766, 100);
-            transactions.add(transactionPanel);
+        for (int i = 0; i < infoPanels.length; i++){
+            infoPanels[i] = new InfoPanel("IP"+i, IP_types[i+4], IP_texts[i+4], IP_values[i+4]);
+            infoPanels[i].setBounds(546, 133+i*113, 260, 110);
+            add(infoPanels[i]);
         }
 
-        transactions.setOpaque(false);
-        transactions.repaint();
-        JScrollPane scrollPane = new JScrollPane();
-        scrollPane.getVerticalScrollBar().setUnitIncrement(16);
-        scrollPane.setViewportView(transactions);
-        JScrollBar jScrollBar = new JScrollBar();
-        scrollPane.add(jScrollBar);
-        scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
-        scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
-        scrollPane.setBorder(BorderFactory.createEmptyBorder());
-        scrollPane.setBounds(0, 15, 828,575);
-        scrollPane.setOpaque(false);
-        scrollPane.getViewport().setOpaque(false);
-        add(scrollPane);
-        scrollPane.repaint();
-        scrollPane.revalidate();
+        repaint();
     }
 
     @Override
     public void update() {
 
-        /* CALL METHOD OF tranactionData to update arraylist */
-        assets = transactionData.getAssets();
-        currencies = transactionData.getCurrencies();
-        types = transactionData.getTypes();
-        dates = transactionData.getDates();
-        times = transactionData.getTimes();
-        quantities = transactionData.getQuantities();
-        fees = transactionData.getFees();
-        prices = transactionData.getPrices();
+        /* CALL METHOD OF positionData to update IP_values and IP_types */
+
+        accountId = accountData.getAccountId();
+        currency = accountData.getCurrency();
+
+        IP_values[0] = String.valueOf(positionData.getPos());
+        IP_values[1] = String.valueOf(positionData.getAvgCost());
+        IP_values[2] = String.valueOf(positionData.getValue());
+        if (positionData.getContract() != null){
+            IP_values[3] = positionData.getContract().secType().name();
+            IP_values[4] = positionData.getContract().localSymbol();
+        }
+
+        double dailyPNL = positionData.getDailyPnL();
+        if (dailyPNL > 0){
+            IP_types[5] = InfoTYPE.POSITIVE;
+        }if (dailyPNL < 0){
+            IP_types[5] = InfoTYPE.NEGATIVE;
+        }
+        IP_values[5] = String.valueOf(dailyPNL);
+
+        double unrealizedPNL = positionData.getUnrealizedPnL();
+        if (unrealizedPNL > 0){
+            IP_types[6] = InfoTYPE.POSITIVE;
+        }if (unrealizedPNL < 0){
+            IP_types[6] = InfoTYPE.NEGATIVE;
+        }
+        IP_values[6] = String.valueOf(unrealizedPNL);
+
+        double realizedPNL = positionData.getRealizedPnL();
+        if (realizedPNL > 0){
+            IP_types[7] = InfoTYPE.POSITIVE;
+        }if (realizedPNL < 0){
+            IP_types[7] = InfoTYPE.NEGATIVE;
+        }
+        IP_values[7] = String.valueOf(realizedPNL);
 
         init();
     }

@@ -18,6 +18,14 @@ public class BackgroundScreen extends JPanel {
     private JButton [] jButtons = new JButton[7];
     private final String[] label = new String[]{"HOME", "ENGINE", "MONITOR", "SETTINGS", "HISTORY", "ACCOUNTS", "POSITIONS"};
 
+    private minimizeAction minimizeAction = new minimizeAction();
+    private closeAction closeAction = new closeAction();
+    private welcomeAction welcomeAction = new welcomeAction();
+    private emergencyAction emergencyAction = new emergencyAction();
+
+    private ImageLabel logoImg ;
+    private ImageLabel emergency ;
+
     public void paintComponent(Graphics g) {
         try {
             Image image = ImageIO.read(getClass().getResource("/background2.jpg"));
@@ -53,26 +61,42 @@ public class BackgroundScreen extends JPanel {
 
         ImageLabel minimizeImg = new ImageLabel("minimize.png");
         minimizeImg.setBounds(1015,0, 50,50);
-        minimizeImg.addMouseListener(new minimizeAction());
+        minimizeImg.addMouseListener(minimizeAction);
         add(minimizeImg);
 
         ImageLabel closeImg = new ImageLabel("close.png");
         closeImg.setBounds(1050,0, 50,50);
-        closeImg.addMouseListener(new closeAction());
+        closeImg.addMouseListener(closeAction);
         add(closeImg);
 
-        ImageLabel logoImg = new ImageLabel("TITLE-1750.png");
+        logoImg = new ImageLabel("TITLE-1750.png");
         logoImg.setBounds(16, 20, 240, 69);
-        logoImg.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
+        logoImg.addMouseListener(welcomeAction);
+        add(logoImg);
 
-                String target = "WELCOME";
-                JFrameBTWS.getInstance().changeScreen(target);
-                changeScreen(target);
+        emergency = new ImageLabel("emergency.png");
+        emergency.addMouseListener(emergencyAction);
 
-            }
-        });
+        repaint();
+    }
+
+    public void engineStarted(){
+        remove(logoImg);
+
+        logoImg.setBounds(85, 30, 170, 49);
+        add(logoImg);
+
+        emergency.setBounds(16, 20, 69, 69);
+        add(emergency);
+
+        repaint();
+    }
+
+    public void engineStopped(){
+        remove(logoImg);
+        remove(emergency);
+
+        logoImg.setBounds(16, 20, 240, 69);
         add(logoImg);
 
         repaint();
@@ -91,6 +115,22 @@ public class BackgroundScreen extends JPanel {
             JFrameBTWS.getInstance().setState(Frame.ICONIFIED);
         }
     }
+    private class welcomeAction extends MouseAdapter {
+        @Override
+        public void mouseClicked(MouseEvent e) {
+            String target = "WELCOME";
+            JFrameBTWS.getInstance().changeScreen(target);
+            changeScreen(target);
+        }
+    }
+    private class emergencyAction extends MouseAdapter {
+        @Override
+        public void mouseClicked(MouseEvent e) {
+            String target = "EMERGENCY";
+            JFrameBTWS.getInstance().changeScreen(target);
+            changeScreen(target);
+        }
+    }
 
     public class buttonAction implements ActionListener {
         @Override
@@ -103,6 +143,10 @@ public class BackgroundScreen extends JPanel {
         }
     }
     public void changeScreen(String target) {
+
+        if (target.equals("EMERGENCY")){
+            return;
+        }
 
         for (JButton jButton : jButtons) jButton.setBackground(GraphicalTheme.primary_color);
 
