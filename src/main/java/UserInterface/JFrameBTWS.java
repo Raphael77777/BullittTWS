@@ -18,6 +18,7 @@ public class JFrameBTWS extends JFrame {
 
     /* THREAD TWS */
     private Thread threadTWS;
+    private boolean twsInit = false;
     private boolean twsStarted = false;
 
     /* DATA */
@@ -37,6 +38,9 @@ public class JFrameBTWS extends JFrame {
     private TransactionsScreen9005 transactionsScreen9005;
     private AccountsScreen9006 accountsScreen9006 = new AccountsScreen9006(accountData);
     private PositionsScreen9007 positionsScreen9007 = new PositionsScreen9007(positionData, accountData);
+
+    /* TWS THREAD */
+    private TwsThread tws;
 
     private JFrameBTWS (){
         setLayout(null);
@@ -129,6 +133,9 @@ public class JFrameBTWS extends JFrame {
     }
     public void showHomeScreen() {
 
+        /* INIT TWS */
+        init();
+
         /* Disable others screens */
         welcomeScreen9000.setVisible(false);
         engineScreen9002.setVisible(false);
@@ -145,6 +152,9 @@ public class JFrameBTWS extends JFrame {
         repaint();
     }
     public void showEngineScreen() {
+
+        /* INIT TWS */
+        init();
 
         /* Disable others screens */
         welcomeScreen9000.setVisible(false);
@@ -163,6 +173,9 @@ public class JFrameBTWS extends JFrame {
     }
     public void showMonitorScreen() {
 
+        /* INIT TWS */
+        init();
+
         /* Disable others screens */
         welcomeScreen9000.setVisible(false);
         homeScreen9001.setVisible(false);
@@ -180,6 +193,9 @@ public class JFrameBTWS extends JFrame {
     }
     public void showSettingsScreen() {
 
+        /* INIT TWS */
+        init();
+
         /* Disable others screens */
         welcomeScreen9000.setVisible(false);
         homeScreen9001.setVisible(false);
@@ -195,6 +211,10 @@ public class JFrameBTWS extends JFrame {
         repaint();
     }
     public void showTransactionsScreen() {
+
+        /* INIT TWS */
+        init();
+
         /* Disable others screens */
         welcomeScreen9000.setVisible(false);
         homeScreen9001.setVisible(false);
@@ -212,6 +232,10 @@ public class JFrameBTWS extends JFrame {
     }
 
     public void showAccountsScreen() {
+
+        /* INIT TWS */
+        init();
+
         /* Disable others screens */
         welcomeScreen9000.setVisible(false);
         homeScreen9001.setVisible(false);
@@ -229,6 +253,10 @@ public class JFrameBTWS extends JFrame {
     }
 
     public void showPositionsScreen() {
+
+        /* INIT TWS */
+        init();
+
         /* Disable others screens */
         welcomeScreen9000.setVisible(false);
         homeScreen9001.setVisible(false);
@@ -397,29 +425,47 @@ public class JFrameBTWS extends JFrame {
         alphaVantageData.setAPI_KEY(key);
     }
 
-    public void start() {
+    public void init() {
 
-        //TODO : START TWS
-        System.out.println("> TWS HAS BEEN STARTED !");
-        backgroundScreen.engineStarted();
+        //TODO : INIT TWS
 
-        TwsThread tws = new TwsThread(strategyData, transactionData, liveData, alphaVantageData, accountData, positionData);
+        if (twsInit){
+            return;
+        }
+        System.out.println("> TWS HAS BEEN INIT !");
+
+        tws = new TwsThread(strategyData, transactionData, liveData, alphaVantageData, accountData, positionData);
         threadTWS = new Thread(tws);
         threadTWS.start();
 
-        twsStarted = true;
+        twsInit = true;
     }
 
-    public void stop() {
+    public boolean start() {
 
-        //TODO : STOP TWS
-        System.out.println("> TWS HAS BEEN STOPPED !");
-        backgroundScreen.engineStopped();
+        //TODO : START TWS
+        if (tws.startMarketAdapter()){
+            System.out.println("> TWS HAS BEEN STARTED !");
+            backgroundScreen.engineStarted();
 
-        if (threadTWS != null) {
-            threadTWS.interrupt();
+            twsStarted = true;
+            return true;
         }
 
-        twsStarted = false;
+        return false;
+    }
+
+    public boolean stop() {
+
+        //TODO : STOP TWS
+        if (tws.stopMarketAdapter()){
+            System.out.println("> TWS HAS BEEN STOPPED !");
+            backgroundScreen.engineStopped();
+
+            twsStarted = false;
+            return true;
+        }
+
+        return false;
     }
 }

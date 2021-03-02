@@ -107,18 +107,16 @@ public class EngineScreen9002 extends AbstractScreen implements Observer {
         }
 
         if (state.equals("stop")){
-            state = "start";
-            display("ENGINE STARTED! Please do not switch off the computer and check the strategy settings.");
+            if (JFrameBTWS.getInstance().start()){
+                state = "start";
+                display("ENGINE STARTED! Please do not switch off the computer and check the strategy settings.");
 
-            //TODO: START ENGINE IN ANOTHER THREAD
-            JFrameBTWS.getInstance().start();
-
+            }
         } else if (state.equals("start")){
-            state = "stop";
-            display("ENGINE STOPPED! You can turn off the computer and check the results of the strategy.");
-
-            //TODO: STOP ENGINE IN ANOTHER THREAD
-            JFrameBTWS.getInstance().stop();
+            if (JFrameBTWS.getInstance().stop()){
+                state = "stop";
+                display("ENGINE STOPPED! You can turn off the computer and check the results of the strategy.");
+            }
         }
 
         init();
@@ -137,12 +135,12 @@ public class EngineScreen9002 extends AbstractScreen implements Observer {
                 SystemTray tray = SystemTray.getSystemTray();
                 Image image = Toolkit.getDefaultToolkit().createImage("FAV-512.png");
 
-                TrayIcon trayIcon = new TrayIcon(image, "BULLITT OLDTWS");
+                TrayIcon trayIcon = new TrayIcon(image, "BULLITT TWS");
                 trayIcon.setImageAutoSize(true);
-                trayIcon.setToolTip("BULLITT OLDTWS");
+                trayIcon.setToolTip("BULLITT TWS");
 
                 tray.add(trayIcon);
-                trayIcon.displayMessage("BULLITT OLDTWS ALERT", message, TrayIcon.MessageType.NONE);
+                trayIcon.displayMessage("BULLITT TWS ALERT", message, TrayIcon.MessageType.NONE);
             } catch (AWTException e) {
                 e.printStackTrace();
             }

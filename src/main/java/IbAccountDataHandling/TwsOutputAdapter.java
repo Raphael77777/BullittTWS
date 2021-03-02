@@ -11,37 +11,24 @@ public class TwsOutputAdapter {
 
     private EClientSocket m_client;
 
-    public TwsOutputAdapter() {
+    public void init() throws InterruptedException {
         TwsInputAdapter twsInputAdapter = new TwsInputAdapter();
 
-        //TODO : onConnect()
+        /* onConnect() */
         m_client = twsInputAdapter.onConnect();
 
-        /** ACCOUNTS SCREEN */
-        //TODO : onReqManagedAccts();
-        //TODO : onReqManagedAccts();
-
-        //TODO : onRequestPositions();
+        /* onReqManagedAccts, onRequestPositions, onRequestAccountSummary */
+        onReqManagedAccts();
         onRequestPositions();
+        onRequestAccountSummary();
 
-        //TODO : onReqPnL();
-        try {
-            Thread.sleep(3000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+        /* onReqPnL */
+        Thread.sleep(3000);
         onReqPnL();
 
-        //TODO : onReqPnLSingle();
-        try {
-            Thread.sleep(3000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+        /* onReqPnLSingle */
+        Thread.sleep(3000);
         onReqPnLSingle();
-
-        //TODO : onRequestAccountSummary();
-        onRequestAccountSummary();
 
         /** ACCOUNTS SCREEN */
         //TODO : reqAllOpenOrders();
@@ -93,6 +80,9 @@ public class TwsOutputAdapter {
     }
 
     public void onReqPnL() {
+        if(TwsThread.accountData.getAccountId().equals("")){
+            return;
+        }
         m_client.reqPnL(125, TwsThread.accountData.getAccountId(), "");
     }
     public void onCancelPnL() {
@@ -100,6 +90,9 @@ public class TwsOutputAdapter {
     }
 
     private void onReqPnLSingle() {
+        if(TwsThread.positionData.getAccount().equals("") || TwsThread.positionData.getContract() == null){
+            return;
+        }
         m_client.reqPnLSingle(126, TwsThread.positionData.getAccount(), "", TwsThread.positionData.getContract().conid());
     }
     public void onCancelPnLSingle() {

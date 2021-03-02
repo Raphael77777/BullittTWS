@@ -54,10 +54,12 @@ public class TwsInputAdapter implements EWrapper {
     @Override
     public void tickPrice(int tickerId, int field, double price, TickAttrib attribs) {
 
-        //TODO : FORWARD TO MARKET ADAPTER
         if (field == 2){ // askPrice
-            String msg = EWrapperMsgGenerator.tickPrice( tickerId, field, price, attribs);
-            System.out.println(msg);
+
+            TwsThread.marketAdapter.tickPrice(tickerId, field, price, attribs);
+
+            //String msg = EWrapperMsgGenerator.tickPrice( tickerId, field, price, attribs);
+            //System.out.println(msg);
         }
     }
 
@@ -355,7 +357,7 @@ public class TwsInputAdapter implements EWrapper {
     public void error(int i, int i1, String s) {
 
         //TODO : CATCH ERROR
-        System.out.println(i+" - "+i1+" - "+s);
+        System.out.println(i+" / "+i1+" / "+s);
     }
 
     @Override
