@@ -14,6 +14,9 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.UnknownHostException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 public class AdapterSMA extends AlphaVantageAdapter {
@@ -52,19 +55,29 @@ public class AdapterSMA extends AlphaVantageAdapter {
                 try {
                     Object obj = jsonParser.parse(inline);
 
-                    SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm", new Locale("fr", "FR"));
-                    String date = simpleDateFormat.format(new Date(System.currentTimeMillis() - 3600 * 1000 * 7 - 60000));
+                    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+                    LocalDateTime localDate = null;
+                    double SMA = 0.0;
 
                     JSONObject skr = (JSONObject) obj;
                     Map analysis = ((Map) skr.get("Technical Analysis: SMA"));
                     Iterator<Map.Entry> itr1 = analysis.entrySet().iterator();
                     while (itr1.hasNext()) {
                         Map.Entry pair = itr1.next();
-                        if (pair.getKey().toString().equals(date)) {
-                            JSONObject val = (JSONObject) pair.getValue();
-                            return Double.parseDouble((String) val.get("SMA"));
+
+                        LocalDateTime tempLocalDate = LocalDateTime.parse(pair.getKey().toString(), formatter);
+
+                        if (localDate == null){
+                            localDate = tempLocalDate;
+                            SMA =  Double.parseDouble((String) ((JSONObject) pair.getValue()).get("SMA"));
+                        }
+
+                        if (tempLocalDate.isAfter(localDate)){
+                            localDate = tempLocalDate;
+                            SMA =  Double.parseDouble((String) ((JSONObject) pair.getValue()).get("SMA"));
                         }
                     }
+                    return SMA;
                 } catch (ParseException e) {
                     e.printStackTrace();
                 } catch (NullPointerException e) {

@@ -14,28 +14,35 @@ import java.util.ArrayList;
 
 public class MarketAdapter {
 
-    ArrayList<Double> prices = new ArrayList<>();
+    private long referenceMS;
+    private long delayMS;
+
+    public MarketAdapter() {
+        referenceMS = System.currentTimeMillis();
+
+        String timescale = TwsThread.strategyData.getTimescale();
+        String delayString = timescale.replace(" sec","");
+        delayMS = Long.parseLong(delayString)*1000;
+    }
 
     public void tickPrice(int tickerId, int field, double price, TickAttrib attribs) {
 
-        prices.add(0, price);
-        System.out.println("CP : "+price);
+        /* Launch signal according to timescale using strategy_data */
+        long currentMS = System.currentTimeMillis();
+        if ((currentMS - referenceMS) >= delayMS){
+            referenceMS = currentMS;
 
-        /**
-        //TODO : Only launch signal every 60sec or others using strategy_data
-        String timescale = TwsThread.strategyData.getTimescale();
-
-        try {
-            new EntrySignalA(prices, prices.size()+200); //Check for signal
-        } catch (MissingApiKeyException e) {
-            e.printStackTrace();
-        } catch (NoNetworkException e) {
-            e.printStackTrace();
-        } catch (OverloadApiUseException e) {
-            e.printStackTrace();
-        } catch (MarketClosedException e) {
-            e.printStackTrace();
-        }*/
-
+            try {
+                new EntrySignalA(price); //Check for signal
+            } catch (MissingApiKeyException e) {
+                e.printStackTrace();
+            } catch (NoNetworkException e) {
+                e.printStackTrace();
+            } catch (OverloadApiUseException e) {
+                e.printStackTrace();
+            } catch (MarketClosedException e) {
+                e.printStackTrace();
+            }
+        }
     }
 }

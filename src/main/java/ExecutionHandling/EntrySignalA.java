@@ -7,15 +7,11 @@ import CustomException.OverloadApiUseException;
 import IbAccountDataHandling.TwsThread;
 import com.ib.client.Types;
 
-import java.util.ArrayList;
-
 public class EntrySignalA {
 
-    private ArrayList<Double> prices;
     private OrderHandler orderHandler;
 
-    public EntrySignalA(ArrayList<Double> prices, Integer parentOrderId) throws MissingApiKeyException, NoNetworkException, OverloadApiUseException, MarketClosedException {
-        this.prices = prices;
+    public EntrySignalA(double price) throws MissingApiKeyException, NoNetworkException, OverloadApiUseException, MarketClosedException {
         this.orderHandler = new OrderHandler();
 
         /**
@@ -30,19 +26,23 @@ public class EntrySignalA {
             }
         }*/
 
-        //TODO: Implement strategy
-        if(prices.size()>1) {
+        if(price != 0.0) {
+            /* Get technical analysis */
+            String asset = TwsThread.strategyData.getAsset().replace(".", "");
+            double SMA_200 = TwsThread.adapterSMA.get(asset, "1min", "200", "open");
+            double RSI_2 = TwsThread.adapterRSI.get(asset, "1min", "2", "open");
 
-            // TODO: Get technical analysis
-            double SMA_200 = TwsThread.adapterSMA.get("USDEUR", "1min", "200", "open");
-            double RSI_2 = TwsThread.adapterRSI.get("USDEUR", "1min", "2", "open");
+            // TODO: To remove
+            System.out.println("PRICE : "+price);
+            System.out.println("SMA200 : "+SMA_200);
+            System.out.println("RSI2 : "+RSI_2);
+            System.out.println("******************************************");
 
-            // TODO: price > SMA(200) && RSI(2) < 10
-            // TODO: Adapt RSI_LIMIT_BUY to accuracy using strategy_data
+            /* price > SMA(200) && RSI(2) < 10 */
+            /* Adapt RSI_LIMIT_BUY to accuracy using strategy_data */
             double accuracy = TwsThread.strategyData.getAccuracy();
-
-            double RSI_LIMIT_BUY = 10;
-            if (prices.get(0) > SMA_200 && RSI_2 < RSI_LIMIT_BUY){
+            double RSI_LIMIT_BUY = 10 - (accuracy*5);
+            if (price > SMA_200 && RSI_2 < RSI_LIMIT_BUY){
 
                 // TODO : Adapt quantity to exposure using strategy_data
                 int exposure = TwsThread.strategyData.getExposure();
@@ -59,16 +59,14 @@ public class EntrySignalA {
                 double SMA_5 = TwsThread.adapterSMA.get("USDEUR", "1min", "5", "open");
                 double stopLossPrice = 0.5;
 
-                orderHandler.placeBracketOrder(parentOrderId+5000, Types.Action.BUY, quantity, limitPrice, takeProfitLimitPrice, stopLossPrice);
+                orderHandler.placeBracketOrder(5000, Types.Action.BUY, quantity, limitPrice, takeProfitLimitPrice, stopLossPrice);
                 System.out.println("> BUY ORDER HAS BEEN PLACED NOW");
             }
 
-            // TODO: price < SMA(200) && RSI(2) > 90
-            // TODO: Adapt RSI_LIMIT_SELL to accuracy using strategy_data
-            accuracy = TwsThread.strategyData.getAccuracy();
-
-            double RSI_LIMIT_SELL = 90;
-            if (prices.get(0) < SMA_200 && RSI_2 > RSI_LIMIT_SELL){
+            /* price < SMA(200) && RSI(2) > 90 */
+            /* Adapt RSI_LIMIT_SELL to accuracy using strategy_data */
+            double RSI_LIMIT_SELL = 90 + (accuracy*5);
+            if (price < SMA_200 && RSI_2 > RSI_LIMIT_SELL){
 
                 // TODO : Adapt quantity to exposure using strategy_data
                 int exposure = TwsThread.strategyData.getExposure();
@@ -85,7 +83,7 @@ public class EntrySignalA {
                 double SMA_5 = TwsThread.adapterSMA.get("USDEUR", "1min", "5", "open");
                 double stopLossPrice = 0.5;
 
-                orderHandler.placeBracketOrder(parentOrderId+5000, Types.Action.SELL, quantity, limitPrice, takeProfitLimitPrice, stopLossPrice);
+                orderHandler.placeBracketOrder(5000, Types.Action.SELL, quantity, limitPrice, takeProfitLimitPrice, stopLossPrice);
                 System.out.println("> SELL ORDER HAS BEEN PLACED NOW");
             }
         }
