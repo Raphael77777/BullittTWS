@@ -11,6 +11,11 @@ public class TwsOutputAdapter {
 
     private EClientSocket m_client;
 
+    private int idOnRequestAccountSummary = 0;
+    private int idOnReqMktData = 0;
+    private int idOnReqPnL = 0;
+    private int idOnReqPnLSingle = 0;
+
     public void init() throws InterruptedException {
         TwsInputAdapter twsInputAdapter = new TwsInputAdapter();
 
@@ -47,17 +52,29 @@ public class TwsOutputAdapter {
     }
 
     public void onRequestAccountSummary() {
-        m_client.reqAccountSummary( 5, "All", "NetLiquidation,BuyingPower,AvailableFunds,Cushion,FullInitMarginReq");
+
+        if (idOnRequestAccountSummary != 0){
+            onCancelAccountSummary();
+        }
+
+        idOnRequestAccountSummary = TwsThread.getNextValidID();
+        m_client.reqAccountSummary(idOnRequestAccountSummary, "All", "NetLiquidation,BuyingPower,AvailableFunds,Cushion,FullInitMarginReq");
     }
     public void onCancelAccountSummary() {
-        m_client.cancelAccountSummary(5);
+        m_client.cancelAccountSummary(idOnRequestAccountSummary);
     }
 
     public void onReqMktData() {
-        m_client.reqMktData( 101, initializeContract(), "221", false, false, new ArrayList<TagValue>());
+
+        if (idOnReqMktData != 0){
+            onCancelMktData();
+        }
+
+        idOnReqMktData = TwsThread.getNextValidID();
+        m_client.reqMktData(idOnReqMktData, initializeContract(), "221", false, false, new ArrayList<TagValue>());
     }
     public void onCancelMktData() {
-        m_client.cancelMktData( 101);
+        m_client.cancelMktData(idOnReqMktData);
     }
 
     public void onReqManagedAccts() {
@@ -83,20 +100,32 @@ public class TwsOutputAdapter {
         if(TwsThread.accountData.getAccountId().equals("")){
             return;
         }
-        m_client.reqPnL(125, TwsThread.accountData.getAccountId(), "");
+
+        if (idOnReqPnL != 0){
+            onCancelPnL();
+        }
+
+        idOnReqPnL = TwsThread.getNextValidID();
+        m_client.reqPnL(idOnReqPnL, TwsThread.accountData.getAccountId(), "");
     }
     public void onCancelPnL() {
-        m_client.cancelPnL(125);
+        m_client.cancelPnL(idOnReqPnL);
     }
 
     private void onReqPnLSingle() {
         if(TwsThread.positionData.getAccount().equals("") || TwsThread.positionData.getContract() == null){
             return;
         }
-        m_client.reqPnLSingle(126, TwsThread.positionData.getAccount(), "", TwsThread.positionData.getContract().conid());
+
+        if (idOnReqPnLSingle != 0){
+            onCancelPnLSingle();
+        }
+
+        idOnReqPnLSingle = TwsThread.getNextValidID();
+        m_client.reqPnLSingle(idOnReqPnLSingle, TwsThread.positionData.getAccount(), "", TwsThread.positionData.getContract().conid());
     }
     public void onCancelPnLSingle() {
-        m_client.cancelPnLSingle(126);
+        m_client.cancelPnLSingle(idOnReqPnLSingle);
     }
 
     private void onPlaceOrder() {
@@ -105,20 +134,18 @@ public class TwsOutputAdapter {
         Order order = new Order();
         Contract contract = new Contract();
 
-        m_client.placeOrder( 126, contract, order );
+        m_client.placeOrder(TwsThread.getNextValidID(), contract, order );
 
     }
 
     public static Contract initializeContract(){
 
-        //TODO : Get contract from strategy_data
-        //String asset = OLDTWS.strategyData.getAsset();
+        /* Get asset from strategy_data */
+        String asset = TwsThread.strategyData.getAsset();
 
         Contract nq = new Contract();
-        nq.localSymbol("EUR.USD");
-        //nq.symbol("EUR");
+        nq.localSymbol(asset);
         nq.secType("CASH");
-        //nq.currency("USD");
         nq.exchange("IDEALPRO");
         return nq;
     }

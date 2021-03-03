@@ -5,7 +5,7 @@ import MarketDataHandling.MarketAdapter;
 import TechnicalAnalysisHandling.AdapterRSI;
 import TechnicalAnalysisHandling.AdapterSMA;
 
-public class TwsThread implements Runnable{
+public class TwsThread implements Runnable {
 
     public static StrategyData strategyData;
     public static TransactionData transactionData;
@@ -19,6 +19,8 @@ public class TwsThread implements Runnable{
 
     public static MarketAdapter marketAdapter;
     public static TwsOutputAdapter twsOutputAdapter = new TwsOutputAdapter();
+
+    private static int nextValidID = 0;
 
     public TwsThread(StrategyData strategyData, TransactionData transactionData, LiveData liveData, AlphaVantageData alphaVantageData, AccountData accountData, PositionData positionData) {
         TwsThread.strategyData = strategyData;
@@ -51,7 +53,6 @@ public class TwsThread implements Runnable{
         twsOutputAdapter.onReqMktData();
         return true;
     }
-
     public boolean stopMarketAdapter () {
 
         if (twsOutputAdapter == null){
@@ -60,5 +61,13 @@ public class TwsThread implements Runnable{
 
         twsOutputAdapter.onCancelMktData();
         return true;
+    }
+
+    public static void setNextValidID(int nextValidID) {
+        TwsThread.nextValidID = nextValidID;
+    }
+    public static int getNextValidID() {
+        nextValidID++;
+        return nextValidID;
     }
 }

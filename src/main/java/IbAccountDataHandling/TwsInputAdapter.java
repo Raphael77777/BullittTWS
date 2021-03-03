@@ -138,8 +138,9 @@ public class TwsInputAdapter implements EWrapper {
     @Override
     public void nextValidId(int i) {
 
-        //TODO : SAVE THIS VALUE IN IB_CONNECTOR
-        System.out.println("nextValidID : "+i);
+        TwsThread.setNextValidID(i);
+
+        //System.out.println("nextValidID : "+i);
     }
 
     @Override
