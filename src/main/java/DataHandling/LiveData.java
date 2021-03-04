@@ -9,21 +9,23 @@ public class LiveData implements Subject{
 
     private ArrayList<Observer> observers = new ArrayList<>();
 
-    private double profitLoss;
-    private double profitLossPercentage;
+    private double dailyPNL;
+    private double unrealizedPNL;
+    private double realizedPNL;
     private int sumOrder;
     private int sumAnalysis;
     private int compellingAnalysisPercentage;
     private double analysisTime;
     private double averageAnalysisTime;
     private double nextAnalysis;
+    private LocalTime timeToStart;
     private LocalTime timeSinceStart;
     private LocalTime startTime;
-    private LocalTime timeToAutoStop;
-    private LocalTime autoStopTime;
     private double startPrice;
     private double currentPrice;
     private double AveragePrice;
+
+    private boolean initCompleted = false;
 
     @Override
     public void registerObserver(Observer o) {
@@ -44,20 +46,28 @@ public class LiveData implements Subject{
 
     /* LIVE DATA METHOD */
 
-    public double getProfitLoss() {
-        return profitLoss;
+    public double getDailyPNL() {
+        return dailyPNL;
     }
 
-    public void setProfitLoss(double profitLoss) {
-        this.profitLoss = profitLoss;
+    public void setDailyPNL(double dailyPNL) {
+        this.dailyPNL = dailyPNL;
     }
 
-    public double getProfitLossPercentage() {
-        return profitLossPercentage;
+    public double getUnrealizedPNL() {
+        return unrealizedPNL;
     }
 
-    public void setProfitLossPercentage(double profitLossPercentage) {
-        this.profitLossPercentage = profitLossPercentage;
+    public void setUnrealizedPNL(double unrealizedPNL) {
+        this.unrealizedPNL = unrealizedPNL;
+    }
+
+    public double getRealizedPNL() {
+        return realizedPNL;
+    }
+
+    public void setRealizedPNL(double realizedPNL) {
+        this.realizedPNL = realizedPNL;
     }
 
     public int getSumOrder() {
@@ -124,20 +134,17 @@ public class LiveData implements Subject{
         this.startTime = startTime;
     }
 
-    public LocalTime getTimeToAutoStop() {
-        return timeToAutoStop;
+    public LocalTime getTimeToStart() {
+        return timeToStart;
     }
 
-    public void setTimeToAutoStop(LocalTime timeToAutoStop) {
-        this.timeToAutoStop = timeToAutoStop;
-    }
+    public void setTimeToStart(LocalTime timeToStart) {
 
-    public LocalTime getAutoStopTime() {
-        return autoStopTime;
-    }
+        if (initCompleted){
+            return;
+        }
 
-    public void setAutoStopTime(LocalTime autoStopTime) {
-        this.autoStopTime = autoStopTime;
+        this.timeToStart = timeToStart;
     }
 
     public double getStartPrice() {
@@ -162,5 +169,13 @@ public class LiveData implements Subject{
 
     public void setAveragePrice(double averagePrice) {
         AveragePrice = averagePrice;
+    }
+
+    public boolean isInitCompleted() {
+        return initCompleted;
+    }
+
+    public void setInitCompleted(boolean initCompleted) {
+        this.initCompleted = initCompleted;
     }
 }

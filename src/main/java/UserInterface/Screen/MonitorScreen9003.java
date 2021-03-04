@@ -10,9 +10,9 @@ public class MonitorScreen9003 extends AbstractScreen implements Observer {
 
     private LiveData liveData;
 
-    private final String [] IP_texts = new String[]{"P&L", "P&L %", "#Order", "#Analysis", "Compelling analysis", "Time since start", "Start time", "Analysis time", "Average analysis time", "Next analysis", "Time to auto stop", "Auto stop time", "Start price", "Current price", "Average price"};
+    private final String [] IP_texts = new String[]{"Daily P&L", "Unrealized P&L", "#Order", "#Analysis", "Compelling analysis", "Realized P&L", "Time to start", "Analysis time", "Average analysis time", "Next analysis", "Time since start", "Start time", "Start price", "Current price", "Average price"};
     private String [] IP_values = new String[]{"--", "--", "--", "--", "--", "--", "--", "--", "--", "--", "--", "--", "--", "--", "--"};
-    private InfoTYPE [] IP_types = new InfoTYPE[]{InfoTYPE.NO_ICON, InfoTYPE.NO_ICON, InfoTYPE.NO_ICON, InfoTYPE.NO_ICON, InfoTYPE.NO_ICON, InfoTYPE.GREEN, InfoTYPE.GREEN, InfoTYPE.NO_ICON, InfoTYPE.NO_ICON, InfoTYPE.NO_ICON, InfoTYPE.RED, InfoTYPE.RED, InfoTYPE.NO_ICON, InfoTYPE.NO_ICON, InfoTYPE.NO_ICON};
+    private InfoTYPE [] IP_types = new InfoTYPE[]{InfoTYPE.NO_ICON, InfoTYPE.NO_ICON, InfoTYPE.NO_ICON, InfoTYPE.NO_ICON, InfoTYPE.NO_ICON, InfoTYPE.NO_ICON, InfoTYPE.GREEN, InfoTYPE.NO_ICON, InfoTYPE.NO_ICON, InfoTYPE.NO_ICON, InfoTYPE.GREEN, InfoTYPE.GREEN, InfoTYPE.NO_ICON, InfoTYPE.NO_ICON, InfoTYPE.NO_ICON};
 
     public MonitorScreen9003(LiveData liveData) {
         this.liveData = liveData;
@@ -42,19 +42,19 @@ public class MonitorScreen9003 extends AbstractScreen implements Observer {
 
         /* CALL METHOD OF liveData to update IP_values and IP_types */
 
-        double profitLoss = liveData.getProfitLoss();
-        IP_values[0] = profitLoss+" USD";
-        if (profitLoss > 0){
+        double dailyPNL = liveData.getDailyPNL();
+        IP_values[0] = String.valueOf(dailyPNL);
+        if (dailyPNL > 0){
             IP_types[0] = InfoTYPE.POSITIVE;
-        }if (profitLoss < 0){
+        }if (dailyPNL < 0){
             IP_types[0] = InfoTYPE.NEGATIVE;
         }
 
-        double profitLossPercentage = liveData.getProfitLossPercentage();
-        IP_values[1] = profitLossPercentage+" %";
-        if (profitLossPercentage > 0){
+        double unrealizedPNL = liveData.getUnrealizedPNL();
+        IP_values[1] = String.valueOf(unrealizedPNL);
+        if (unrealizedPNL > 0){
             IP_types[1] = InfoTYPE.POSITIVE;
-        }if (profitLossPercentage < 0){
+        }if (unrealizedPNL < 0){
             IP_types[1] = InfoTYPE.NEGATIVE;
         }
 
@@ -62,14 +62,21 @@ public class MonitorScreen9003 extends AbstractScreen implements Observer {
         IP_values[3] = liveData.getSumAnalysis()+"";
         IP_values[4] = liveData.getCompellingAnalysisPercentage()+" %";
 
-        IP_values[5] = liveData.getTimeSinceStart()+"";
-        IP_values[6] = liveData.getStartTime()+"";
+        double realizedPNL = liveData.getRealizedPNL();
+        IP_values[5] = String.valueOf(realizedPNL);
+        if (realizedPNL > 0){
+            IP_types[5] = InfoTYPE.POSITIVE;
+        }if (realizedPNL < 0){
+            IP_types[5] = InfoTYPE.NEGATIVE;
+        }
+
+        IP_values[6] = liveData.getTimeToStart()+"";
         IP_values[7] = liveData.getAnalysisTime()+" ms";
         IP_values[8] = liveData.getAverageAnalysisTime()+" ms";
         IP_values[9] = liveData.getNextAnalysis()+" ms";
 
-        IP_values[10] = liveData.getTimeToAutoStop()+"";
-        IP_values[11] = liveData.getAutoStopTime()+"";
+        IP_values[10] = liveData.getTimeSinceStart()+"";
+        IP_values[11] = liveData.getStartTime()+"";
         IP_values[12] = liveData.getStartPrice()+"";
         IP_values[13] = liveData.getCurrentPrice()+"";
         IP_values[14] = liveData.getAveragePrice()+"";
