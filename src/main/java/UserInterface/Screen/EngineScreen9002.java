@@ -82,7 +82,7 @@ public class EngineScreen9002 extends AbstractScreen implements Observer {
         IP_values[0] = strategyData.getAsset();
         IP_values[2] = String.valueOf(strategyData.getAccuracy());
         IP_values[3] = strategyData.getTimescale();
-        IP_values[4] = strategyData.getExposure() +" %";
+        IP_values[4] = String.valueOf(strategyData.getMultiplier());
         IP_values[5] = strategyData.getOrder();
         IP_values[6] = strategyData.getTake_profit() +" %";
         IP_values[7] = strategyData.getStop_loss() +" %";
