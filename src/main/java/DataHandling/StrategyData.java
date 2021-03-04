@@ -1,5 +1,6 @@
 package DataHandling;
 
+import UserInterface.JFrameBTWS;
 import UserInterface.Screen.Observer;
 
 import java.io.*;
@@ -130,6 +131,7 @@ public class StrategyData implements Subject, Serializable {
     }
 
     public void compil (){
+        JFrameBTWS.getInstance().positionData.reset();
         notifyObservers();
         serialize();
     }

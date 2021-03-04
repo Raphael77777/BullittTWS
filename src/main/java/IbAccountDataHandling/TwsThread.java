@@ -4,6 +4,9 @@ import DataHandling.*;
 import MarketDataHandling.MarketAdapter;
 import TechnicalAnalysisHandling.AdapterRSI;
 import TechnicalAnalysisHandling.AdapterSMA;
+import com.ib.client.Order;
+import com.ib.client.OrderType;
+import com.ib.client.Types;
 
 public class TwsThread implements Runnable {
 
@@ -66,12 +69,30 @@ public class TwsThread implements Runnable {
             return false;
         }
 
+        /* Stop chrono */
         chronoLiveData.stop();
 
+        /* Stop market data */
         twsOutputAdapter.onCancelMktData();
+
+        /* Clear open orders */
         twsOutputAdapter.onGlobalCancel();
 
-        //TODO : KILL POSITIONS
+        /* Clear open positions */
+        if (positionData.getContract() != null && strategyData.getAsset().equals(positionData.getContract().localSymbol())){
+            double position = positionData.getPos();
+            Order order = new Order();
+            order.orderId(getNextValidID());
+            if (position > 0){
+                order.action(Types.Action.SELL);
+            } else if (position < 0) {
+                order.action(Types.Action.BUY);
+            }
+            order.orderType(OrderType.MKT);
+            order.totalQuantity(Math.abs(position));
+            order.transmit(true);
+            twsOutputAdapter.onPlaceOrder(order);
+        }
 
         return true;
     }

@@ -113,28 +113,15 @@ public class TwsOutputAdapter {
         m_client.cancelMktData(idOnReqMktData);
     }
 
-
-    //TODO : reqAllOpenOrders();
-    public void reqAllOpenOrders() {
-        m_client.reqAllOpenOrders();
-    }
-
-    //TODO : onGlobalCancel();
     public void onGlobalCancel() {
         m_client.reqGlobalCancel();
     }
 
-    //TODO : onPlaceOrder();
-    private void onPlaceOrder() {
-
-        //TODO : Initialize order
-        Order order = new Order();
+    public void onPlaceOrder(Order order) {
         m_client.placeOrder(TwsThread.getNextValidID(), initializeContract(), order );
-
     }
 
-
-    /* Initialize Contract */
+    /*  Initialize Contract */
     public static Contract initializeContract(){
 
         /* Get asset from strategy_data */
@@ -145,5 +132,12 @@ public class TwsOutputAdapter {
         nq.secType("CASH");
         nq.exchange("IDEALPRO");
         return nq;
+    }
+
+
+    //TODO : reqAllOpenOrders();
+    //TODO : IS NECESSARY ?
+    public void reqAllOpenOrders() {
+        m_client.reqAllOpenOrders();
     }
 }

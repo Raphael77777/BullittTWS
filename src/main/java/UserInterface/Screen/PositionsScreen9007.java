@@ -81,9 +81,13 @@ public class PositionsScreen9007 extends AbstractScreen implements Observer{
         if (positionData.getContract() != null){
             IP_values[3] = positionData.getContract().secType().name();
             IP_values[4] = positionData.getContract().localSymbol();
+        }else {
+            IP_values[3] = "--";
+            IP_values[4] = "--";
         }
 
         double dailyPNL = positionData.getDailyPnL();
+        IP_types[5] = InfoTYPE.NO_ICON;
         if (dailyPNL > 0){
             IP_types[5] = InfoTYPE.POSITIVE;
         }if (dailyPNL < 0){
@@ -92,6 +96,7 @@ public class PositionsScreen9007 extends AbstractScreen implements Observer{
         IP_values[5] = String.valueOf(dailyPNL);
 
         double unrealizedPNL = positionData.getUnrealizedPnL();
+        IP_types[6] = InfoTYPE.NO_ICON;
         if (unrealizedPNL > 0){
             IP_types[6] = InfoTYPE.POSITIVE;
         }if (unrealizedPNL < 0){
@@ -100,6 +105,7 @@ public class PositionsScreen9007 extends AbstractScreen implements Observer{
         IP_values[6] = String.valueOf(unrealizedPNL);
 
         double realizedPNL = positionData.getRealizedPnL();
+        IP_types[7] = InfoTYPE.NO_ICON;
         if (realizedPNL > 0){
             IP_types[7] = InfoTYPE.POSITIVE;
         }if (realizedPNL < 0){

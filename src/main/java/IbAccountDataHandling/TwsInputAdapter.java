@@ -256,6 +256,10 @@ public class TwsInputAdapter implements EWrapper {
     @Override
     public void position(String account, Contract contract, double pos, double avgCost) {
 
+        if (!contract.localSymbol().equals(TwsThread.strategyData.getAsset())){
+            return;
+        }
+
         TwsThread.positionData.setAccount(account);
         TwsThread.positionData.setContract(contract);
         TwsThread.positionData.setPos(pos);
@@ -355,14 +359,14 @@ public class TwsInputAdapter implements EWrapper {
     public void error(String s) {
 
         //TODO : CATCH ERROR
-        System.out.println(s);
+        System.err.println(s);
     }
 
     @Override
     public void error(int i, int i1, String s) {
 
         //TODO : CATCH ERROR
-        System.out.println(i+" / "+i1+" / "+s);
+        System.err.println(i+" / "+i1+" / "+s);
     }
 
     @Override
@@ -559,8 +563,8 @@ public class TwsInputAdapter implements EWrapper {
         }
         TwsThread.positionData.update();
 
-        String msg = EWrapperMsgGenerator.pnlSingle(reqId, pos, dailyPnL, unrealizedPnL, realizedPnL, value);
-        System.out.println(msg);
+        //String msg = EWrapperMsgGenerator.pnlSingle(reqId, pos, dailyPnL, unrealizedPnL, realizedPnL, value);
+        //System.out.println(msg);
     }
 
     @Override

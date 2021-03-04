@@ -44,6 +44,7 @@ public class MonitorScreen9003 extends AbstractScreen implements Observer {
 
         double dailyPNL = liveData.getDailyPNL();
         IP_values[0] = String.valueOf(dailyPNL);
+        IP_types[0] = InfoTYPE.NO_ICON;
         if (dailyPNL > 0){
             IP_types[0] = InfoTYPE.POSITIVE;
         }if (dailyPNL < 0){
@@ -52,6 +53,7 @@ public class MonitorScreen9003 extends AbstractScreen implements Observer {
 
         double unrealizedPNL = liveData.getUnrealizedPNL();
         IP_values[1] = String.valueOf(unrealizedPNL);
+        IP_types[1] = InfoTYPE.NO_ICON;
         if (unrealizedPNL > 0){
             IP_types[1] = InfoTYPE.POSITIVE;
         }if (unrealizedPNL < 0){
@@ -64,6 +66,7 @@ public class MonitorScreen9003 extends AbstractScreen implements Observer {
 
         double realizedPNL = liveData.getRealizedPNL();
         IP_values[5] = String.valueOf(realizedPNL);
+        IP_types[5] = InfoTYPE.NO_ICON;
         if (realizedPNL > 0){
             IP_types[5] = InfoTYPE.POSITIVE;
         }if (realizedPNL < 0){
@@ -82,6 +85,7 @@ public class MonitorScreen9003 extends AbstractScreen implements Observer {
 
         double varOpening = liveData.getVarOpening();
         IP_values[14] = varOpening+" %";
+        IP_types[14] = InfoTYPE.NO_ICON;
         if (varOpening > 0){
             IP_types[14] = InfoTYPE.POSITIVE;
         }if (varOpening < 0){

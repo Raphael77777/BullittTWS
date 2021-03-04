@@ -31,10 +31,11 @@ public class EntrySignalA {
             TwsThread.liveData.update();
 
             // TODO: Show technical analysis
+            System.out.println("* START ******************************************");
             System.out.println("PRICE : "+price);
             System.out.println("SMA200 : "+SMA_200);
             System.out.println("RSI2 : "+RSI_2);
-            System.out.println("******************************************");
+            System.out.println("* END ********************************************");
 
             /* price > SMA(200) && RSI(2) < 10 */
             /* Adapt RSI_LIMIT_BUY to accuracy using strategy_data */

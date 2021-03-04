@@ -27,7 +27,7 @@ public class JFrameBTWS extends JFrame {
     private AlphaVantageData alphaVantageData;
     private LiveData liveData = new LiveData();
     private AccountData accountData = new AccountData();
-    private PositionData positionData = new PositionData();
+    public PositionData positionData = new PositionData();
 
     /* Screen 900X */
     private WelcomeScreen9000 welcomeScreen9000 = new WelcomeScreen9000();

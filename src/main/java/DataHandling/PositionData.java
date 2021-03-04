@@ -117,4 +117,17 @@ public class PositionData implements Subject {
     public void update() {
         notifyObservers();
     }
+
+    public void reset(){
+        account = "";
+        contract = null;
+        pos = 0.0;
+        avgCost = 0.0;
+        dailyPnL = 0.0;
+        unrealizedPnL = 0.0;
+        realizedPnL = 0.0;
+        value = 0.0;
+
+        update();
+    }
 }
