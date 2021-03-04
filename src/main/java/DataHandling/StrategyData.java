@@ -14,7 +14,7 @@ public class StrategyData implements Subject, Serializable {
     private String order ="--";
     private String timescale ="--";
     private double accuracy;
-    private int exposure;
+    private int multiplier;
     private double take_profit;
     private double stop_loss;
 
@@ -105,12 +105,12 @@ public class StrategyData implements Subject, Serializable {
         this.accuracy = accuracy;
     }
 
-    public int getExposure() {
-        return exposure;
+    public int getMultiplier() {
+        return multiplier;
     }
 
-    public void setExposure(int exposure) {
-        this.exposure = exposure;
+    public void setMultiplier(int multiplier) {
+        this.multiplier = multiplier;
     }
 
     public double getTake_profit() {

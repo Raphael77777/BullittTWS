@@ -15,6 +15,8 @@ public class TwsOutputAdapter {
     private int idOnReqMktData = 0;
     private int idOnReqPnL = 0;
     private int idOnReqPnLSingle = 0;
+    private boolean reqPos = false;
+    public static boolean statusReqPnLSingle = false;
 
     public void init() throws InterruptedException {
         TwsInputAdapter twsInputAdapter = new TwsInputAdapter();
@@ -28,27 +30,27 @@ public class TwsOutputAdapter {
         onRequestAccountSummary();
 
         /* onReqPnL */
-        Thread.sleep(3000);
-        onReqPnL();
+        boolean statusReqPnL = false;
+        while (!statusReqPnL){
+            Thread.sleep(2000);
+            statusReqPnL = onReqPnL();
+        }
+    }
 
-        /* onReqPnLSingle */
-        Thread.sleep(3000);
-        onReqPnLSingle();
+    public void onReqManagedAccts() {
+        m_client.reqManagedAccts();
+    }
 
-        /** ACCOUNTS SCREEN */
-        //TODO : reqAllOpenOrders();
-        //TODO : reqAllOpenOrders();
-
-        /** TRADING ENGINE */
-        //TODO : onReqMktData();
-        //TODO : onReqMktData();
-
-        //TODO : onPlaceOrder();
-        //onPlaceOrder();
-
-        /** BACKGROUND SCREEN */
-        //TODO : onGlobalCancel();
-        //TODO : onGlobalCancel();
+    public void onRequestPositions() {
+        if (reqPos){
+            onCancelPositions();
+        }
+        m_client.reqPositions();
+        reqPos = true;
+    }
+    public void onCancelPositions() {
+        m_client.cancelPositions();
+        reqPos = false;
     }
 
     public void onRequestAccountSummary() {
@@ -64,6 +66,40 @@ public class TwsOutputAdapter {
         m_client.cancelAccountSummary(idOnRequestAccountSummary);
     }
 
+    public boolean onReqPnL() {
+        if(TwsThread.accountData.getAccountId().equals("")){
+            return false;
+        }
+
+        if (idOnReqPnL != 0){
+            onCancelPnL();
+        }
+
+        idOnReqPnL = TwsThread.getNextValidID();
+        m_client.reqPnL(idOnReqPnL, TwsThread.accountData.getAccountId(), "");
+        return true;
+    }
+    public void onCancelPnL() {
+        m_client.cancelPnL(idOnReqPnL);
+    }
+
+    public void onReqPnLSingle() {
+        if(TwsThread.positionData.getAccount().equals("") || TwsThread.positionData.getContract() == null || TwsThread.positionData.getContract().conid() == 0){
+            statusReqPnLSingle = false;
+        }
+
+        if (idOnReqPnLSingle != 0){
+            onCancelPnLSingle();
+        }
+
+        idOnReqPnLSingle = TwsThread.getNextValidID();
+        m_client.reqPnLSingle(idOnReqPnLSingle, TwsThread.positionData.getAccount(), "", TwsThread.positionData.getContract().conid());
+        statusReqPnLSingle = true;
+    }
+    public void onCancelPnLSingle() {
+        m_client.cancelPnLSingle(idOnReqPnLSingle);
+    }
+
     public void onReqMktData() {
 
         if (idOnReqMktData != 0){
@@ -77,67 +113,28 @@ public class TwsOutputAdapter {
         m_client.cancelMktData(idOnReqMktData);
     }
 
-    public void onReqManagedAccts() {
-        m_client.reqManagedAccts();
-    }
 
+    //TODO : reqAllOpenOrders();
     public void reqAllOpenOrders() {
         m_client.reqAllOpenOrders();
     }
 
-    public void onRequestPositions() {
-        m_client.reqPositions();
-    }
-    public void onCancelPositions() {
-        m_client.cancelPositions();
-    }
-
+    //TODO : onGlobalCancel();
     public void onGlobalCancel() {
         m_client.reqGlobalCancel();
     }
 
-    public void onReqPnL() {
-        if(TwsThread.accountData.getAccountId().equals("")){
-            return;
-        }
-
-        if (idOnReqPnL != 0){
-            onCancelPnL();
-        }
-
-        idOnReqPnL = TwsThread.getNextValidID();
-        m_client.reqPnL(idOnReqPnL, TwsThread.accountData.getAccountId(), "");
-    }
-    public void onCancelPnL() {
-        m_client.cancelPnL(idOnReqPnL);
-    }
-
-    private void onReqPnLSingle() {
-        if(TwsThread.positionData.getAccount().equals("") || TwsThread.positionData.getContract() == null){
-            return;
-        }
-
-        if (idOnReqPnLSingle != 0){
-            onCancelPnLSingle();
-        }
-
-        idOnReqPnLSingle = TwsThread.getNextValidID();
-        m_client.reqPnLSingle(idOnReqPnLSingle, TwsThread.positionData.getAccount(), "", TwsThread.positionData.getContract().conid());
-    }
-    public void onCancelPnLSingle() {
-        m_client.cancelPnLSingle(idOnReqPnLSingle);
-    }
-
+    //TODO : onPlaceOrder();
     private void onPlaceOrder() {
 
-        //TODO : INIT ORDER & CONTRACT
+        //TODO : Initialize order
         Order order = new Order();
-        Contract contract = new Contract();
-
-        m_client.placeOrder(TwsThread.getNextValidID(), contract, order );
+        m_client.placeOrder(TwsThread.getNextValidID(), initializeContract(), order );
 
     }
 
+
+    /* Initialize Contract */
     public static Contract initializeContract(){
 
         /* Get asset from strategy_data */

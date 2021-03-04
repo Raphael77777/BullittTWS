@@ -262,6 +262,10 @@ public class TwsInputAdapter implements EWrapper {
         TwsThread.positionData.setAvgCost(avgCost);
         TwsThread.positionData.update();
 
+        if (!TwsOutputAdapter.statusReqPnLSingle){
+            TwsThread.twsOutputAdapter.onReqPnLSingle();
+        }
+
         //String msg = EWrapperMsgGenerator.position(account, contract, pos, avgCost);
         //System.out.println(msg);
     }

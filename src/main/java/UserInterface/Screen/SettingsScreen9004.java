@@ -13,7 +13,7 @@ public class SettingsScreen9004 extends AbstractScreen implements Observer {
     private StrategyData strategyData;
 
     private JPanel[] inputs = new JPanel[7];
-    private final String[] IN_Description = new String[]{"Asset", "Accuracy", "Timescale", "% Exposure", "% Take Profit", "% Stop Loss", "Order"};
+    private final String[] IN_Description = new String[]{"Asset", "Accuracy", "Timescale", "Multiplier", "% Take Profit", "% Stop Loss", "Order"};
 
     private String [] IN_DropV0 = new String[]{"AUD.CAD", "AUD.CHF", "AUD.CNH", "AUD.HKD", "AUD.JPY", "AUD.NZD", "AUD.SGD", "AUD.USD", "AUD.ZAR", "CAD.CHF", "CAD.CNH", "CAD.JPY", "CHF.CNH", "CHF.CZK", "CHF.DKK", "CHF.HUF", "CHF.JPY", "CHF.NOK", "CHF.PLN", "CHF.SEK", "CHF.TRY", "CHF.ZAR", "CNH.HKD", "CNH.JPY", "DKK.JPY", "DKK.NOK", "DKK.SEK", "EUR.AUD", "EUR.CAD", "EUR.CHF", "EUR.CNH", "EUR.CZK", "EUR.DKK", "EUR.GBP", "EUR.HKD", "EUR.HUF", "EUR.ILS", "EUR.JPY", "EUR.MXN", "EUR.NOK", "EUR.NZD", "EUR.PLN", "EUR.RUB", "EUR.SEK", "EUR.SGD", "EUR.TRY", "EUR.USD", "EUR.ZAR", "GBP.AUD", "GBP.CAD", "GBP.CHF", "GBP.CNH", "GBP.CZK", "GBP.DKK", "GBP.HKD", "GBP.HUF", "GBP.JPY", "GBP.MXN", "GBP.NOK", "GBP.NZD", "GBP.PLN", "GBP.SEK", "GBP.SGD", "GBP.TRY", "GBP.USD", "GBP.ZAR", "HKD.JPY", "KRW.AUD", "KRW.CAD", "KRW.CHF", "KRW.EUR", "KRW.GBP", "KRW.HKD", "KRW.JPY", "KRW.USD", "MXN.JPY", "NOK.JPY", "NOK.SEK", "NZD.CAD", "NZD.CHF", "NZD.JPY", "NZD.USD", "SEK.JPY", "SGD.CNH", "SGD.HKD", "SGD.JPY", "USD.CAD", "USD.CHF", "USD.CNH", "USD.CZK", "USD.DKK", "USD.HKD", "USD.HUF", "USD.ILS", "USD.JPY", "USD.KRW", "USD.MXN", "USD.NOK", "USD.PLN", "USD.RUB", "USD.SEK", "USD.SGD", "USD.TRY", "USD.ZAR", "ZAR.JPY"};
     private String [] IN_DropV2 = new String[]{"60 sec", "120 sec", "180 sec", "240 sec"};
@@ -23,7 +23,7 @@ public class SettingsScreen9004 extends AbstractScreen implements Observer {
     private InputCombo order;
     private InputCombo timescale;
     private InputDouble accuracy;
-    private InputInteger exposure;
+    private InputInteger multiplier;
     private InputDoubleL take_profit;
     private InputDoubleL stop_loss;
 
@@ -56,9 +56,9 @@ public class SettingsScreen9004 extends AbstractScreen implements Observer {
         timescale.setBounds(283, 133, 260, 110);
         add(timescale);
 
-        exposure = new InputInteger("VA3", IN_Description[3]);
-        exposure.setBounds(546, 133, 260, 110);
-        add(exposure);
+        multiplier = new InputInteger("VA3", IN_Description[3]);
+        multiplier.setBounds(546, 133, 260, 110);
+        add(multiplier);
 
         take_profit = new InputDoubleL("VA4", InfoTYPE.POSITIVE, IN_Description[4], "Select a limit for take profit order");
         take_profit.setBounds(20, 246, 523, 110);
@@ -100,7 +100,7 @@ public class SettingsScreen9004 extends AbstractScreen implements Observer {
         order.setSelected(strategyData.getOrder());
         timescale.setSelected(strategyData.getTimescale());
         accuracy.setNumber(strategyData.getAccuracy());
-        exposure.setNumber(strategyData.getExposure());
+        multiplier.setNumber(strategyData.getMultiplier());
         take_profit.setNumber(strategyData.getTake_profit());
         stop_loss.setNumber(strategyData.getStop_loss());
 
@@ -114,7 +114,7 @@ public class SettingsScreen9004 extends AbstractScreen implements Observer {
         strategyData.setOrder(order.getSelected());
         strategyData.setTimescale(timescale.getSelected());
         strategyData.setAccuracy(accuracy.getNumber());
-        strategyData.setExposure(exposure.getNumber());
+        strategyData.setMultiplier(multiplier.getNumber());
         strategyData.setTake_profit(take_profit.getNumber());
         strategyData.setStop_loss(stop_loss.getNumber());
 

@@ -14,25 +14,13 @@ public class EntrySignalA {
     public EntrySignalA(double price) throws MissingApiKeyException, NoNetworkException, OverloadApiUseException, MarketClosedException {
         this.orderHandler = new OrderHandler();
 
-        /**
-        if(prices.size()>1) {
-            if (prices.get(0) - prices.get(1) >= 0.00002) {
-                orderHandler.placeBracketOrder(parentOrderId+5000, Types.Action.BUY, 1, 1, 1, .5);
-                System.out.println("BUY NOW");
-            }
-            if(prices.get(0) - prices.get(1) <= -0.00002) {
-                orderHandler.placeBracketOrder(parentOrderId+5000, Types.Action.SELL, 1, 1, 1, .5);
-                System.out.println("SELL NOW");
-            }
-        }*/
-
         if(price != 0.0) {
             /* Get technical analysis */
             String asset = TwsThread.strategyData.getAsset().replace(".", "");
             double SMA_200 = TwsThread.adapterSMA.get(asset, "1min", "200", "open");
             double RSI_2 = TwsThread.adapterRSI.get(asset, "1min", "2", "open");
 
-            // TODO: To remove
+            // TODO: Show technical analysis
             System.out.println("PRICE : "+price);
             System.out.println("SMA200 : "+SMA_200);
             System.out.println("RSI2 : "+RSI_2);
@@ -44,22 +32,45 @@ public class EntrySignalA {
             double RSI_LIMIT_BUY = 10 - (accuracy*5);
             if (price > SMA_200 && RSI_2 < RSI_LIMIT_BUY){
 
-                // TODO : Adapt quantity to exposure using strategy_data
-                int exposure = TwsThread.strategyData.getExposure();
-                int quantity = 1;
-                double limitPrice = 1;
+                /* Adapt quantity to multiplier using strategy_data */
+                int multiplier = TwsThread.strategyData.getMultiplier();
+                int quantity = 20000 * multiplier;
 
-                // TODO : Adapt takeProfitLimitPrice to strategy_data
+                /* Adapt order to type using strategy_data */
+                String order = TwsThread.strategyData.getOrder();
+                double limitPrice = 0;
+                switch (order){
+                    case "Market":
+                        limitPrice = -1;
+                        break;
+                    case "Limit":
+                        limitPrice = price*1.02;
+                        break;
+                }
+
+                /* Adapt takeProfitLimitPrice to strategy_data */
                 double takeProfit = TwsThread.strategyData.getTake_profit();
-                double takeProfitLimitPrice = 1;
+                double takeProfitLimitPrice = price * (1.0+(takeProfit/100.0));
 
-                // TODO : Adapt stopLossPrice to strategy_data
+                /* Adapt stopLossPrice to strategy_data */
                 double stopLoss = TwsThread.strategyData.getStop_loss();
-                // TODO : Adapt stop loss to SMA_5 => price > SMA(5)
-                double SMA_5 = TwsThread.adapterSMA.get("USDEUR", "1min", "5", "open");
-                double stopLossPrice = 0.5;
+                double stopLossPrice = price * (1.0-(stopLoss/100.0));
 
-                orderHandler.placeBracketOrder(5000, Types.Action.BUY, quantity, limitPrice, takeProfitLimitPrice, stopLossPrice);
+                /* Adapt stop loss to SMA_5 => stopLossPrice > SMA(5) */
+                double SMA_5 = TwsThread.adapterSMA.get(asset, "1min", "5", "open");
+                if (stopLossPrice > SMA_5){
+                    stopLossPrice = SMA_5;
+                }
+
+                // TODO : Show buy order
+                System.out.println("**** BUY ORDER N°"+TwsThread.getNextValidID()+" ****"+
+                                "\n > Quantity : "+quantity+" <"+
+                                "\n > Limit Price : "+limitPrice+" <"+
+                                "\n > TakeProfit Limit Price : "+takeProfitLimitPrice+" <"+
+                                "\n > StopLoss Limit Price : "+stopLossPrice+" <"+
+                                "\n ******* END ******* ");
+
+                orderHandler.placeBracketOrder(TwsThread.getNextValidID(), Types.Action.BUY, quantity, limitPrice, takeProfitLimitPrice, stopLossPrice);
                 System.out.println("> BUY ORDER HAS BEEN PLACED NOW");
             }
 
@@ -68,24 +79,59 @@ public class EntrySignalA {
             double RSI_LIMIT_SELL = 90 + (accuracy*5);
             if (price < SMA_200 && RSI_2 > RSI_LIMIT_SELL){
 
-                // TODO : Adapt quantity to exposure using strategy_data
-                int exposure = TwsThread.strategyData.getExposure();
-                int quantity = 1;
-                double limitPrice = 1;
+                /* Adapt quantity to multiplier using strategy_data */
+                int multiplier = TwsThread.strategyData.getMultiplier();
+                int quantity = 20000 * multiplier;
 
-                // TODO : Adapt takeProfitLimitPrice to strategy_data
+                /* Adapt order to type using strategy_data */
+                String order = TwsThread.strategyData.getOrder();
+                double limitPrice = 0;
+                switch (order){
+                    case "Market":
+                        limitPrice = -1;
+                        break;
+                    case "Limit":
+                        limitPrice = price*-1.02;
+                        break;
+                }
+
+                /* Adapt takeProfitLimitPrice to strategy_data */
                 double takeProfit = TwsThread.strategyData.getTake_profit();
-                double takeProfitLimitPrice = 1;
+                double takeProfitLimitPrice = price * (1.0-(takeProfit/100.0));
 
-                // TODO : Adapt stopLossPrice to strategy_data
+                /* Adapt stopLossPrice to strategy_data */
                 double stopLoss = TwsThread.strategyData.getStop_loss();
-                // TODO : Adapt stop loss to SMA_5 => price < SMA(5)
-                double SMA_5 = TwsThread.adapterSMA.get("USDEUR", "1min", "5", "open");
-                double stopLossPrice = 0.5;
+                double stopLossPrice = price * (1.0+(stopLoss/100.0));
 
-                orderHandler.placeBracketOrder(5000, Types.Action.SELL, quantity, limitPrice, takeProfitLimitPrice, stopLossPrice);
+                /* Adapt stop loss to SMA_5 => stopLossPrice < SMA(5) */
+                double SMA_5 = TwsThread.adapterSMA.get(asset, "1min", "5", "open");
+                if (stopLossPrice < SMA_5){
+                    stopLossPrice = SMA_5;
+                }
+
+                // TODO : Show sell order
+                System.out.println("**** SELL ORDER N°"+TwsThread.getNextValidID()+" ****"+
+                        "\n > Quantity : "+quantity+" <"+
+                        "\n > Limit Price : "+limitPrice+" <"+
+                        "\n > TakeProfit Limit Price : "+takeProfitLimitPrice+" <"+
+                        "\n > StopLoss Limit Price : "+stopLossPrice+" <"+
+                        "\n ******* END ******* ");
+
+                orderHandler.placeBracketOrder(TwsThread.getNextValidID(), Types.Action.SELL, quantity, limitPrice, takeProfitLimitPrice, stopLossPrice);
                 System.out.println("> SELL ORDER HAS BEEN PLACED NOW");
             }
+
+            /**
+             if(prices.size()>1) {
+             if (prices.get(0) - prices.get(1) >= 0.00002) {
+             orderHandler.placeBracketOrder(parentOrderId+5000, Types.Action.BUY, 1, 1, 1, .5);
+             System.out.println("BUY NOW");
+             }
+             if(prices.get(0) - prices.get(1) <= -0.00002) {
+             orderHandler.placeBracketOrder(parentOrderId+5000, Types.Action.SELL, 1, 1, 1, .5);
+             System.out.println("SELL NOW");
+             }
+             }*/
         }
     }
 }
