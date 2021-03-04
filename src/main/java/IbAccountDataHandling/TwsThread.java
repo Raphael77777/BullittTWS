@@ -69,6 +69,10 @@ public class TwsThread implements Runnable {
         chronoLiveData.stop();
 
         twsOutputAdapter.onCancelMktData();
+        twsOutputAdapter.onGlobalCancel();
+
+        //TODO : KILL POSITIONS
+
         return true;
     }
 
