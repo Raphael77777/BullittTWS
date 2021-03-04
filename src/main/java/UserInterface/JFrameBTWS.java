@@ -102,9 +102,9 @@ public class JFrameBTWS extends JFrame {
             e.printStackTrace();
         }*/
 
-        SimulatorLiveData simulatorLiveData = new SimulatorLiveData(liveData);
-        Thread t = new Thread(simulatorLiveData);
-        t.start();
+        //SimulatorLiveData simulatorLiveData = new SimulatorLiveData(liveData);
+        //Thread t = new Thread(simulatorLiveData);
+        //t.start();
 
         /* SHOW WelcomeScreen9001 */
         showWelcomeScreen();

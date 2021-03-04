@@ -20,6 +20,7 @@ public class TwsThread implements Runnable {
     public static MarketAdapter marketAdapter;
     public static TwsOutputAdapter twsOutputAdapter = new TwsOutputAdapter();
 
+    private ChronoLiveData chronoLiveData;
     private static int nextValidID = 0;
 
     public TwsThread(StrategyData strategyData, TransactionData transactionData, LiveData liveData, AlphaVantageData alphaVantageData, AccountData accountData, PositionData positionData) {
@@ -44,11 +45,17 @@ public class TwsThread implements Runnable {
     }
 
     public boolean startMarketAdapter () {
-        TwsThread.marketAdapter = new MarketAdapter();
 
         if (twsOutputAdapter == null){
             return false;
         }
+
+        TwsThread.liveData.reset();
+
+        TwsThread.marketAdapter = new MarketAdapter();
+        chronoLiveData = new ChronoLiveData(TwsThread.liveData);
+        Thread t = new Thread(chronoLiveData);
+        t.start();
 
         twsOutputAdapter.onReqMktData();
         return true;
@@ -58,6 +65,8 @@ public class TwsThread implements Runnable {
         if (twsOutputAdapter == null){
             return false;
         }
+
+        chronoLiveData.stop();
 
         twsOutputAdapter.onCancelMktData();
         return true;

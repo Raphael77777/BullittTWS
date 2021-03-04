@@ -1,7 +1,11 @@
 package DataHandling;
 
+import IbAccountDataHandling.TwsThread;
 import UserInterface.Screen.Observer;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+import java.sql.Time;
 import java.time.LocalTime;
 import java.util.ArrayList;
 
@@ -14,18 +18,14 @@ public class LiveData implements Subject{
     private double realizedPNL;
     private int sumOrder;
     private int sumAnalysis;
-    private int compellingAnalysisPercentage;
     private double analysisTime;
-    private double averageAnalysisTime;
-    private double nextAnalysis;
-    private LocalTime timeToStart;
-    private LocalTime timeSinceStart;
-    private LocalTime startTime;
+    private ArrayList<Double> averageAnalysisTime = new ArrayList<>();
+    private double minAnalysisTime;
+    private double maxAnalysisTime;
+    private LocalTime timeSinceStart = new Time(-7200000).toLocalTime();
+    private LocalTime startTime = new Time(-7200000).toLocalTime();
     private double startPrice;
     private double currentPrice;
-    private double AveragePrice;
-
-    private boolean initCompleted = false;
 
     @Override
     public void registerObserver(Observer o) {
@@ -86,12 +86,15 @@ public class LiveData implements Subject{
         this.sumAnalysis = sumAnalysis;
     }
 
-    public int getCompellingAnalysisPercentage() {
-        return compellingAnalysisPercentage;
-    }
+    public double getCompellingAnalysisPercentage() {
+        if (sumOrder == 0.0 || sumAnalysis == 0.0){
+            return 0.0;
+        }
 
-    public void setCompellingAnalysisPercentage(int compellingAnalysisPercentage) {
-        this.compellingAnalysisPercentage = compellingAnalysisPercentage;
+        double d = (1.0*sumOrder)/(1.0*sumAnalysis);
+        BigDecimal bigDecimal = new BigDecimal(Double.toString(d));
+        bigDecimal = bigDecimal.setScale(2, RoundingMode.HALF_UP);
+        return bigDecimal.doubleValue();
     }
 
     public double getAnalysisTime() {
@@ -99,23 +102,47 @@ public class LiveData implements Subject{
     }
 
     public void setAnalysisTime(double analysisTime) {
+
+        if (minAnalysisTime == 0 && maxAnalysisTime == 0){
+            minAnalysisTime = analysisTime;
+            maxAnalysisTime = analysisTime;
+        }
+
+        if (analysisTime < minAnalysisTime){
+            minAnalysisTime = analysisTime;
+        }
+
+        if (analysisTime > maxAnalysisTime){
+            maxAnalysisTime = analysisTime;
+        }
+
+        averageAnalysisTime.add(analysisTime);
         this.analysisTime = analysisTime;
     }
 
     public double getAverageAnalysisTime() {
-        return averageAnalysisTime;
+
+        if (averageAnalysisTime.size() == 0){
+            return 0.0;
+        }
+
+        double avg = 0.0;
+
+        for (double d : averageAnalysisTime){
+            avg+=d;
+        }
+
+        BigDecimal avgTime = new BigDecimal(Double.toString(avg/averageAnalysisTime.size()));
+        avgTime = avgTime.setScale(2, RoundingMode.HALF_UP);
+        return avgTime.doubleValue();
     }
 
-    public void setAverageAnalysisTime(double averageAnalysisTime) {
-        this.averageAnalysisTime = averageAnalysisTime;
+    public double getMinAnalysisTime() {
+        return minAnalysisTime;
     }
 
-    public double getNextAnalysis() {
-        return nextAnalysis;
-    }
-
-    public void setNextAnalysis(double nextAnalysis) {
-        this.nextAnalysis = nextAnalysis;
+    public double getMaxAnalysisTime() {
+        return maxAnalysisTime;
     }
 
     public LocalTime getTimeSinceStart() {
@@ -134,25 +161,8 @@ public class LiveData implements Subject{
         this.startTime = startTime;
     }
 
-    public LocalTime getTimeToStart() {
-        return timeToStart;
-    }
-
-    public void setTimeToStart(LocalTime timeToStart) {
-
-        if (initCompleted){
-            return;
-        }
-
-        this.timeToStart = timeToStart;
-    }
-
     public double getStartPrice() {
         return startPrice;
-    }
-
-    public void setStartPrice(double startPrice) {
-        this.startPrice = startPrice;
     }
 
     public double getCurrentPrice() {
@@ -160,22 +170,44 @@ public class LiveData implements Subject{
     }
 
     public void setCurrentPrice(double currentPrice) {
+
+        if (startPrice == 0){
+            startPrice = currentPrice;
+        }
+
         this.currentPrice = currentPrice;
     }
 
-    public double getAveragePrice() {
-        return AveragePrice;
+    public double getVarOpening() {
+
+        if (startPrice == 0 || currentPrice == 0){
+            return 0.0;
+        }
+
+        BigDecimal avgTime = new BigDecimal(Double.toString((100.0*currentPrice/startPrice)-100));
+        avgTime = avgTime.setScale(4, RoundingMode.HALF_UP);
+        return avgTime.doubleValue();
     }
 
-    public void setAveragePrice(double averagePrice) {
-        AveragePrice = averagePrice;
+    public void update() {
+        notifyObservers();
     }
 
-    public boolean isInitCompleted() {
-        return initCompleted;
-    }
+    public void reset () {
+        dailyPNL = 0.0;
+        unrealizedPNL = 0.0;
+        realizedPNL = 0.0;
+        sumOrder = 0;
+        sumAnalysis = 0;
+        analysisTime = 0.0;
+        averageAnalysisTime.clear();
+        minAnalysisTime = 0.0;
+        maxAnalysisTime = 0.0;
+        timeSinceStart = new Time(-7200000).toLocalTime();
+        startTime = new Time(-7200000).toLocalTime();
+        startPrice = 0.0;
+        currentPrice = 0.0;
 
-    public void setInitCompleted(boolean initCompleted) {
-        this.initCompleted = initCompleted;
+        update();
     }
 }

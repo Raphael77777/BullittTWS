@@ -11,14 +11,24 @@ public class EntrySignalA {
 
     private OrderHandler orderHandler;
 
+    private long startMs;
+    private long stopMS;
+
     public EntrySignalA(double price) throws MissingApiKeyException, NoNetworkException, OverloadApiUseException, MarketClosedException {
         this.orderHandler = new OrderHandler();
 
         if(price != 0.0) {
+
+            startMs = System.currentTimeMillis();
+
             /* Get technical analysis */
             String asset = TwsThread.strategyData.getAsset().replace(".", "");
             double SMA_200 = TwsThread.adapterSMA.get(asset, "1min", "200", "open");
             double RSI_2 = TwsThread.adapterRSI.get(asset, "1min", "2", "open");
+
+            TwsThread.liveData.setSumAnalysis(TwsThread.liveData.getSumAnalysis()+1);
+            TwsThread.liveData.setCurrentPrice(price);
+            TwsThread.liveData.update();
 
             // TODO: Show technical analysis
             System.out.println("PRICE : "+price);
@@ -70,6 +80,9 @@ public class EntrySignalA {
                                 "\n > StopLoss Limit Price : "+stopLossPrice+" <"+
                                 "\n ******* END ******* ");
 
+                TwsThread.liveData.setSumOrder(TwsThread.liveData.getSumOrder()+1);
+                TwsThread.liveData.update();
+
                 orderHandler.placeBracketOrder(TwsThread.getNextValidID(), Types.Action.BUY, quantity, limitPrice, takeProfitLimitPrice, stopLossPrice);
                 System.out.println("> BUY ORDER HAS BEEN PLACED NOW");
             }
@@ -117,9 +130,16 @@ public class EntrySignalA {
                         "\n > StopLoss Limit Price : "+stopLossPrice+" <"+
                         "\n ******* END ******* ");
 
+                TwsThread.liveData.setSumOrder(TwsThread.liveData.getSumOrder()+1);
+                TwsThread.liveData.update();
+
                 orderHandler.placeBracketOrder(TwsThread.getNextValidID(), Types.Action.SELL, quantity, limitPrice, takeProfitLimitPrice, stopLossPrice);
                 System.out.println("> SELL ORDER HAS BEEN PLACED NOW");
             }
+
+            stopMS = System.currentTimeMillis();
+            TwsThread.liveData.setAnalysisTime(stopMS - startMs);
+            TwsThread.liveData.update();
 
             /**
              if(prices.size()>1) {

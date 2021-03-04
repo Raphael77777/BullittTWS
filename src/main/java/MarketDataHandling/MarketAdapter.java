@@ -10,12 +10,15 @@ import com.ib.client.TickAttrib;
 import com.ib.client.TickType;
 import com.ib.controller.ApiController;
 
+import java.sql.Time;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.ArrayList;
 
 public class MarketAdapter {
 
     private long referenceMS;
-    private long delayMS;
+    private final long delayMS;
 
     public MarketAdapter() {
         referenceMS = System.currentTimeMillis();
@@ -23,6 +26,10 @@ public class MarketAdapter {
         String timescale = TwsThread.strategyData.getTimescale();
         String delayString = timescale.replace(" sec","");
         delayMS = Long.parseLong(delayString)*1000;
+
+        LocalTime startTime = new Time(System.currentTimeMillis()).toLocalTime();
+        TwsThread.liveData.setStartTime(startTime);
+        TwsThread.liveData.update();
     }
 
     public void tickPrice(int tickerId, int field, double price, TickAttrib attribs) {

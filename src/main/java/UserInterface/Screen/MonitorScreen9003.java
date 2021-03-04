@@ -10,9 +10,9 @@ public class MonitorScreen9003 extends AbstractScreen implements Observer {
 
     private LiveData liveData;
 
-    private final String [] IP_texts = new String[]{"Daily P&L", "Unrealized P&L", "#Order", "#Analysis", "Compelling analysis", "Realized P&L", "Time to start", "Analysis time", "Average analysis time", "Next analysis", "Time since start", "Start time", "Start price", "Current price", "Average price"};
+    private final String [] IP_texts = new String[]{"Daily P&L", "Unrealized P&L", "#Order", "#Analysis", "Compelling analysis", "Realized P&L", "Analysis time", "Average analysis time", "Min. analysis time", "Max. analysis time", "Time since start", "Start time", "Start price", "Current price", "Var. start"};
     private String [] IP_values = new String[]{"--", "--", "--", "--", "--", "--", "--", "--", "--", "--", "--", "--", "--", "--", "--"};
-    private InfoTYPE [] IP_types = new InfoTYPE[]{InfoTYPE.NO_ICON, InfoTYPE.NO_ICON, InfoTYPE.NO_ICON, InfoTYPE.NO_ICON, InfoTYPE.NO_ICON, InfoTYPE.NO_ICON, InfoTYPE.GREEN, InfoTYPE.NO_ICON, InfoTYPE.NO_ICON, InfoTYPE.NO_ICON, InfoTYPE.GREEN, InfoTYPE.GREEN, InfoTYPE.NO_ICON, InfoTYPE.NO_ICON, InfoTYPE.NO_ICON};
+    private InfoTYPE [] IP_types = new InfoTYPE[]{InfoTYPE.NO_ICON, InfoTYPE.NO_ICON, InfoTYPE.NO_ICON, InfoTYPE.NO_ICON, InfoTYPE.NO_ICON, InfoTYPE.NO_ICON, InfoTYPE.NO_ICON, InfoTYPE.NO_ICON, InfoTYPE.NO_ICON, InfoTYPE.NO_ICON, InfoTYPE.GREEN, InfoTYPE.GREEN, InfoTYPE.NO_ICON, InfoTYPE.NO_ICON, InfoTYPE.NO_ICON};
 
     public MonitorScreen9003(LiveData liveData) {
         this.liveData = liveData;
@@ -70,16 +70,23 @@ public class MonitorScreen9003 extends AbstractScreen implements Observer {
             IP_types[5] = InfoTYPE.NEGATIVE;
         }
 
-        IP_values[6] = liveData.getTimeToStart()+"";
-        IP_values[7] = liveData.getAnalysisTime()+" ms";
-        IP_values[8] = liveData.getAverageAnalysisTime()+" ms";
-        IP_values[9] = liveData.getNextAnalysis()+" ms";
+        IP_values[6] = liveData.getAnalysisTime()+" ms";
+        IP_values[7] = liveData.getAverageAnalysisTime()+" ms";
+        IP_values[8] = liveData.getMinAnalysisTime()+" ms";
+        IP_values[9] = liveData.getMaxAnalysisTime()+" ms";
 
         IP_values[10] = liveData.getTimeSinceStart()+"";
         IP_values[11] = liveData.getStartTime()+"";
         IP_values[12] = liveData.getStartPrice()+"";
         IP_values[13] = liveData.getCurrentPrice()+"";
-        IP_values[14] = liveData.getAveragePrice()+"";
+
+        double varOpening = liveData.getVarOpening();
+        IP_values[14] = varOpening+" %";
+        if (varOpening > 0){
+            IP_types[14] = InfoTYPE.POSITIVE;
+        }if (varOpening < 0){
+            IP_types[14] = InfoTYPE.NEGATIVE;
+        }
 
         init();
     }

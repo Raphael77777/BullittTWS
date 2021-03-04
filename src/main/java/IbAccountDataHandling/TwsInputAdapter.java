@@ -505,15 +505,19 @@ public class TwsInputAdapter implements EWrapper {
         BigDecimal dPNL = new BigDecimal(Double.toString(dailyPnL));
         dPNL = dPNL.setScale(2, RoundingMode.HALF_UP);
         TwsThread.accountData.setDailyPNL(dPNL.doubleValue());
+        TwsThread.liveData.setDailyPNL(dPNL.doubleValue());
 
         BigDecimal uPNL = new BigDecimal(Double.toString(unrealizedPnL));
         uPNL = uPNL.setScale(2, RoundingMode.HALF_UP);
         TwsThread.accountData.setUnrealizedPNL(uPNL.doubleValue());
+        TwsThread.liveData.setUnrealizedPNL(uPNL.doubleValue());
 
         BigDecimal rPNL = new BigDecimal(Double.toString(realizedPnL));
         rPNL = rPNL.setScale(2, RoundingMode.HALF_UP);
         TwsThread.accountData.setRealizedPNL(rPNL.doubleValue());
+        TwsThread.liveData.setRealizedPNL(rPNL.doubleValue());
         TwsThread.accountData.update();
+        TwsThread.liveData.update();
 
         //String msg = EWrapperMsgGenerator.pnl(reqId, dailyPnL, unrealizedPnL, realizedPnL);
         //System.out.println(msg);

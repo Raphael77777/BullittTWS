@@ -32,7 +32,7 @@ public class TwsOutputAdapter {
         /* onReqPnL */
         boolean statusReqPnL = false;
         while (!statusReqPnL){
-            Thread.sleep(2000);
+            Thread.sleep(3000);
             statusReqPnL = onReqPnL();
         }
     }

@@ -159,4 +159,15 @@ public class TransactionData implements Subject, Serializable {
         notifyObservers();
         serialize();
     }
+
+    public void reset (){
+        assets.clear();
+        currencies.clear();
+        types.clear();
+        dates.clear();
+        times.clear();
+        quantities.clear();
+        fees.clear();
+        prices.clear();
+    }
 }
