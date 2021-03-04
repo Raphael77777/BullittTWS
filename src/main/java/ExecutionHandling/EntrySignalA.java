@@ -104,7 +104,7 @@ public class EntrySignalA {
                         limitPrice = -1;
                         break;
                     case "Limit":
-                        limitPrice = price*-1.02;
+                        limitPrice = price*0.98;
                         break;
                 }
 
