@@ -22,7 +22,7 @@ public class JFrameBTWS extends JFrame {
     private boolean twsStarted = false;
 
     /* DATA */
-    private TransactionData transactionData;
+    private HistoryData historyData = new HistoryData();
     private StrategyData strategyData;
     private AlphaVantageData alphaVantageData;
     private LiveData liveData = new LiveData();
@@ -31,11 +31,11 @@ public class JFrameBTWS extends JFrame {
 
     /* Screen 900X */
     private WelcomeScreen9000 welcomeScreen9000 = new WelcomeScreen9000();
-    private HomeScreen9001 homeScreen9001;
+    private HomeScreen9001 homeScreen9001 = new HomeScreen9001(historyData);
     private EngineScreen9002 engineScreen9002;
     private MonitorScreen9003 monitorScreen9003 = new MonitorScreen9003(liveData);
     private SettingsScreen9004 settingsScreen9004;
-    private TransactionsScreen9005 transactionsScreen9005;
+    private TransactionsScreen9005 transactionsScreen9005 = new TransactionsScreen9005(historyData);
     private AccountsScreen9006 accountsScreen9006 = new AccountsScreen9006(accountData);
     private PositionsScreen9007 positionsScreen9007 = new PositionsScreen9007(positionData, accountData);
 
@@ -55,13 +55,6 @@ public class JFrameBTWS extends JFrame {
         setIconImage(img.getImage());
         setVisible(true);
 
-        /* GET DATA FROM DISK */
-        /* DESERIALIZE TRANSACTION_DATA */
-        try {
-            transactionData = loadTransactions();
-        }catch (IOException e){
-            transactionData = new TransactionData();
-        }
         /* DESERIALIZE STRATEGY_DATA */
         try {
             strategyData = loadStrategy();
@@ -76,10 +69,8 @@ public class JFrameBTWS extends JFrame {
         }
 
         /* CREATE SCREEN WITH DATA */
-        homeScreen9001 = new HomeScreen9001(transactionData);
         engineScreen9002 = new EngineScreen9002(strategyData, alphaVantageData);
         settingsScreen9004 = new SettingsScreen9004(strategyData);
-        transactionsScreen9005 = new TransactionsScreen9005(transactionData);
 
         /* INIT BACKGROUND, MENU, LOGO */
         backgroundScreen = new BackgroundScreen();
@@ -317,35 +308,6 @@ public class JFrameBTWS extends JFrame {
         backgroundScreen.changeScreen(target);
     }
 
-    public TransactionData loadTransactions () throws IOException {
-        TransactionData transactionData = null;
-
-        FileInputStream in = null;
-        ObjectInputStream ois = null;
-        try {
-            String home = System.getProperty("user.home");
-            File file = new File(home+"/transactions.bullitt");
-            in = new FileInputStream(file);
-            ois = new ObjectInputStream( in );
-            transactionData = (TransactionData) ois.readObject();
-        } catch(ClassNotFoundException w) {
-            w.printStackTrace();
-        }finally {
-            try {
-                if (ois != null) {
-                    ois.close();
-                }
-                if (in != null) {
-                    in.close();
-                }
-            } catch (IOException r) {
-                r.printStackTrace();
-            }
-        }
-
-        return transactionData;
-    }
-
     public StrategyData loadStrategy () throws IOException {
         StrategyData strategyData = null;
 
@@ -434,7 +396,7 @@ public class JFrameBTWS extends JFrame {
         }
         System.out.println("> TWS HAS BEEN INIT !");
 
-        tws = new TwsThread(strategyData, transactionData, liveData, alphaVantageData, accountData, positionData);
+        tws = new TwsThread(strategyData, historyData, liveData, alphaVantageData, accountData, positionData);
         threadTWS = new Thread(tws);
         threadTWS.start();
 

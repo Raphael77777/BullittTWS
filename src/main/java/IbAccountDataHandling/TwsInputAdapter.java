@@ -91,6 +91,15 @@ public class TwsInputAdapter implements EWrapper {
     @Override
     public void orderStatus( int orderId, String status, double filled, double remaining, double avgFillPrice, int permId, int parentId, double lastFillPrice, int clientId, String whyHeld, double mktCapPrice) {
 
+        //TODO : UPDATE Transaction within history data
+        //TwsThread.historyData.getTransaction(parentId).setAvgFillPrice(avgFillPrice);
+
+        if (parentId == 0){
+            //ADD MASTER ORDER
+        }else if (parentId != 0){
+            //ADD SLAVE ORDER
+        }
+
         //TODO : FORWARD TO ORDER_DATA
         String msg = EWrapperMsgGenerator.orderStatus( orderId, status, filled, remaining, avgFillPrice, permId, parentId, lastFillPrice, clientId, whyHeld, mktCapPrice);
         System.out.println(msg);
@@ -102,6 +111,15 @@ public class TwsInputAdapter implements EWrapper {
     @Override
     public void openOrder(int orderId, Contract contract, Order order, OrderState orderState) {
 
+        //TODO : UPDATE Transaction within history data
+        //TwsThread.historyData.getTransaction(orderId).setLimitPrice(order.lmtPrice());
+
+        if (order.parentId() == 0){
+            //ADD MASTER ORDER
+        }else if (order.parentId() != 0){
+            //ADD SLAVE ORDER
+        }
+
         //TODO : FORWARD TO ORDER_DATA
         String msg = EWrapperMsgGenerator.openOrder( orderId, contract, order, orderState);
         System.out.println(msg);
@@ -110,9 +128,8 @@ public class TwsInputAdapter implements EWrapper {
     @Override
     public void openOrderEnd() {
 
-        //TODO : TO REMOVE
-        String msg = EWrapperMsgGenerator.openOrderEnd();
-        System.out.println(msg);
+        //String msg = EWrapperMsgGenerator.openOrderEnd();
+        //System.out.println(msg);
     }
 
     @Override

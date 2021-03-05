@@ -4,6 +4,7 @@ import CustomException.MarketClosedException;
 import CustomException.MissingApiKeyException;
 import CustomException.NoNetworkException;
 import CustomException.OverloadApiUseException;
+import DataHandling.TransactionDTO;
 import IbAccountDataHandling.TwsThread;
 import RiskHandling.RiskManagementSystem;
 import com.ib.client.*;
@@ -163,6 +164,8 @@ public class OrderHandlerTWS {
             for (Order o : bracketOrder) {
                 TwsThread.twsOutputAdapter.onPlaceOrder(o);
             }
+            /* ADD TRANSACTIONS TO HISTORY */
+            TwsThread.historyData.addTransactions(new TransactionDTO(bracketOrder));
             System.out.println("> The risk management system agreed a transaction.");
         } else {
             System.out.println("> The risk management system blocked a transaction.");

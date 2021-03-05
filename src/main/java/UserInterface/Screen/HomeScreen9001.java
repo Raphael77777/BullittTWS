@@ -1,16 +1,16 @@
 package UserInterface.Screen;
 
-import DataHandling.TransactionData;
+import DataHandling.HistoryData;
+import UserInterface.Component.Enum.InfoTYPE;
 import UserInterface.Component.Panel.ButtonPanel;
 import UserInterface.Component.Panel.InfoPanel;
-import UserInterface.Component.Enum.InfoTYPE;
 
 public class HomeScreen9001 extends AbstractScreen implements Observer{
 
     private InfoPanel[] infoPanels = new InfoPanel[5];
     private ButtonPanel[] buttonPanels = new ButtonPanel[5];
 
-    private TransactionData transactionData;
+    private HistoryData historyData;
 
     private final String [] BT_Header = new String[]{"1. STRATEGY", "2. START", "3. MONITOR", "4. STOP", "5. HISTORY"};
     private final String [] BT_Description = new String[]{"Modify or view the strategy", "Launching the engine with the strategy", "View live data", "Stopping the engine with the strategy", "View transaction history"};
@@ -20,9 +20,9 @@ public class HomeScreen9001 extends AbstractScreen implements Observer{
     private String [] IP_values = new String[]{"5", "4", "1", "1000 USD", "LONG"};
     private InfoTYPE [] IP_types = new InfoTYPE[]{InfoTYPE.POSITIVE, InfoTYPE.NEGATIVE, InfoTYPE.POSITIVE, InfoTYPE.NO_ICON, InfoTYPE.POSITIVE};
 
-    public HomeScreen9001(TransactionData transactionData) {
-        this.transactionData = transactionData;
-        this.transactionData.registerObserver(this);
+    public HomeScreen9001(HistoryData historyData) {
+        this.historyData = historyData;
+        this.historyData.registerObserver(this);
 
         update();
     }
@@ -52,11 +52,11 @@ public class HomeScreen9001 extends AbstractScreen implements Observer{
 
         /* CALL METHOD OF tranactionData to update IP_values and IP_types */
         /* #BUY */
-        int numberBuy = transactionData.getNumberBuy();
+        int numberBuy = historyData.getNumberBuy();
         IP_values[0] = (String.valueOf(numberBuy));
 
         /* #SELL */
-        int numberSell = transactionData.getNumberSell();
+        int numberSell = historyData.getNumberSell();
         IP_values[1] = (String.valueOf(numberSell));
 
         /* #OPEN */
@@ -71,7 +71,7 @@ public class HomeScreen9001 extends AbstractScreen implements Observer{
         IP_types[2] = (type);
 
         /* EXPOSITION */
-        double exposition = transactionData.getExposition();
+        double exposition = historyData.getExposition();
         IP_values[3] = (exposition +" USD");
 
         /* POSITION */

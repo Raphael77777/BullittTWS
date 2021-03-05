@@ -1,7 +1,9 @@
 package UserInterface.Component.Panel;
 
+import DataHandling.TransactionDTO;
 import UserInterface.Component.Enum.TransactionTYPE;
 import UserInterface.STATIC.GraphicalTheme;
+import com.ib.client.Types;
 
 import javax.swing.*;
 import java.awt.*;
@@ -13,48 +15,43 @@ import java.sql.Date;
 
 public class TransactionPanel extends JPanel {
 
+    //TODO : TO UPDATE PANEL
+
     /* Values */
-    private final String IDENTIFIER;
-    private String asset = "MSFT";
-    private String currency = "EUR";
+    private String IDENTIFIER;
+    private TransactionDTO transactionDTO;
 
-    private TransactionTYPE type = TransactionTYPE.BUY;
-    private Date date = new Date(System.currentTimeMillis());
-    private Time time = new Time(System.currentTimeMillis());
-
-    private double quantity = 1;
-    private double fees = 3.00;
-    private double price = 300.00;
-
-    public TransactionPanel(String IDENTIFIER, String asset, String currency, TransactionTYPE type, Date date, Time time, double quantity, double fees, double price) {
+    public TransactionPanel(String IDENTIFIER, TransactionDTO transactionDTO) {
 
         setBounds(0, 0, 766, 100);
         setOpaque(false);
         setLayout(null);
 
         this.IDENTIFIER = IDENTIFIER;
-        this.asset = asset;
-        this.currency = currency;
-        this.type = type;
-        this.date = date;
-        this.time = time;
-        this.quantity = quantity;
-        this.fees = fees;
-        this.price = price;
+        this.transactionDTO = transactionDTO;
 
         init();
     }
 
-    public void update (String asset, String currency, TransactionTYPE type, Date date, Time time, double quantity, double fees, double price) {
+    //TODO : TO REMOVE
+    public TransactionPanel(String IDENTIFIER, String asset, String currency, Types.Action type, Date date, Time time, double quantity, double fees, double price) {
 
-        this.asset = asset;
-        this.currency = currency;
-        this.type = type;
-        this.date = date;
-        this.time = time;
-        this.quantity = quantity;
-        this.fees = fees;
-        this.price = price;
+        setBounds(0, 0, 766, 100);
+        setOpaque(false);
+        setLayout(null);
+
+        init();
+    }
+
+    public void update (TransactionDTO transactionDTO) {
+
+        this.transactionDTO = transactionDTO;
+
+        init();
+    }
+
+    //TODO : TO REMOVE
+    public void update (String asset, String currency, Types.Action type, Date date, Time time, double quantity, double fees, double price) {
 
         init();
     }
@@ -81,31 +78,31 @@ public class TransactionPanel extends JPanel {
         int x = 20;
         int y = (int ) (h*0.47) - 30;
 
-        if (type == TransactionTYPE.BUY){
+        if (transactionDTO.getAction() == Types.Action.BUY){
             g2d.setPaint(GraphicalTheme.primary_color);
             g2d.fillPolygon(new int[] {15+x, x, 30+x}, new int[] {y, 30+y, 30+y}, 3);
-        } else if (type == TransactionTYPE.SELL){
+        } else if (transactionDTO.getAction() == Types.Action.SELL){
             g2d.setPaint(GraphicalTheme.secondary_color);
             g2d.fillPolygon(new int[] {x, 15+x, 30+x}, new int[] {y, 30+y, y}, 3);
         }
 
         g.setFont(GraphicalTheme.font_header1);
-        g.drawString(asset, 60, (int ) (h*0.47));
+        g.drawString(transactionDTO.getAsset(), 60, (int ) (h*0.47));
 
         g.setFont(GraphicalTheme.font_header2);
         g.setColor(GraphicalTheme.light_color);
-        g.drawString(type +" "+quantity+" UNIT", 20, (int ) (h*0.85));
+        g.drawString(transactionDTO.getAction() +" "+transactionDTO.getQuantity()+" UNIT", 20, (int ) (h*0.85));
 
-        int width = g.getFontMetrics().stringWidth("@"+price+" "+currency);
-        g.drawString("@ "+price+" "+currency, (w-width)/2-20, (int ) (h*0.47));
-        BigDecimal bigDecimal = new BigDecimal(Double.toString(price*quantity));
+        int width = g.getFontMetrics().stringWidth("@"+transactionDTO.getAvgFillPrice()+" "+0);
+        g.drawString("@ "+0+" "+0, (w-width)/2-20, (int ) (h*0.47));
+        BigDecimal bigDecimal = new BigDecimal(Double.toString(0*0));
         bigDecimal = bigDecimal.setScale(2, RoundingMode.HALF_UP);
-        g.drawString(bigDecimal.doubleValue()+" "+currency+" ["+fees+"]", (w-width)/2-20, (int ) (h*0.85));
+        g.drawString(bigDecimal.doubleValue()+" "+0+" ["+0+"]", (w-width)/2-20, (int ) (h*0.85));
 
-        width = g.getFontMetrics().stringWidth(date.toString());
-        g.drawString(date.toString(), w-width-20, (int ) (h*0.47));
-        width = g.getFontMetrics().stringWidth(time.toString());
-        g.drawString(time.toString(), w-width-20, (int ) (h*0.85));
+        width = g.getFontMetrics().stringWidth(transactionDTO.getDate().toString());
+        g.drawString(transactionDTO.getDate().toString(), w-width-20, (int ) (h*0.47));
+        width = g.getFontMetrics().stringWidth(transactionDTO.getTime().toString());
+        g.drawString(transactionDTO.getTime().toString(), w-width-20, (int ) (h*0.85));
 
     }
 

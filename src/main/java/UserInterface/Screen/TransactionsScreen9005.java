@@ -1,33 +1,24 @@
 package UserInterface.Screen;
 
-import DataHandling.TransactionData;
+import DataHandling.HistoryData;
+import DataHandling.TransactionDTO;
 import UserInterface.Component.Panel.TransactionPanel;
-import UserInterface.Component.Enum.TransactionTYPE;
 
 import javax.swing.*;
 import java.awt.*;
-import java.sql.Date;
-import java.sql.Time;
-import java.util.ArrayList;
+import java.util.List;
 
 public class TransactionsScreen9005 extends AbstractScreen implements Observer{
 
     private TransactionPanel[] transactionPanels;
 
-    private TransactionData transactionData;
+    private HistoryData historyData;
 
-    private ArrayList<String> assets;
-    private ArrayList<String> currencies;
-    private ArrayList<TransactionTYPE> types;
-    private ArrayList<Date> dates;
-    private ArrayList<Time> times;
-    private ArrayList<Double> quantities;
-    private ArrayList<Double> fees;
-    private ArrayList<Double> prices;
+    private List<TransactionDTO> transactionDTOS;
 
-    public TransactionsScreen9005(TransactionData transactionData) {
-        this.transactionData = transactionData;
-        this.transactionData.registerObserver(this);
+    public TransactionsScreen9005(HistoryData historyData) {
+        this.historyData = historyData;
+        this.historyData.registerObserver(this);
 
         update();
     }
@@ -37,17 +28,19 @@ public class TransactionsScreen9005 extends AbstractScreen implements Observer{
 
         removeAll();
 
-        if (assets == null || assets.size() == 0){
+        if (transactionDTOS == null || transactionDTOS.size() == 0){
             return;
         }
 
         JPanel transactions = new JPanel();
         transactions.setLayout(null);
-        transactions.setPreferredSize(new Dimension(766,assets.size()*105+5));
+        transactions.setPreferredSize(new Dimension(766,transactionDTOS.size()*105+5));
 
-        transactionPanels = new TransactionPanel[assets.size()];
+        transactionPanels = new TransactionPanel[transactionDTOS.size()];
         for (int i = 0; i< transactionPanels.length; i++){
-            TransactionPanel transactionPanel = new TransactionPanel("TR"+i, assets.get(i), currencies.get(i), types.get(i), dates.get(i), times.get(i), quantities.get(i), fees.get(i), prices.get(i));
+
+            //TODO : TO UPDATE PANEL
+            TransactionPanel transactionPanel = new TransactionPanel("TR"+i, transactionDTOS.get(i));
             transactionPanel.setBounds(16, 5+(i*105), 766, 100);
             transactions.add(transactionPanel);
         }
@@ -73,15 +66,8 @@ public class TransactionsScreen9005 extends AbstractScreen implements Observer{
     @Override
     public void update() {
 
-        /* CALL METHOD OF tranactionData to update arraylist */
-        assets = transactionData.getAssets();
-        currencies = transactionData.getCurrencies();
-        types = transactionData.getTypes();
-        dates = transactionData.getDates();
-        times = transactionData.getTimes();
-        quantities = transactionData.getQuantities();
-        fees = transactionData.getFees();
-        prices = transactionData.getPrices();
+        /* CALL METHOD OF historyDATA to update arraylist */
+        transactionDTOS = historyData.getTransactions();
 
         init();
     }

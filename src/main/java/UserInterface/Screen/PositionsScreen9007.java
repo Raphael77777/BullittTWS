@@ -2,19 +2,10 @@ package UserInterface.Screen;
 
 import DataHandling.AccountData;
 import DataHandling.PositionData;
-import DataHandling.TransactionData;
 import UserInterface.Component.Enum.InfoTYPE;
-import UserInterface.Component.Enum.TransactionTYPE;
 import UserInterface.Component.Panel.AccountPanel;
 import UserInterface.Component.Panel.InfoPanel;
 import UserInterface.Component.Panel.InfoPanelL;
-import UserInterface.Component.Panel.TransactionPanel;
-
-import javax.swing.*;
-import java.awt.*;
-import java.sql.Date;
-import java.sql.Time;
-import java.util.ArrayList;
 
 public class PositionsScreen9007 extends AbstractScreen implements Observer{
 

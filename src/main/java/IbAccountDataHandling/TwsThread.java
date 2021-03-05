@@ -11,7 +11,7 @@ import com.ib.client.Types;
 public class TwsThread implements Runnable {
 
     public static StrategyData strategyData;
-    public static TransactionData transactionData;
+    public static HistoryData historyData;
     public static LiveData liveData;
     public static AlphaVantageData alphaVantageData;
     public static AccountData accountData;
@@ -26,9 +26,9 @@ public class TwsThread implements Runnable {
     private ChronoLiveData chronoLiveData;
     private static int nextValidID = 0;
 
-    public TwsThread(StrategyData strategyData, TransactionData transactionData, LiveData liveData, AlphaVantageData alphaVantageData, AccountData accountData, PositionData positionData) {
+    public TwsThread(StrategyData strategyData, HistoryData historyData, LiveData liveData, AlphaVantageData alphaVantageData, AccountData accountData, PositionData positionData) {
         TwsThread.strategyData = strategyData;
-        TwsThread.transactionData = transactionData;
+        TwsThread.historyData = historyData;
         TwsThread.liveData = liveData;
         TwsThread.alphaVantageData = alphaVantageData;
         TwsThread.accountData = accountData;
@@ -53,7 +53,9 @@ public class TwsThread implements Runnable {
             return false;
         }
 
+        /* RESET DATA BEFORE STARTING */
         TwsThread.liveData.reset();
+        TwsThread.historyData.reset();
 
         TwsThread.marketAdapter = new MarketAdapter();
         chronoLiveData = new ChronoLiveData(TwsThread.liveData);
