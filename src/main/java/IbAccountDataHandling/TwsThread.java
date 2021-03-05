@@ -104,4 +104,8 @@ public class TwsThread implements Runnable {
         nextValidID++;
         return nextValidID;
     }
+    public static int getNextValidIDOrder() {
+        nextValidID+=3;
+        return nextValidID;
+    }
 }
