@@ -1,16 +1,9 @@
 package DataHandling;
 
-import UserInterface.Component.Enum.TransactionTYPE;
 import UserInterface.Screen.Observer;
 import com.ib.client.Types;
 
-import java.io.*;
-import java.sql.Date;
-import java.sql.Time;
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class HistoryData implements Subject {
 
@@ -57,6 +50,7 @@ public class HistoryData implements Subject {
         for (Map.Entry<Integer,TransactionDTO> entry : transactions.entrySet()){
             transactionDTOS.add(entry.getValue());
         }
+        Collections.reverse(transactionDTOS);
 
         return transactionDTOS;
     }
@@ -103,5 +97,6 @@ public class HistoryData implements Subject {
 
     public void reset (){
         transactions.clear();
+        notifyObservers();
     }
 }

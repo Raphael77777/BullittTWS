@@ -34,14 +34,12 @@ public class TransactionsScreen9005 extends AbstractScreen implements Observer{
 
         JPanel transactions = new JPanel();
         transactions.setLayout(null);
-        transactions.setPreferredSize(new Dimension(766,transactionDTOS.size()*105+5));
+        transactions.setPreferredSize(new Dimension(766,transactionDTOS.size()*368+5));
 
         transactionPanels = new TransactionPanel[transactionDTOS.size()];
         for (int i = 0; i< transactionPanels.length; i++){
-
-            //TODO : TO UPDATE PANEL
             TransactionPanel transactionPanel = new TransactionPanel("TR"+i, transactionDTOS.get(i));
-            transactionPanel.setBounds(16, 5+(i*105), 766, 100);
+            transactionPanel.setBounds(16, 5+(i*368), 769, 363);
             transactions.add(transactionPanel);
         }
 

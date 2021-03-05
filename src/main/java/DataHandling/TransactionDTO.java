@@ -39,7 +39,7 @@ public class TransactionDTO {
         /* Get parent order */
         Order parentOrder = bracketOrder.get(0);
 
-        orderId = parentOrder.orderId();
+        orderId = parentOrder.orderId()+1;
         action = parentOrder.action();
         asset = TwsThread.strategyData.getAsset();
         quantity = parentOrder.totalQuantity();
