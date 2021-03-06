@@ -116,7 +116,7 @@ public class TransactionPanel extends JPanel {
         g.drawString("@ "+transactionDTO.getLimitPrice(), (w-widthM)/2, (int ) (h*0.26));
         g.drawString("AVG: "+transactionDTO.getAvgFillPrice(), (w-widthM)/2, (int ) (h*0.36));
         g.drawString(transactionDTO.getAction() +" "+quantity+"K UNIT", 20, (int ) (h*0.26));
-        g.drawString(transactionDTO.getStatus()+"STATUS", 20, (int ) (h*0.36));
+        g.drawString(transactionDTO.getStatus(), 20, (int ) (h*0.36));
 
         width = g.getFontMetrics().stringWidth(transactionDTO.getDate().toString());
         g.drawString(transactionDTO.getDate().toString(), w-width-20, (int ) (h*0.26));
@@ -134,8 +134,9 @@ public class TransactionPanel extends JPanel {
         g.drawString(transactionDTO.getType_tp().toString(), (w-widthM)/2, 205);
 
         g.setFont(GraphicalTheme.font_header2);
-        g.drawString("@ "+transactionDTO.getTakeProfitLimitPrice(), (w-widthM)/2, 240);
-        g.drawString(transactionDTO.getStatus_tp()+"STATUS", 160, 205);
+        g.drawString("AVG: "+transactionDTO.getAvgFillPrice_tp(), (w-widthM)/2, 240);
+        g.drawString("@ "+transactionDTO.getTakeProfitLimitPrice(), (w-widthM)/2+65, 205);
+        g.drawString(transactionDTO.getStatus_tp(), 160, 205);
         Types.Action action = ((transactionDTO.getAction() == Types.Action.BUY) ? Types.Action.SELL : Types.Action.BUY);
         g.drawString(action +" "+quantity+"K UNIT", 70, 240);
 
@@ -150,8 +151,9 @@ public class TransactionPanel extends JPanel {
         g.drawString(transactionDTO.getType_sl().toString(), (w-widthM)/2, 310);
 
         g.setFont(GraphicalTheme.font_header2);
-        g.drawString("@ "+transactionDTO.getStopLossPrice(), (w-widthM)/2, 345);
-        g.drawString(transactionDTO.getStatus_sl()+"STATUS", 160, 310);
+        g.drawString("AVG: "+transactionDTO.getAvgFillPrice_sl(), (w-widthM)/2, 345);
+        g.drawString("@ "+transactionDTO.getStopLossPrice(), (w-widthM)/2+65, 310);
+        g.drawString(transactionDTO.getStatus_sl(), 160, 310);
         g.drawString(action +" "+quantity+"K UNIT", 70, 345);
 
     }

@@ -35,6 +35,19 @@ public class MarketAdapter {
     public void tickPrice(int tickerId, int field, double price, TickAttrib attribs) {
 
         /* Launch signal according to timescale using strategy_data */
+
+        try {
+            new EntrySignalA(1); //Check for signal
+        } catch (MissingApiKeyException e) {
+            e.printStackTrace();
+        } catch (NoNetworkException e) {
+            e.printStackTrace();
+        } catch (OverloadApiUseException e) {
+            e.printStackTrace();
+        } catch (MarketClosedException e) {
+            e.printStackTrace();
+        }
+
         long currentMS = System.currentTimeMillis();
         if ((currentMS - referenceMS) >= delayMS){
             referenceMS = currentMS;

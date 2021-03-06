@@ -91,36 +91,46 @@ public class TwsInputAdapter implements EWrapper {
     @Override
     public void orderStatus( int orderId, String status, double filled, double remaining, double avgFillPrice, int permId, int parentId, double lastFillPrice, int clientId, String whyHeld, double mktCapPrice) {
 
-        //TODO : UPDATE Transaction within history data
-        //TwsThread.historyData.getTransaction(parentId).setAvgFillPrice(avgFillPrice);
-
-        if (parentId == 0){
-            //ADD MASTER ORDER
+        /* UPDATE Transaction within history data */
+        if (parentId == 0){ //parent
+            TwsThread.historyData.getTransaction(orderId).setStatus(status);
+            TwsThread.historyData.getTransaction(orderId).setAvgFillPrice(avgFillPrice);
+            TwsThread.historyData.update();
         }else if (parentId != 0){
-            //ADD SLAVE ORDER
+            if (TwsThread.historyData.getTransaction(parentId).getOrderId_tp() == orderId){ //tp
+                TwsThread.historyData.getTransaction(parentId).setStatus_tp(status);
+                TwsThread.historyData.getTransaction(parentId).setAvgFillPrice_tp(avgFillPrice);
+                TwsThread.historyData.update();
+            } else if (TwsThread.historyData.getTransaction(parentId).getOrderId_sl() == orderId){ //sl
+                TwsThread.historyData.getTransaction(parentId).setStatus_sl(status);
+                TwsThread.historyData.getTransaction(parentId).setAvgFillPrice_sl(avgFillPrice);
+                TwsThread.historyData.update();
+            }
         }
 
-        //TODO : FORWARD TO ORDER_DATA
+        //TODO : TO CONTROL ON LIVE
         String msg = EWrapperMsgGenerator.orderStatus( orderId, status, filled, remaining, avgFillPrice, permId, parentId, lastFillPrice, clientId, whyHeld, mktCapPrice);
         System.out.println(msg);
-
-        //TODO : SAVE THIS VALUE IN IB_CONNECTOR
-        //( orderId + 1)
     }
 
     @Override
     public void openOrder(int orderId, Contract contract, Order order, OrderState orderState) {
 
-        //TODO : UPDATE Transaction within history data
-        //TwsThread.historyData.getTransaction(orderId).setLimitPrice(order.lmtPrice());
-
-        if (order.parentId() == 0){
-            //ADD MASTER ORDER
+        /* UPDATE Transaction within history data */
+        if (order.parentId() == 0){ //parent
+            TwsThread.historyData.getTransaction(order.orderId()).setStatus(orderState.getStatus());
+            TwsThread.historyData.update();
         }else if (order.parentId() != 0){
-            //ADD SLAVE ORDER
+            if (order.orderType() == OrderType.LMT){ //tp
+                TwsThread.historyData.getTransaction(order.parentId()).setStatus_tp(orderState.getStatus());
+                TwsThread.historyData.update();
+            } else if (order.orderType() == OrderType.STP){ //sl
+                TwsThread.historyData.getTransaction(order.parentId()).setStatus_sl(orderState.getStatus());
+                TwsThread.historyData.update();
+            }
         }
 
-        //TODO : FORWARD TO ORDER_DATA
+        //TODO : TO CONTROL ON LIVE
         String msg = EWrapperMsgGenerator.openOrder( orderId, contract, order, orderState);
         System.out.println(msg);
     }

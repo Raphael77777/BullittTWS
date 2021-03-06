@@ -19,7 +19,7 @@ public class ChronoLiveData implements Runnable {
 
         while (!exit){
             liveData.setTimeSinceStart(new Time(System.currentTimeMillis()- startMs -(7200*1000)).toLocalTime());
-            liveData.notifyObservers();
+            liveData.update();
 
             try {
                 Thread.sleep(1000);

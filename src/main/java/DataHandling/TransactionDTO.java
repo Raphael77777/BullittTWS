@@ -28,12 +28,14 @@ public class TransactionDTO {
     private OrderType type_tp;
     private double takeProfitLimitPrice;
     private String status_tp;
+    private double avgFillPrice_tp;
 
     /* STOP LOSS ORDER */
     private int orderId_sl;
     private OrderType type_sl;
     private double stopLossPrice;
     private String status_sl;
+    private double avgFillPrice_sl;
 
     public TransactionDTO (List<Order> bracketOrder){
         /* Get parent order */
@@ -56,6 +58,7 @@ public class TransactionDTO {
         type_tp = takeProfitOrder.orderType();
         takeProfitLimitPrice = takeProfitOrder.lmtPrice();
         status_tp = "";
+        avgFillPrice_tp = 0;
 
         /* Get stop loss order */
         Order stopLossOrder = bracketOrder.get(2);
@@ -63,6 +66,7 @@ public class TransactionDTO {
         type_sl = stopLossOrder.orderType();
         stopLossPrice = stopLossOrder.auxPrice();
         status_sl = "";
+        avgFillPrice_sl = 0;
     }
 
     public int getOrderId() {
@@ -207,5 +211,21 @@ public class TransactionDTO {
 
     public void setStatus_sl(String status_sl) {
         this.status_sl = status_sl;
+    }
+
+    public double getAvgFillPrice_tp() {
+        return avgFillPrice_tp;
+    }
+
+    public void setAvgFillPrice_tp(double avgFillPrice_tp) {
+        this.avgFillPrice_tp = avgFillPrice_tp;
+    }
+
+    public double getAvgFillPrice_sl() {
+        return avgFillPrice_sl;
+    }
+
+    public void setAvgFillPrice_sl(double avgFillPrice_sl) {
+        this.avgFillPrice_sl = avgFillPrice_sl;
     }
 }

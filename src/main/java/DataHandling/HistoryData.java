@@ -95,6 +95,10 @@ public class HistoryData implements Subject {
         notifyObservers();
     }
 
+    public void update (){
+        notifyObservers();
+    }
+
     public void reset (){
         transactions.clear();
         notifyObservers();
