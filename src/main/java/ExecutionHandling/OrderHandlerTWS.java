@@ -67,7 +67,7 @@ public class OrderHandlerTWS {
     }
 
     /* Create buy order */
-    public void placeBuyOrder(double price) throws MissingApiKeyException, NoNetworkException, OverloadApiUseException, MarketClosedException {
+    public void placeBuyOrder(double price) {
 
         /* Adapt quantity to multiplier using strategy_data */
         int multiplier = TwsThread.strategyData.getMultiplier();
@@ -94,8 +94,7 @@ public class OrderHandlerTWS {
         double stopLossPrice = price * (1.0-(stopLoss/100.0));
 
         /* Adapt stop loss to SMA_5 => stopLossPrice > SMA(5) */
-        String asset = TwsThread.strategyData.getAsset().replace(".", "");
-        double SMA_5 = TwsThread.adapterSMA.get(asset, "1min", "5", "open");
+        double SMA_5 = TwsThread.SMA_5;
         if (stopLossPrice > SMA_5){
             stopLossPrice = SMA_5;
         }
@@ -113,7 +112,7 @@ public class OrderHandlerTWS {
     }
 
     /* Create sell order */
-    public void placeSellOrder(double price) throws MissingApiKeyException, NoNetworkException, OverloadApiUseException, MarketClosedException {
+    public void placeSellOrder(double price){
 
         /* Adapt quantity to multiplier using strategy_data */
         int multiplier = TwsThread.strategyData.getMultiplier();
@@ -140,8 +139,7 @@ public class OrderHandlerTWS {
         double stopLossPrice = price * (1.0+(stopLoss/100.0));
 
         /* Adapt stop loss to SMA_5 => stopLossPrice < SMA(5) */
-        String asset = TwsThread.strategyData.getAsset().replace(".", "");
-        double SMA_5 = TwsThread.adapterSMA.get(asset, "1min", "5", "open");
+        double SMA_5 = TwsThread.SMA_5;
         if (stopLossPrice < SMA_5){
             stopLossPrice = SMA_5;
         }
