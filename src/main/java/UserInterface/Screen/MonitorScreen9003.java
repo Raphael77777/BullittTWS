@@ -6,13 +6,13 @@ import UserInterface.Component.Panel.InfoPanel;
 
 public class MonitorScreen9003 extends AbstractScreen implements Observer {
 
-    private InfoPanel [] infoPanels = new InfoPanel[15];
+    private final InfoPanel [] infoPanels = new InfoPanel[15];
 
-    private LiveData liveData;
+    private final LiveData liveData;
 
     private final String [] IP_texts = new String[]{"Daily P&L", "Unrealized P&L", "#Order", "#Analysis", "Compelling analysis", "Realized P&L", "Analysis time", "Average analysis time", "Min. analysis time", "Max. analysis time", "Time since start", "Start time", "Start price", "Current price", "Var. start"};
-    private String [] IP_values = new String[]{"--", "--", "--", "--", "--", "--", "--", "--", "--", "--", "--", "--", "--", "--", "--"};
-    private EnumType[] IP_types = new EnumType[]{EnumType.NO_ICON, EnumType.NO_ICON, EnumType.NO_ICON, EnumType.NO_ICON, EnumType.NO_ICON, EnumType.NO_ICON, EnumType.NO_ICON, EnumType.NO_ICON, EnumType.NO_ICON, EnumType.NO_ICON, EnumType.GREEN, EnumType.GREEN, EnumType.NO_ICON, EnumType.NO_ICON, EnumType.NO_ICON};
+    private final String [] IP_values = new String[]{"--", "--", "--", "--", "--", "--", "--", "--", "--", "--", "--", "--", "--", "--", "--"};
+    private final EnumType[] IP_types = new EnumType[]{EnumType.NO_ICON, EnumType.NO_ICON, EnumType.NO_ICON, EnumType.NO_ICON, EnumType.NO_ICON, EnumType.NO_ICON, EnumType.NO_ICON, EnumType.NO_ICON, EnumType.NO_ICON, EnumType.NO_ICON, EnumType.GREEN, EnumType.GREEN, EnumType.NO_ICON, EnumType.NO_ICON, EnumType.NO_ICON};
 
     public MonitorScreen9003(LiveData liveData) {
         this.liveData = liveData;

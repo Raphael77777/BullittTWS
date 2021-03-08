@@ -16,18 +16,18 @@ import java.awt.event.MouseListener;
 
 public class EngineScreen9002 extends AbstractScreen implements Observer {
 
-    private InfoPanel[] infoPanels = new InfoPanel[9];
-    private ButtonPanel[] buttonPanels = new ButtonPanel[2];
+    private final InfoPanel[] infoPanels = new InfoPanel[9];
+    private final ButtonPanel[] buttonPanels = new ButtonPanel[2];
 
-    private StrategyData strategyData;
-    private AlphaVantageData alphaVantageData;
+    private final StrategyData strategyData;
+    private final AlphaVantageData alphaVantageData;
     private final MouseListener mouseListener = new startAndStop();
     private String state = "stop";
     private boolean apiKeyAvailable = false;
 
     private final String [] IP_texts = new String[]{"Asset", "Strategy", "Accuracy", "Timescale", "Exposure", "Order", "Take profit", "Stop loss", "APIs key"};
-    private String [] IP_values = new String[]{"JPY/USD", "RSI(2)", "0.7", "60 sec", "90%", "Limit", "7.5%", "5%", "Inactive"};
-    private EnumType[] IP_types = new EnumType[]{EnumType.NO_ICON, EnumType.NO_ICON, EnumType.NEUTRAL, EnumType.NEUTRAL, EnumType.NEUTRAL, EnumType.NEUTRAL, EnumType.POSITIVE, EnumType.NEGATIVE, EnumType.NO_ICON };
+    private final String [] IP_values = new String[]{"JPY/USD", "RSI(2)", "0.7", "60 sec", "90%", "Limit", "7.5%", "5%", "Inactive"};
+    private final EnumType[] IP_types = new EnumType[]{EnumType.NO_ICON, EnumType.NO_ICON, EnumType.NEUTRAL, EnumType.NEUTRAL, EnumType.NEUTRAL, EnumType.NEUTRAL, EnumType.POSITIVE, EnumType.NEGATIVE, EnumType.NO_ICON };
 
     private final String [] BT_Header = new String[]{"1. STRATEGY", "2. MONITOR"};
     private final String [] BT_Description = new String[]{"Modify or view the strategy", "View live data"};

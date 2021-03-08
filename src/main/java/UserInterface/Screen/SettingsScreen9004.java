@@ -2,22 +2,22 @@ package UserInterface.Screen;
 
 import DataHandling.StrategyData;
 import UserInterface.Component.Enum.EnumType;
-import UserInterface.Component.Input.*;
+import UserInterface.Component.Input.InputCombo;
+import UserInterface.Component.Input.InputDouble;
+import UserInterface.Component.Input.InputDoubleL;
+import UserInterface.Component.Input.InputInteger;
 import UserInterface.Component.Panel.ButtonPanel;
 import UserInterface.Component.Panel.InfoPanel;
 
-import javax.swing.*;
-
 public class SettingsScreen9004 extends AbstractScreen implements Observer {
 
-    private StrategyData strategyData;
+    private final StrategyData strategyData;
 
-    private JPanel[] inputs = new JPanel[7];
     private final String[] IN_Description = new String[]{"Asset", "Accuracy", "Timescale", "Multiplier", "% Take Profit", "% Stop Loss", "Order"};
 
-    private String [] IN_DropV0 = new String[]{"AUD.CAD", "AUD.CHF", "AUD.CNH", "AUD.HKD", "AUD.JPY", "AUD.NZD", "AUD.SGD", "AUD.USD", "AUD.ZAR", "CAD.CHF", "CAD.CNH", "CAD.JPY", "CHF.CNH", "CHF.CZK", "CHF.DKK", "CHF.HUF", "CHF.JPY", "CHF.NOK", "CHF.PLN", "CHF.SEK", "CHF.TRY", "CHF.ZAR", "CNH.HKD", "CNH.JPY", "DKK.JPY", "DKK.NOK", "DKK.SEK", "EUR.AUD", "EUR.CAD", "EUR.CHF", "EUR.CNH", "EUR.CZK", "EUR.DKK", "EUR.GBP", "EUR.HKD", "EUR.HUF", "EUR.ILS", "EUR.JPY", "EUR.MXN", "EUR.NOK", "EUR.NZD", "EUR.PLN", "EUR.RUB", "EUR.SEK", "EUR.SGD", "EUR.TRY", "EUR.USD", "EUR.ZAR", "GBP.AUD", "GBP.CAD", "GBP.CHF", "GBP.CNH", "GBP.CZK", "GBP.DKK", "GBP.HKD", "GBP.HUF", "GBP.JPY", "GBP.MXN", "GBP.NOK", "GBP.NZD", "GBP.PLN", "GBP.SEK", "GBP.SGD", "GBP.TRY", "GBP.USD", "GBP.ZAR", "HKD.JPY", "KRW.AUD", "KRW.CAD", "KRW.CHF", "KRW.EUR", "KRW.GBP", "KRW.HKD", "KRW.JPY", "KRW.USD", "MXN.JPY", "NOK.JPY", "NOK.SEK", "NZD.CAD", "NZD.CHF", "NZD.JPY", "NZD.USD", "SEK.JPY", "SGD.CNH", "SGD.HKD", "SGD.JPY", "USD.CAD", "USD.CHF", "USD.CNH", "USD.CZK", "USD.DKK", "USD.HKD", "USD.HUF", "USD.ILS", "USD.JPY", "USD.KRW", "USD.MXN", "USD.NOK", "USD.PLN", "USD.RUB", "USD.SEK", "USD.SGD", "USD.TRY", "USD.ZAR", "ZAR.JPY"};
-    private String [] IN_DropV2 = new String[]{"10 sec", "20 sec", "40 sec", "50 sec", "60 sec", "70 sec", "80 sec", "90 sec"};
-    private String [] IN_DropV6 = new String[]{"Market", "Limit"};
+    private final String [] IN_DropV0 = new String[]{"AUD.CAD", "AUD.CHF", "AUD.CNH", "AUD.HKD", "AUD.JPY", "AUD.NZD", "AUD.SGD", "AUD.USD", "AUD.ZAR", "CAD.CHF", "CAD.CNH", "CAD.JPY", "CHF.CNH", "CHF.CZK", "CHF.DKK", "CHF.HUF", "CHF.JPY", "CHF.NOK", "CHF.PLN", "CHF.SEK", "CHF.TRY", "CHF.ZAR", "CNH.HKD", "CNH.JPY", "DKK.JPY", "DKK.NOK", "DKK.SEK", "EUR.AUD", "EUR.CAD", "EUR.CHF", "EUR.CNH", "EUR.CZK", "EUR.DKK", "EUR.GBP", "EUR.HKD", "EUR.HUF", "EUR.ILS", "EUR.JPY", "EUR.MXN", "EUR.NOK", "EUR.NZD", "EUR.PLN", "EUR.RUB", "EUR.SEK", "EUR.SGD", "EUR.TRY", "EUR.USD", "EUR.ZAR", "GBP.AUD", "GBP.CAD", "GBP.CHF", "GBP.CNH", "GBP.CZK", "GBP.DKK", "GBP.HKD", "GBP.HUF", "GBP.JPY", "GBP.MXN", "GBP.NOK", "GBP.NZD", "GBP.PLN", "GBP.SEK", "GBP.SGD", "GBP.TRY", "GBP.USD", "GBP.ZAR", "HKD.JPY", "KRW.AUD", "KRW.CAD", "KRW.CHF", "KRW.EUR", "KRW.GBP", "KRW.HKD", "KRW.JPY", "KRW.USD", "MXN.JPY", "NOK.JPY", "NOK.SEK", "NZD.CAD", "NZD.CHF", "NZD.JPY", "NZD.USD", "SEK.JPY", "SGD.CNH", "SGD.HKD", "SGD.JPY", "USD.CAD", "USD.CHF", "USD.CNH", "USD.CZK", "USD.DKK", "USD.HKD", "USD.HUF", "USD.ILS", "USD.JPY", "USD.KRW", "USD.MXN", "USD.NOK", "USD.PLN", "USD.RUB", "USD.SEK", "USD.SGD", "USD.TRY", "USD.ZAR", "ZAR.JPY"};
+    private final String [] IN_DropV2 = new String[]{"10 sec", "20 sec", "40 sec", "50 sec", "60 sec", "70 sec", "80 sec", "90 sec"};
+    private final String [] IN_DropV6 = new String[]{"Market", "Limit"};
 
     private InputCombo asset;
     private InputCombo order;

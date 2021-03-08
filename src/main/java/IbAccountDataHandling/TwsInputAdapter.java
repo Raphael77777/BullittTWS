@@ -112,9 +112,8 @@ public class TwsInputAdapter implements EWrapper {
             // OTHER TRANSACTIONS NOT PASSED BY THE SYSTEM
         }
 
-        //TODO : TO CONTROL ON LIVE
-        String msg = EWrapperMsgGenerator.orderStatus( orderId, status, filled, remaining, avgFillPrice, permId, parentId, lastFillPrice, clientId, whyHeld, mktCapPrice);
-        System.out.println(msg);
+        //String msg = EWrapperMsgGenerator.orderStatus( orderId, status, filled, remaining, avgFillPrice, permId, parentId, lastFillPrice, clientId, whyHeld, mktCapPrice);
+        //System.out.println(msg);
     }
 
     @Override
@@ -138,9 +137,8 @@ public class TwsInputAdapter implements EWrapper {
             // OTHER TRANSACTIONS NOT PASSED BY THE SYSTEM
         }
 
-        //TODO : TO CONTROL ON LIVE
-        String msg = EWrapperMsgGenerator.openOrder( orderId, contract, order, orderState);
-        System.out.println(msg);
+        //String msg = EWrapperMsgGenerator.openOrder( orderId, contract, order, orderState);
+        //System.out.println(msg);
     }
 
     @Override

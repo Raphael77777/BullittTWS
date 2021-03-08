@@ -13,31 +13,29 @@ import java.io.ObjectInputStream;
 
 public class JFrameBTWS extends JFrame {
 
-    private static JFrameBTWS jFrameBTWS = new JFrameBTWS();
+    private static final JFrameBTWS jFrameBTWS = new JFrameBTWS();
     private static BackgroundScreen backgroundScreen;
 
-    /* THREAD TWS */
-    private Thread threadTWS;
     private boolean twsInit = false;
     private boolean twsStarted = false;
 
     /* DATA */
-    private HistoryData historyData = new HistoryData();
+    private final HistoryData historyData = new HistoryData();
     private StrategyData strategyData;
     private AlphaVantageData alphaVantageData;
-    private LiveData liveData = new LiveData();
-    private AccountData accountData = new AccountData();
+    private final LiveData liveData = new LiveData();
+    private final AccountData accountData = new AccountData();
     public PositionData positionData = new PositionData();
 
     /* Screen 900X */
-    private WelcomeScreen9000 welcomeScreen9000 = new WelcomeScreen9000();
-    private HomeScreen9001 homeScreen9001 = new HomeScreen9001(historyData);
-    private EngineScreen9002 engineScreen9002;
-    private MonitorScreen9003 monitorScreen9003 = new MonitorScreen9003(liveData);
-    private SettingsScreen9004 settingsScreen9004;
-    private TransactionsScreen9005 transactionsScreen9005 = new TransactionsScreen9005(historyData);
-    private AccountsScreen9006 accountsScreen9006 = new AccountsScreen9006(accountData);
-    private PositionsScreen9007 positionsScreen9007 = new PositionsScreen9007(positionData, accountData);
+    private final WelcomeScreen9000 welcomeScreen9000 = new WelcomeScreen9000();
+    private final HomeScreen9001 homeScreen9001 = new HomeScreen9001(historyData);
+    private final EngineScreen9002 engineScreen9002;
+    private final MonitorScreen9003 monitorScreen9003 = new MonitorScreen9003(liveData);
+    private final SettingsScreen9004 settingsScreen9004;
+    private final TransactionsScreen9005 transactionsScreen9005 = new TransactionsScreen9005(historyData);
+    private final AccountsScreen9006 accountsScreen9006 = new AccountsScreen9006(accountData);
+    private final PositionsScreen9007 positionsScreen9007 = new PositionsScreen9007(positionData, accountData);
 
     /* TWS THREAD */
     private TwsThread tws;
@@ -397,7 +395,8 @@ public class JFrameBTWS extends JFrame {
         System.out.println("> TWS HAS BEEN INIT !");
 
         tws = new TwsThread(strategyData, historyData, liveData, alphaVantageData, accountData, positionData);
-        threadTWS = new Thread(tws);
+        /* THREAD TWS */
+        Thread threadTWS = new Thread(tws);
         threadTWS.start();
 
         twsInit = true;

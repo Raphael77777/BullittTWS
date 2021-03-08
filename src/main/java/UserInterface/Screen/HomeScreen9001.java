@@ -7,18 +7,18 @@ import UserInterface.Component.Panel.InfoPanel;
 
 public class HomeScreen9001 extends AbstractScreen implements Observer{
 
-    private InfoPanel[] infoPanels = new InfoPanel[5];
-    private ButtonPanel[] buttonPanels = new ButtonPanel[5];
+    private final InfoPanel[] infoPanels = new InfoPanel[5];
+    private final ButtonPanel[] buttonPanels = new ButtonPanel[5];
 
-    private HistoryData historyData;
+    private final HistoryData historyData;
 
     private final String [] BT_Header = new String[]{"1. STRATEGY", "2. START", "3. MONITOR", "4. STOP", "5. HISTORY"};
     private final String [] BT_Description = new String[]{"Modify or view the strategy", "Launching the engine with the strategy", "View live data", "Stopping the engine with the strategy", "View transaction history"};
     private final String [] BT_Target = new String[]{"SETTINGS", "ENGINE", "MONITOR", "ENGINE", "HISTORY"};
 
     private final String [] IP_texts = new String[]{"#BUY", "#SELL", "DELTA", "Exposition", "Position"};
-    private String [] IP_values = new String[]{"5", "4", "1", "1000 USD", "LONG"};
-    private EnumType[] IP_types = new EnumType[]{EnumType.POSITIVE, EnumType.NEGATIVE, EnumType.POSITIVE, EnumType.NO_ICON, EnumType.POSITIVE};
+    private final String [] IP_values = new String[]{"5", "4", "1", "1000 USD", "LONG"};
+    private final EnumType[] IP_types = new EnumType[]{EnumType.POSITIVE, EnumType.NEGATIVE, EnumType.POSITIVE, EnumType.NO_ICON, EnumType.POSITIVE};
 
     public HomeScreen9001(HistoryData historyData) {
         this.historyData = historyData;
@@ -50,7 +50,7 @@ public class HomeScreen9001 extends AbstractScreen implements Observer{
     @Override
     public void update() {
 
-        /* CALL METHOD OF tranactionData to update IP_values and IP_types */
+        /* CALL METHOD OF transactionData to update IP_values and IP_types */
         /* #BUY */
         int numberBuy = historyData.getNumberBuy();
         IP_values[0] = (String.valueOf(numberBuy));

@@ -9,19 +9,18 @@ import UserInterface.Component.Panel.InfoPanelL;
 
 public class PositionsScreen9007 extends AbstractScreen implements Observer{
 
-    private AccountPanel accountPanel;
-    private InfoPanel[] infoPanels = new InfoPanel[4];
-    private InfoPanelL[] infoPanelLS = new InfoPanelL[4];
+    private final InfoPanel[] infoPanels = new InfoPanel[4];
+    private final InfoPanelL[] infoPanelLS = new InfoPanelL[4];
 
-    private PositionData positionData;
-    private AccountData accountData;
+    private final PositionData positionData;
+    private final AccountData accountData;
 
     private String accountId = "DU985632";
     private String currency = "USD";
 
     private final String [] IP_texts = new String[]{"Position", "Average Cost", "Value", "Type", "Symbol", "Daily P&L", "Unrealized P&L", "Realized P&L"};
-    private String [] IP_values = new String[]{"--", "--", "--", "--", "--", "--", "--", "--"};
-    private EnumType[] IP_types = new EnumType[]{EnumType.NO_ICON, EnumType.NO_ICON, EnumType.NO_ICON, EnumType.NO_ICON, EnumType.NO_ICON, EnumType.NO_ICON, EnumType.NO_ICON, EnumType.NO_ICON};
+    private final String [] IP_values = new String[]{"--", "--", "--", "--", "--", "--", "--", "--"};
+    private final EnumType[] IP_types = new EnumType[]{EnumType.NO_ICON, EnumType.NO_ICON, EnumType.NO_ICON, EnumType.NO_ICON, EnumType.NO_ICON, EnumType.NO_ICON, EnumType.NO_ICON, EnumType.NO_ICON};
 
 
     public PositionsScreen9007(PositionData positionData, AccountData accountData) {
@@ -39,7 +38,7 @@ public class PositionsScreen9007 extends AbstractScreen implements Observer{
 
         removeAll();
 
-        accountPanel = new AccountPanel(accountId, currency);
+        AccountPanel accountPanel = new AccountPanel(accountId, currency);
         accountPanel.setBounds(20, 20, 786, 110);
         add(accountPanel);
 

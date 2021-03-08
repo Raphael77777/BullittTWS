@@ -10,9 +10,7 @@ import java.util.List;
 
 public class TransactionsScreen9005 extends AbstractScreen implements Observer{
 
-    private TransactionPanel[] transactionPanels;
-
-    private HistoryData historyData;
+    private final HistoryData historyData;
 
     private List<TransactionDTO> transactionDTOS;
 
@@ -36,7 +34,7 @@ public class TransactionsScreen9005 extends AbstractScreen implements Observer{
         transactions.setLayout(null);
         transactions.setPreferredSize(new Dimension(766,transactionDTOS.size()*368+5));
 
-        transactionPanels = new TransactionPanel[transactionDTOS.size()];
+        TransactionPanel[] transactionPanels = new TransactionPanel[transactionDTOS.size()];
         for (int i = 0; i< transactionPanels.length; i++){
             TransactionPanel transactionPanel = new TransactionPanel(transactionDTOS.get(i));
             transactionPanel.setBounds(16, 5+(i*368), 769, 363);

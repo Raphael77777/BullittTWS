@@ -15,16 +15,10 @@ import java.io.IOException;
 
 public class BackgroundScreen extends JPanel {
 
-    private JButton [] jButtons = new JButton[7];
-    private final String[] label = new String[]{"HOME", "ENGINE", "MONITOR", "SETTINGS", "HISTORY", "ACCOUNTS", "POSITIONS"};
+    private final JButton [] jButtons = new JButton[7];
 
-    private minimizeAction minimizeAction = new minimizeAction();
-    private closeAction closeAction = new closeAction();
-    private welcomeAction welcomeAction = new welcomeAction();
-    private emergencyAction emergencyAction = new emergencyAction();
-
-    private ImageLabel logoImg ;
-    private ImageLabel emergency ;
+    private final ImageLabel logoImg ;
+    private final ImageLabel emergency ;
 
     public void paintComponent(Graphics g) {
         try {
@@ -48,6 +42,7 @@ public class BackgroundScreen extends JPanel {
 
         removeAll();
 
+        String[] label = new String[]{"HOME", "ENGINE", "MONITOR", "SETTINGS", "HISTORY", "ACCOUNTS", "POSITIONS"};
         for (int i = 0; i< label.length; i++){
             jButtons[i] = new JButton(label[i]);
             jButtons[i].setBackground(GraphicalTheme.primary_color);
@@ -61,20 +56,24 @@ public class BackgroundScreen extends JPanel {
 
         ImageLabel minimizeImg = new ImageLabel("minimize.png");
         minimizeImg.setBounds(1015,0, 50,50);
+        BackgroundScreen.minimizeAction minimizeAction = new minimizeAction();
         minimizeImg.addMouseListener(minimizeAction);
         add(minimizeImg);
 
         ImageLabel closeImg = new ImageLabel("close.png");
         closeImg.setBounds(1050,0, 50,50);
+        BackgroundScreen.closeAction closeAction = new closeAction();
         closeImg.addMouseListener(closeAction);
         add(closeImg);
 
         logoImg = new ImageLabel("TITLE-1750.png");
         logoImg.setBounds(16, 20, 240, 69);
+        BackgroundScreen.welcomeAction welcomeAction = new welcomeAction();
         logoImg.addMouseListener(welcomeAction);
         add(logoImg);
 
         emergency = new ImageLabel("emergency.png");
+        BackgroundScreen.emergencyAction emergencyAction = new emergencyAction();
         emergency.addMouseListener(emergencyAction);
 
         repaint();
@@ -102,14 +101,14 @@ public class BackgroundScreen extends JPanel {
         repaint();
     }
 
-    private class closeAction extends MouseAdapter {
+    private static class closeAction extends MouseAdapter {
         @Override
         public void mouseClicked(MouseEvent e) {
             JFrameBTWS.getInstance().setVisible(false);
             System.exit(0);
         }
     }
-    private class minimizeAction extends MouseAdapter {
+    private static class minimizeAction extends MouseAdapter {
         @Override
         public void mouseClicked(MouseEvent e) {
             JFrameBTWS.getInstance().setState(Frame.ICONIFIED);
