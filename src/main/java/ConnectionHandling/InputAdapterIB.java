@@ -22,9 +22,7 @@ public class InputAdapterIB implements EWrapper {
 
         m_client.eConnect( "127.0.0.1",7497, 2);
         if (m_client.isConnected()) {
-            String msg = "Connected to Tws server version " +
-                    m_client.serverVersion() + " at " +
-                    m_client.getTwsConnectionTime();
+            String msg = "> Connected to Tws server version " + m_client.serverVersion() + " at " + m_client.getTwsConnectionTime();
             System.out.println(msg);
         }
 
