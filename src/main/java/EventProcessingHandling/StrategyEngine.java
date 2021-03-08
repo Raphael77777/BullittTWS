@@ -23,7 +23,7 @@ public class StrategyEngine {
 
             long startMs = System.currentTimeMillis();
 
-            TwsIB.liveData.setSumAnalysis(TwsIB.liveData.getSumAnalysis()+1);
+            TwsIB.liveData.incrementAnalysis();
             TwsIB.liveData.setCurrentPrice(price);
             TwsIB.liveData.update();
 
@@ -38,7 +38,7 @@ public class StrategyEngine {
             double RSI_LIMIT_BUY = 10 - (accuracy*5);
             if (price > SMA_200 && RSI_2 < RSI_LIMIT_BUY){
 
-                TwsIB.liveData.setSumOrder(TwsIB.liveData.getSumOrder()+1);
+                TwsIB.liveData.incrementOrder();
                 TwsIB.liveData.update();
 
                 orderHandler.placeBuyOrder(price);
@@ -51,7 +51,7 @@ public class StrategyEngine {
             double RSI_LIMIT_SELL = 90 + (accuracy*5);
             if (price < SMA_200 && RSI_2 > RSI_LIMIT_SELL){
 
-                TwsIB.liveData.setSumOrder(TwsIB.liveData.getSumOrder()+1);
+                TwsIB.liveData.incrementOrder();
                 TwsIB.liveData.update();
 
                 orderHandler.placeSellOrder(price);

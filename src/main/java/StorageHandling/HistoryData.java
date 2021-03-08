@@ -42,7 +42,7 @@ public class HistoryData implements Subject {
         }
     }
 
-    /* TRANSACTION METHOD */
+    /* HISTORY DATA METHOD */
 
     public List<TransactionDTO> getTransactions (){
         List<TransactionDTO> transactionDTOS = new ArrayList<>();

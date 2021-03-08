@@ -73,16 +73,16 @@ public class LiveData implements Subject{
         return sumOrder;
     }
 
-    public void setSumOrder(int sumOrder) {
-        this.sumOrder = sumOrder;
+    public void incrementOrder() {
+        this.sumOrder++;
     }
 
     public int getSumAnalysis() {
         return sumAnalysis;
     }
 
-    public void setSumAnalysis(int sumAnalysis) {
-        this.sumAnalysis = sumAnalysis;
+    public void incrementAnalysis() {
+        this.sumAnalysis++;
     }
 
     public double getCompellingAnalysisPercentage() {

@@ -12,7 +12,7 @@ import java.util.List;
 public class OrderManager {
 
     /* Create bracket orders */
-    private static List<Order> BracketOrder(Types.Action action, int quantity, double limitPrice, double takeProfitLimitPrice, double stopLossPrice) {
+    public static List<Order> BracketOrder(Types.Action action, int quantity, double limitPrice, double takeProfitLimitPrice, double stopLossPrice) {
 
         int parentOrderId = TwsIB.getNextValidIDOrder();
 
