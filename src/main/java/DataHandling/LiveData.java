@@ -103,6 +103,10 @@ public class LiveData implements Subject{
 
     public void setAnalysisTime(double analysisTime) {
 
+        if (analysisTime == 0){
+            analysisTime = getAverageAnalysisTime();
+        }
+
         if (minAnalysisTime == 0 && maxAnalysisTime == 0){
             minAnalysisTime = analysisTime;
             maxAnalysisTime = analysisTime;

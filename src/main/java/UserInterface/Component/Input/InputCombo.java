@@ -9,19 +9,18 @@ import java.awt.geom.Line2D;
 public class InputCombo extends JPanel implements InputInterface {
 
     /* Values */
-    private final String IDENTIFIER;
     private String DD_Header = "";
     private String [] DD_Values;
 
+    /* Components */
     private JComboBox<String> jComboBox;
 
-    public InputCombo(String IDENTIFIER, String DD_Header, String [] DD_Values) {
+    public InputCombo(String DD_Header, String [] DD_Values) {
 
         setBounds(0, 0, 260, 110);
         setOpaque(false);
         setLayout(null);
 
-        this.IDENTIFIER = IDENTIFIER;
         this.DD_Header = DD_Header;
         this.DD_Values = DD_Values;
 
@@ -77,9 +76,5 @@ public class InputCombo extends JPanel implements InputInterface {
         jComboBox.setBorder(BorderFactory.createEmptyBorder());
         jComboBox.setBounds(20, 10, 220, 50);
         add(jComboBox);
-    }
-
-    public String getIDENTIFIER() {
-        return IDENTIFIER;
     }
 }

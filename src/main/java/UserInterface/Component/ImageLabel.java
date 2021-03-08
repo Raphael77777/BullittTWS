@@ -7,7 +7,7 @@ import java.io.IOException;
 
 public class ImageLabel extends JLabel {
 
-    private String pathname;
+    private final String pathname;
 
     public ImageLabel(String pathname){
         this.pathname=pathname;

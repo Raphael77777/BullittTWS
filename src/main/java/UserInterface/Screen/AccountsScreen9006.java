@@ -1,10 +1,8 @@
 package UserInterface.Screen;
 
 import DataHandling.AccountData;
-import DataHandling.LiveData;
-import UserInterface.Component.Enum.InfoTYPE;
+import UserInterface.Component.Enum.EnumType;
 import UserInterface.Component.Panel.AccountPanel;
-import UserInterface.Component.Panel.ButtonPanel;
 import UserInterface.Component.Panel.InfoPanel;
 import UserInterface.Component.Panel.InfoPanelL;
 
@@ -21,7 +19,7 @@ public class AccountsScreen9006 extends AbstractScreen implements Observer {
 
     private final String [] IP_texts = new String[]{"Available Funds", "Net Liquidation Value", "Buying Power", "Margin Requirement", "Daily P&L", "Unrealized P&L", "Realized P&L", "Cushion"};
     private String [] IP_values = new String[]{"--", "--", "--", "--", "--", "--", "--", "--"};
-    private InfoTYPE [] IP_types = new InfoTYPE[]{InfoTYPE.NO_ICON, InfoTYPE.NO_ICON, InfoTYPE.NO_ICON, InfoTYPE.NO_ICON, InfoTYPE.NO_ICON, InfoTYPE.NO_ICON, InfoTYPE.NO_ICON, InfoTYPE.NO_ICON};
+    private EnumType[] IP_types = new EnumType[]{EnumType.NO_ICON, EnumType.NO_ICON, EnumType.NO_ICON, EnumType.NO_ICON, EnumType.NO_ICON, EnumType.NO_ICON, EnumType.NO_ICON, EnumType.NO_ICON};
 
     public AccountsScreen9006(AccountData accountData) {
         this.accountData = accountData;
@@ -35,18 +33,18 @@ public class AccountsScreen9006 extends AbstractScreen implements Observer {
 
         removeAll();
 
-        accountPanel = new AccountPanel("ACC", accountId, currency);
+        accountPanel = new AccountPanel(accountId, currency);
         accountPanel.setBounds(20, 20, 786, 110);
         add(accountPanel);
 
         for (int i = 0; i<infoPanelLS.length; i++){
-            infoPanelLS[i] = new InfoPanelL("IPL"+i, IP_types[i], IP_texts[i], IP_values[i]);
+            infoPanelLS[i] = new InfoPanelL(IP_types[i], IP_texts[i], IP_values[i]);
             infoPanelLS[i].setBounds(20, 133+i*113, 523, 110);
             add(infoPanelLS[i]);
         }
 
         for (int i = 0; i < infoPanels.length; i++){
-            infoPanels[i] = new InfoPanel("IP"+i, IP_types[i+4], IP_texts[i+4], IP_values[i+4]);
+            infoPanels[i] = new InfoPanel(IP_types[i+4], IP_texts[i+4], IP_values[i+4]);
             infoPanels[i].setBounds(546, 133+i*113, 260, 110);
             add(infoPanels[i]);
         }
@@ -68,26 +66,29 @@ public class AccountsScreen9006 extends AbstractScreen implements Observer {
         IP_values[3] = String.valueOf(accountData.getMarginReq());
 
         double dailyPNL = accountData.getDailyPNL();
+        IP_types[4] = EnumType.NO_ICON;
         if (dailyPNL > 0){
-            IP_types[4] = InfoTYPE.POSITIVE;
+            IP_types[4] = EnumType.POSITIVE;
         }if (dailyPNL < 0){
-            IP_types[4] = InfoTYPE.NEGATIVE;
+            IP_types[4] = EnumType.NEGATIVE;
         }
         IP_values[4] = String.valueOf(dailyPNL);
 
         double unrealizedPNL = accountData.getUnrealizedPNL();
+        IP_types[5] = EnumType.NO_ICON;
         if (unrealizedPNL > 0){
-            IP_types[5] = InfoTYPE.POSITIVE;
+            IP_types[5] = EnumType.POSITIVE;
         }if (unrealizedPNL < 0){
-            IP_types[5] = InfoTYPE.NEGATIVE;
+            IP_types[5] = EnumType.NEGATIVE;
         }
         IP_values[5] = String.valueOf(unrealizedPNL);
 
         double realizedPNL = accountData.getRealizedPNL();
+        IP_types[6] = EnumType.NO_ICON;
         if (realizedPNL > 0){
-            IP_types[6] = InfoTYPE.POSITIVE;
+            IP_types[6] = EnumType.POSITIVE;
         }if (realizedPNL < 0){
-            IP_types[6] = InfoTYPE.NEGATIVE;
+            IP_types[6] = EnumType.NEGATIVE;
         }
         IP_values[6] = String.valueOf(realizedPNL);
 

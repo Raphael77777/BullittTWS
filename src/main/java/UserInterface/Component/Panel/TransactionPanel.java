@@ -11,19 +11,17 @@ import java.awt.geom.Line2D;
 public class TransactionPanel extends JPanel {
 
     /* Values */
-    private String IDENTIFIER;
     private TransactionDTO transactionDTO;
 
     private Color color_parent;
     private Color color_child;
 
-    public TransactionPanel(String IDENTIFIER, TransactionDTO transactionDTO) {
+    public TransactionPanel(TransactionDTO transactionDTO) {
 
         setBounds(0, 0, 769, 363);
         setOpaque(false);
         setLayout(null);
 
-        this.IDENTIFIER = IDENTIFIER;
         this.transactionDTO = transactionDTO;
 
         if (transactionDTO.getAction() == Types.Action.BUY){
@@ -34,7 +32,6 @@ public class TransactionPanel extends JPanel {
             color_child = GraphicalTheme.primary_color;
         }
 
-        init();
     }
 
     @Override
@@ -156,12 +153,5 @@ public class TransactionPanel extends JPanel {
         g.drawString(transactionDTO.getStatus_sl(), 160, 310);
         g.drawString(action +" "+quantity+"K UNIT", 70, 345);
 
-    }
-
-    private void init (){
-    }
-
-    public String getIDENTIFIER() {
-        return IDENTIFIER;
     }
 }

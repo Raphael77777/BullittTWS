@@ -1,10 +1,9 @@
 package UserInterface.Component.Panel;
 
-import UserInterface.Component.Enum.InfoTYPE;
+import UserInterface.Component.Enum.EnumType;
 import UserInterface.Component.ImageLabel;
 import UserInterface.JFrameBTWS;
 import UserInterface.STATIC.GraphicalTheme;
-import UserInterface.Screen.BackgroundScreen;
 
 import javax.swing.*;
 import java.awt.*;
@@ -16,20 +15,18 @@ import java.awt.geom.Line2D;
 
 public class ButtonPanel extends JPanel {
 
-    /* Values */
-    private final String IDENTIFIER;
-    private InfoTYPE type = InfoTYPE.NEUTRAL;
-    private String header = "";
-    private String text = "";
-    private String target = "HOME";
+    private EnumType type;
+    private String header;
+    private String text;
+    private String target;
 
-    public ButtonPanel(String IDENTIFIER, InfoTYPE type, String header, String text, String target) {
+    public ButtonPanel(EnumType type, String header, String text, String target) {
 
         setBounds(0, 0, 523, 110);
         setOpaque(false);
         setLayout(null);
 
-        this.IDENTIFIER = IDENTIFIER;
+        /* Values */
         this.type = type;
         this.header = header;
         this.text = text;
@@ -38,7 +35,7 @@ public class ButtonPanel extends JPanel {
         init();
     }
 
-    public void update (InfoTYPE type, String header, String text, String target) {
+    public void update (EnumType type, String header, String text, String target) {
         this.type = type;
         this.header = header;
         this.text = text;
@@ -66,11 +63,11 @@ public class ButtonPanel extends JPanel {
         g2d.draw(new Line2D.Float(493, 0, 523, 0));
         g2d.draw(new Line2D.Float(523, 0, 523, 30));
 
-        if (type == InfoTYPE.POSITIVE){
+        if (type == EnumType.POSITIVE){
             g2d.setPaint(GraphicalTheme.primary_color);
-        } else if (type == InfoTYPE.NEGATIVE){
+        } else if (type == EnumType.NEGATIVE){
             g2d.setPaint(GraphicalTheme.secondary_color);
-        } else if (type == InfoTYPE.NEUTRAL || type == InfoTYPE.NO_ICON){
+        } else if (type == EnumType.NEUTRAL || type == EnumType.NO_ICON){
             g2d.setPaint(GraphicalTheme.light_color);
         }
 
@@ -104,15 +101,10 @@ public class ButtonPanel extends JPanel {
         }
     }
 
-    public String getIDENTIFIER() {
-        return IDENTIFIER;
-    }
-
     private class updateAPIKEY extends MouseAdapter {
         @Override
         public void mouseClicked(MouseEvent e) {
             JFrameBTWS.getInstance().setAPIKEY();
         }
     }
-
 }

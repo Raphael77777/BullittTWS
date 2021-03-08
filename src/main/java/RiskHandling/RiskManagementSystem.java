@@ -18,11 +18,11 @@ public class RiskManagementSystem {
         Order tp = bracketOrder.get(1);
         Order sl = bracketOrder.get(2);
 
-        if (parent.orderId() != tp.parentId()){
+        if (parent.orderId()+1 != tp.parentId()){
             return false;
         }
 
-        if (parent.orderId() != sl.parentId()){
+        if (parent.orderId()+1 != sl.parentId()){
             return false;
         }
 

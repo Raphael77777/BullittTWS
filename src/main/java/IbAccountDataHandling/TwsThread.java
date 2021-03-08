@@ -54,6 +54,7 @@ public class TwsThread implements Runnable {
         /* RESET DATA BEFORE STARTING */
         TwsThread.liveData.reset();
         TwsThread.historyData.reset();
+        TwsOutputAdapter.statusReqPnLSingle = false;
 
         TwsThread.marketAdapter = new MarketAdapter();
         chronoLiveData = new ChronoLiveData(TwsThread.liveData);

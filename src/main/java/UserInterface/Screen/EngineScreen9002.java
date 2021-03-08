@@ -5,7 +5,7 @@ import DataHandling.StrategyData;
 import UserInterface.Component.ImageLabel;
 import UserInterface.Component.Panel.ButtonPanel;
 import UserInterface.Component.Panel.InfoPanel;
-import UserInterface.Component.Enum.InfoTYPE;
+import UserInterface.Component.Enum.EnumType;
 import UserInterface.JFrameBTWS;
 
 import javax.swing.*;
@@ -27,7 +27,7 @@ public class EngineScreen9002 extends AbstractScreen implements Observer {
 
     private final String [] IP_texts = new String[]{"Asset", "Strategy", "Accuracy", "Timescale", "Exposure", "Order", "Take profit", "Stop loss", "APIs key"};
     private String [] IP_values = new String[]{"JPY/USD", "RSI(2)", "0.7", "60 sec", "90%", "Limit", "7.5%", "5%", "Inactive"};
-    private InfoTYPE [] IP_types = new InfoTYPE[]{InfoTYPE.NO_ICON, InfoTYPE.NO_ICON, InfoTYPE.NEUTRAL, InfoTYPE.NEUTRAL, InfoTYPE.NEUTRAL, InfoTYPE.NEUTRAL, InfoTYPE.POSITIVE, InfoTYPE.NEGATIVE, InfoTYPE.NO_ICON };
+    private EnumType[] IP_types = new EnumType[]{EnumType.NO_ICON, EnumType.NO_ICON, EnumType.NEUTRAL, EnumType.NEUTRAL, EnumType.NEUTRAL, EnumType.NEUTRAL, EnumType.POSITIVE, EnumType.NEGATIVE, EnumType.NO_ICON };
 
     private final String [] BT_Header = new String[]{"1. STRATEGY", "2. MONITOR"};
     private final String [] BT_Description = new String[]{"Modify or view the strategy", "View live data"};
@@ -52,7 +52,7 @@ public class EngineScreen9002 extends AbstractScreen implements Observer {
         for (int i = 0; i < 3; i++){
             for (int j = 0; j < 3; j++){
                 if (idx < infoPanels.length){
-                    infoPanels[idx] = new InfoPanel("IP"+idx, IP_types[idx], IP_texts[idx], IP_values[idx]);
+                    infoPanels[idx] = new InfoPanel(IP_types[idx], IP_texts[idx], IP_values[idx]);
                     infoPanels[idx].setBounds(20+(i*263), 20+j*113, 260, 110);
                     add(infoPanels[idx]);
                     idx++;
@@ -61,7 +61,7 @@ public class EngineScreen9002 extends AbstractScreen implements Observer {
         }
 
         for (int i = 0; i< buttonPanels.length; i++){
-            buttonPanels[i] = new ButtonPanel("BT"+i, InfoTYPE.NO_ICON, BT_Header[i], BT_Description[i], BT_Target[i]);
+            buttonPanels[i] = new ButtonPanel(EnumType.NO_ICON, BT_Header[i], BT_Description[i], BT_Target[i]);
             buttonPanels[i].setBounds(20, 359+i*113, 523, 110);
             add(buttonPanels[i]);
         }
@@ -89,11 +89,11 @@ public class EngineScreen9002 extends AbstractScreen implements Observer {
 
         if (alphaVantageData.getAPI_KEY() == null || alphaVantageData.getAPI_KEY().equals("")){
             IP_values[8] = "Inactive";
-            IP_types[8] = InfoTYPE.RED;
+            IP_types[8] = EnumType.RED;
             apiKeyAvailable = false;
         }else if (alphaVantageData.getAPI_KEY().length() == 16){
             IP_values[8] = "Active";
-            IP_types[8] = InfoTYPE.GREEN;
+            IP_types[8] = EnumType.GREEN;
             apiKeyAvailable = true;
         }
 

@@ -33,7 +33,7 @@ public class OrderHandlerTWS {
                 break;
             case "Limit":
                 parent.orderType(OrderType.LMT);
-                parent.lmtPrice(limitPrice/2);
+                parent.lmtPrice(limitPrice);
                 break;
         }
         parent.transmit(false);

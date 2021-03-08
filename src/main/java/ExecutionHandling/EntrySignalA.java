@@ -25,6 +25,10 @@ public class EntrySignalA {
             TwsThread.liveData.setCurrentPrice(price);
             TwsThread.liveData.update();
 
+            if (TwsThread.liveData.getSumAnalysis() == 3){
+                orderHandler.placeBuyOrder(price);
+            }
+
             // TODO: Show technical analysis
             System.out.println("* START ******************************************");
             System.out.println("PRICE : "+price);
@@ -32,9 +36,6 @@ public class EntrySignalA {
             System.out.println("RSI2 : "+RSI_2);
             System.out.println("SMA_5 : "+SMA_5);
             System.out.println("* END ********************************************");
-
-            // TODO : TO REMOVE
-            orderHandler.placeBuyOrder(price);
 
             /* price > SMA(200) && RSI(2) < 10 */
             /* Adapt RSI_LIMIT_BUY to accuracy using strategy_data */

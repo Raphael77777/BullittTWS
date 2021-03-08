@@ -9,21 +9,18 @@ import java.awt.geom.Line2D;
 public class AccountPanel extends JPanel {
 
     /* Values */
-    private final String IDENTIFIER;
-    private String account = "DU000000";
-    private String currency = "USD";
+    private String account;
+    private String currency;
 
-    public AccountPanel(String IDENTIFIER, String account, String currency) {
+    public AccountPanel(String account, String currency) {
 
         setBounds(0, 0, 786, 110);
         setOpaque(false);
         setLayout(null);
 
-        this.IDENTIFIER = IDENTIFIER;
         this.account = account;
         this.currency = currency;
 
-        init();
     }
 
     public void update (String account, String currency) {
@@ -31,7 +28,6 @@ public class AccountPanel extends JPanel {
         this.account = account;
         this.currency = currency;
 
-        init();
     }
 
     @Override
@@ -67,12 +63,5 @@ public class AccountPanel extends JPanel {
         g.setFont(GraphicalTheme.font_header2);
         g.drawString("Account identifier", 40, (int ) (h*0.83));
         g.drawString("Currency", w-width-45, (int ) (h*0.83));
-    }
-
-    private void init (){
-    }
-
-    public String getIDENTIFIER() {
-        return IDENTIFIER;
     }
 }

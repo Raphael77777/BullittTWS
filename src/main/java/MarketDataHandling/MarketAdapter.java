@@ -1,19 +1,11 @@
 package MarketDataHandling;
 
-import CustomException.MarketClosedException;
-import CustomException.MissingApiKeyException;
-import CustomException.NoNetworkException;
-import CustomException.OverloadApiUseException;
 import ExecutionHandling.EntrySignalA;
 import IbAccountDataHandling.TwsThread;
 import com.ib.client.TickAttrib;
-import com.ib.client.TickType;
-import com.ib.controller.ApiController;
 
 import java.sql.Time;
-import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.util.ArrayList;
 
 public class MarketAdapter {
 
@@ -35,8 +27,6 @@ public class MarketAdapter {
     public void tickPrice(int tickerId, int field, double price, TickAttrib attribs) {
 
         /* Launch signal according to timescale using strategy_data */
-
-        new EntrySignalA(1); //Check for signal
         if (price == -1.0){
             return;
         }

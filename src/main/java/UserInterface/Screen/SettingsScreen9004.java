@@ -1,7 +1,7 @@
 package UserInterface.Screen;
 
 import DataHandling.StrategyData;
-import UserInterface.Component.Enum.InfoTYPE;
+import UserInterface.Component.Enum.EnumType;
 import UserInterface.Component.Input.*;
 import UserInterface.Component.Panel.ButtonPanel;
 import UserInterface.Component.Panel.InfoPanel;
@@ -40,50 +40,50 @@ public class SettingsScreen9004 extends AbstractScreen implements Observer {
         removeAll();
 
         /* STATIC */
-        ButtonPanel strategy = new ButtonPanel("STY", InfoTYPE.NO_ICON, "RSI (2)", "Strategy", "NO BUTTON");
+        ButtonPanel strategy = new ButtonPanel(EnumType.NO_ICON, "RSI (2)", "Strategy", "NO BUTTON");
         strategy.setBounds(20, 20, 523, 110);
         add(strategy);
 
-        asset = new InputCombo("VA0", IN_Description[0], IN_DropV0);
+        asset = new InputCombo(IN_Description[0], IN_DropV0);
         asset.setBounds(546, 20, 260, 110);
         add(asset);
 
-        accuracy = new InputDouble("VA1", IN_Description[1]);
+        accuracy = new InputDouble(IN_Description[1]);
         accuracy.setBounds(20, 133, 260, 110);
         add(accuracy);
 
-        timescale = new InputCombo("VA2", IN_Description[2], IN_DropV2);
+        timescale = new InputCombo(IN_Description[2], IN_DropV2);
         timescale.setBounds(283, 133, 260, 110);
         add(timescale);
 
-        multiplier = new InputInteger("VA3", IN_Description[3]);
+        multiplier = new InputInteger(IN_Description[3]);
         multiplier.setBounds(546, 133, 260, 110);
         add(multiplier);
 
-        take_profit = new InputDoubleL("VA4", InfoTYPE.POSITIVE, IN_Description[4], "Select a limit for take profit order");
+        take_profit = new InputDoubleL(EnumType.POSITIVE, IN_Description[4], "Select a limit for take profit order");
         take_profit.setBounds(20, 246, 523, 110);
         add(take_profit);
 
         /* STATIC */
-        InfoPanel infoPanelRMS = new InfoPanel("RMS", InfoTYPE.NO_ICON, "RMS", "Active");
+        InfoPanel infoPanelRMS = new InfoPanel(EnumType.NO_ICON, "RMS", "Active");
         infoPanelRMS.setBounds(546, 246, 260, 110);
         add(infoPanelRMS);
 
-        stop_loss = new InputDoubleL("VA5", InfoTYPE.NEGATIVE, IN_Description[5], "Select a limit for stop loss order");
+        stop_loss = new InputDoubleL(EnumType.NEGATIVE, IN_Description[5], "Select a limit for stop loss order");
         stop_loss.setBounds(20, 359, 523, 110);
         add(stop_loss);
 
         /* STATIC */
-        InfoPanel infoPanelAKI = new InfoPanel("AKI", InfoTYPE.NO_ICON, "Auto-kill", "Active");
+        InfoPanel infoPanelAKI = new InfoPanel(EnumType.NO_ICON, "Auto-kill", "Active");
         infoPanelAKI.setBounds(546, 359, 260, 110);
         add(infoPanelAKI);
 
-        order = new InputCombo("VA6", IN_Description[6], IN_DropV6);
+        order = new InputCombo(IN_Description[6], IN_DropV6);
         order.setBounds(20, 472, 260, 110);
         add(order);
 
         /* STATIC */
-        ButtonPanel save = new ButtonPanel("COMPIL", InfoTYPE.NO_ICON, "COMPILATION", "Save and update the strategy", "COMPIL");
+        ButtonPanel save = new ButtonPanel(EnumType.NO_ICON, "COMPILATION", "Save and update the strategy", "COMPIL");
         save.setBounds(283, 472, 523, 110);
         add(save);
 

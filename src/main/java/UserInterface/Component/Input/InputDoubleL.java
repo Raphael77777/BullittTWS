@@ -1,6 +1,6 @@
 package UserInterface.Component.Input;
 
-import UserInterface.Component.Enum.InfoTYPE;
+import UserInterface.Component.Enum.EnumType;
 import UserInterface.STATIC.GraphicalTheme;
 
 import javax.swing.*;
@@ -10,20 +10,19 @@ import java.awt.geom.Line2D;
 public class InputDoubleL extends JPanel implements InputInterface {
 
     /* Values */
-    private final String IDENTIFIER;
-    private String DD_Header = "";
-    private String DD_Description = "";
-    private InfoTYPE DD_Type = InfoTYPE.POSITIVE;
+    private String DD_Header;
+    private String DD_Description;
+    private EnumType DD_Type;
 
+    /* Components */
     private JTextField jTextField;
 
-    public InputDoubleL(String IDENTIFIER, InfoTYPE DD_Type, String DD_Header, String DD_Description) {
+    public InputDoubleL(EnumType DD_Type, String DD_Header, String DD_Description) {
 
         setBounds(0, 0, 523, 110);
         setOpaque(false);
         setLayout(null);
 
-        this.IDENTIFIER = IDENTIFIER;
         this.DD_Type = DD_Type;
         this.DD_Header = DD_Header;
         this.DD_Description = DD_Description;
@@ -66,9 +65,9 @@ public class InputDoubleL extends JPanel implements InputInterface {
         g2d.draw(new Line2D.Float(493, 0, 523, 0));
         g2d.draw(new Line2D.Float(523, 0, 523, 30));
 
-        if (DD_Type == InfoTYPE.POSITIVE){
+        if (DD_Type == EnumType.POSITIVE){
             g.setColor(GraphicalTheme.primary_color);
-        }else if (DD_Type == InfoTYPE.NEGATIVE){
+        }else if (DD_Type == EnumType.NEGATIVE){
             g.setColor(GraphicalTheme.secondary_color);
         }else {
             g.setColor(GraphicalTheme.light_color);
@@ -98,12 +97,7 @@ public class InputDoubleL extends JPanel implements InputInterface {
             }
         });
 
-        //jTextField.setBorder(BorderFactory.createEmptyBorder());
         jTextField.setBounds(283, 10, 220, 50);
         add(jTextField);
-    }
-
-    public String getIDENTIFIER() {
-        return IDENTIFIER;
     }
 }

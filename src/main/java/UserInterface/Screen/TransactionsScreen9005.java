@@ -38,7 +38,7 @@ public class TransactionsScreen9005 extends AbstractScreen implements Observer{
 
         transactionPanels = new TransactionPanel[transactionDTOS.size()];
         for (int i = 0; i< transactionPanels.length; i++){
-            TransactionPanel transactionPanel = new TransactionPanel("TR"+i, transactionDTOS.get(i));
+            TransactionPanel transactionPanel = new TransactionPanel(transactionDTOS.get(i));
             transactionPanel.setBounds(16, 5+(i*368), 769, 363);
             transactions.add(transactionPanel);
         }

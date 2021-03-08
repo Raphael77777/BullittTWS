@@ -9,18 +9,17 @@ import java.awt.geom.Line2D;
 public class InputDouble extends JPanel implements InputInterface {
 
     /* Values */
-    private final String IDENTIFIER;
     private String DD_Header = "";
 
+    /* Components */
     private JTextField jTextField;
 
-    public InputDouble(String IDENTIFIER, String DD_Header) {
+    public InputDouble(String DD_Header) {
 
         setBounds(0, 0, 260, 110);
         setOpaque(false);
         setLayout(null);
 
-        this.IDENTIFIER = IDENTIFIER;
         this.DD_Header = DD_Header;
 
         jTextField = new JTextField("0.00");
@@ -89,12 +88,7 @@ public class InputDouble extends JPanel implements InputInterface {
             }
         });
 
-        //jTextField.setBorder(BorderFactory.createEmptyBorder());
         jTextField.setBounds(20, 10, 220, 50);
         add(jTextField);
-    }
-
-    public String getIDENTIFIER() {
-        return IDENTIFIER;
     }
 }

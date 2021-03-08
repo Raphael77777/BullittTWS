@@ -1,7 +1,7 @@
 package UserInterface.Screen;
 
 import DataHandling.LiveData;
-import UserInterface.Component.Enum.InfoTYPE;
+import UserInterface.Component.Enum.EnumType;
 import UserInterface.Component.Panel.InfoPanel;
 
 public class MonitorScreen9003 extends AbstractScreen implements Observer {
@@ -12,7 +12,7 @@ public class MonitorScreen9003 extends AbstractScreen implements Observer {
 
     private final String [] IP_texts = new String[]{"Daily P&L", "Unrealized P&L", "#Order", "#Analysis", "Compelling analysis", "Realized P&L", "Analysis time", "Average analysis time", "Min. analysis time", "Max. analysis time", "Time since start", "Start time", "Start price", "Current price", "Var. start"};
     private String [] IP_values = new String[]{"--", "--", "--", "--", "--", "--", "--", "--", "--", "--", "--", "--", "--", "--", "--"};
-    private InfoTYPE [] IP_types = new InfoTYPE[]{InfoTYPE.NO_ICON, InfoTYPE.NO_ICON, InfoTYPE.NO_ICON, InfoTYPE.NO_ICON, InfoTYPE.NO_ICON, InfoTYPE.NO_ICON, InfoTYPE.NO_ICON, InfoTYPE.NO_ICON, InfoTYPE.NO_ICON, InfoTYPE.NO_ICON, InfoTYPE.GREEN, InfoTYPE.GREEN, InfoTYPE.NO_ICON, InfoTYPE.NO_ICON, InfoTYPE.NO_ICON};
+    private EnumType[] IP_types = new EnumType[]{EnumType.NO_ICON, EnumType.NO_ICON, EnumType.NO_ICON, EnumType.NO_ICON, EnumType.NO_ICON, EnumType.NO_ICON, EnumType.NO_ICON, EnumType.NO_ICON, EnumType.NO_ICON, EnumType.NO_ICON, EnumType.GREEN, EnumType.GREEN, EnumType.NO_ICON, EnumType.NO_ICON, EnumType.NO_ICON};
 
     public MonitorScreen9003(LiveData liveData) {
         this.liveData = liveData;
@@ -27,7 +27,7 @@ public class MonitorScreen9003 extends AbstractScreen implements Observer {
         int idx = 0;
         for (int i = 0; i < 3; i++){
             for (int j = 0; j < 5; j++){
-                infoPanels[idx] = new InfoPanel("IP"+idx, IP_types[idx], IP_texts[idx], IP_values[idx]);
+                infoPanels[idx] = new InfoPanel(IP_types[idx], IP_texts[idx], IP_values[idx]);
                 infoPanels[idx].setBounds(20+(i*263), 20+j*113, 260, 110);
                 add(infoPanels[idx]);
                 idx++;
@@ -44,20 +44,20 @@ public class MonitorScreen9003 extends AbstractScreen implements Observer {
 
         double dailyPNL = liveData.getDailyPNL();
         IP_values[0] = String.valueOf(dailyPNL);
-        IP_types[0] = InfoTYPE.NO_ICON;
+        IP_types[0] = EnumType.NO_ICON;
         if (dailyPNL > 0){
-            IP_types[0] = InfoTYPE.POSITIVE;
+            IP_types[0] = EnumType.POSITIVE;
         }if (dailyPNL < 0){
-            IP_types[0] = InfoTYPE.NEGATIVE;
+            IP_types[0] = EnumType.NEGATIVE;
         }
 
         double unrealizedPNL = liveData.getUnrealizedPNL();
         IP_values[1] = String.valueOf(unrealizedPNL);
-        IP_types[1] = InfoTYPE.NO_ICON;
+        IP_types[1] = EnumType.NO_ICON;
         if (unrealizedPNL > 0){
-            IP_types[1] = InfoTYPE.POSITIVE;
+            IP_types[1] = EnumType.POSITIVE;
         }if (unrealizedPNL < 0){
-            IP_types[1] = InfoTYPE.NEGATIVE;
+            IP_types[1] = EnumType.NEGATIVE;
         }
 
         IP_values[2] = liveData.getSumOrder()+"";
@@ -66,11 +66,11 @@ public class MonitorScreen9003 extends AbstractScreen implements Observer {
 
         double realizedPNL = liveData.getRealizedPNL();
         IP_values[5] = String.valueOf(realizedPNL);
-        IP_types[5] = InfoTYPE.NO_ICON;
+        IP_types[5] = EnumType.NO_ICON;
         if (realizedPNL > 0){
-            IP_types[5] = InfoTYPE.POSITIVE;
+            IP_types[5] = EnumType.POSITIVE;
         }if (realizedPNL < 0){
-            IP_types[5] = InfoTYPE.NEGATIVE;
+            IP_types[5] = EnumType.NEGATIVE;
         }
 
         IP_values[6] = liveData.getAnalysisTime()+" ms";
@@ -85,11 +85,11 @@ public class MonitorScreen9003 extends AbstractScreen implements Observer {
 
         double varOpening = liveData.getVarOpening();
         IP_values[14] = varOpening+" %";
-        IP_types[14] = InfoTYPE.NO_ICON;
+        IP_types[14] = EnumType.NO_ICON;
         if (varOpening > 0){
-            IP_types[14] = InfoTYPE.POSITIVE;
+            IP_types[14] = EnumType.POSITIVE;
         }if (varOpening < 0){
-            IP_types[14] = InfoTYPE.NEGATIVE;
+            IP_types[14] = EnumType.NEGATIVE;
         }
 
         init();

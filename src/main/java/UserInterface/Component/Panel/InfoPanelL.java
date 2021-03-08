@@ -1,6 +1,6 @@
 package UserInterface.Component.Panel;
 
-import UserInterface.Component.Enum.InfoTYPE;
+import UserInterface.Component.Enum.EnumType;
 import UserInterface.STATIC.GraphicalTheme;
 
 import javax.swing.*;
@@ -9,32 +9,28 @@ import java.awt.geom.Line2D;
 
 public class InfoPanelL extends JPanel {
 
-    /* Values */
-    private final String IDENTIFIER;
-    private InfoTYPE type = InfoTYPE.NEUTRAL;
-    private String text = "";
-    private String value = "";
+    private EnumType type;
+    private String text;
+    private String value;
 
-    public InfoPanelL(String IDENTIFIER, InfoTYPE type, String text, String value) {
+    public InfoPanelL(EnumType type, String text, String value) {
 
         setBounds(0, 0, 523, 110);
         setOpaque(false);
         setLayout(null);
 
-        this.IDENTIFIER = IDENTIFIER;
+        /* Values */
         this.type = type;
         this.text = text;
         this.value = value;
 
-        init();
     }
 
-    public void update (InfoTYPE type, String text, String value) {
+    public void update (EnumType type, String text, String value) {
         this.type = type;
         this.text = text;
         this.value = value;
 
-        init();
     }
 
     @Override
@@ -62,20 +58,20 @@ public class InfoPanelL extends JPanel {
         int x = (w/2)-(width/2)-50;
         int y = (int ) (h*0.47) - 30;
 
-        if (type == InfoTYPE.POSITIVE){
+        if (type == EnumType.POSITIVE){
             g2d.setPaint(GraphicalTheme.primary_color);
             g2d.fillPolygon(new int[] {15+x, x, 30+x}, new int[] {y, 30+y, 30+y}, 3);
-        } else if (type == InfoTYPE.NEGATIVE){
+        } else if (type == EnumType.NEGATIVE){
             g2d.setPaint(GraphicalTheme.secondary_color);
             g2d.fillPolygon(new int[] {x, 15+x, 30+x}, new int[] {y, 30+y, y}, 3);
-        } else if (type == InfoTYPE.NEUTRAL){
+        } else if (type == EnumType.NEUTRAL){
             g2d.setPaint(GraphicalTheme.light_color);
             g2d.fillPolygon(new int[] {x, x, 30+x}, new int[] {y, 30+y, 15+y}, 3);
-        } else if (type == InfoTYPE.NO_ICON){
+        } else if (type == EnumType.NO_ICON){
             g2d.setPaint(GraphicalTheme.light_color);
-        }else if (type == InfoTYPE.GREEN){
+        }else if (type == EnumType.GREEN){
             g2d.setPaint(GraphicalTheme.primary_color);
-        }else if (type == InfoTYPE.RED){
+        }else if (type == EnumType.RED){
             g2d.setPaint(GraphicalTheme.secondary_color);
         }
 
@@ -84,12 +80,5 @@ public class InfoPanelL extends JPanel {
         g.setFont(GraphicalTheme.font_header2);
         width = g.getFontMetrics().stringWidth(text);
         g.drawString(text, (w-width)/2, (int ) (h*0.85));
-    }
-
-    private void init (){
-    }
-
-    public String getIDENTIFIER() {
-        return IDENTIFIER;
     }
 }

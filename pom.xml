@@ -29,14 +29,6 @@
             <systemPath>${project.basedir}/IB/TwsApi.jar</systemPath>
         </dependency>
 
-        <dependency>
-            <groupId>com.ib</groupId>
-            <artifactId>apidemo</artifactId>
-            <version>9.76</version>
-            <scope>system</scope>
-            <systemPath>${project.basedir}/data/ApiDemo.jar</systemPath>
-        </dependency>
-
         <!-- https://mvnrepository.com/artifact/com.googlecode.json-simple/json-simple -->
         <dependency>
             <groupId>com.googlecode.json-simple</groupId>
