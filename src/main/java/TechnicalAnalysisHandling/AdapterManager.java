@@ -56,7 +56,7 @@ public class AdapterManager implements Runnable {
             TwsThread.RSI_2 = RSI_2;
             TwsThread.SMA_5 = SMA_5;
 
-            if (init){
+            if (init && !TwsThread.forceStop){
                 TwsThread.initMktAdapter();
                 init = false;
             }

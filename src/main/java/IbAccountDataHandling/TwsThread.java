@@ -26,6 +26,7 @@ public class TwsThread implements Runnable {
     private ChronoLiveData chronoLiveData;
     private AdapterManager adapterManager;
     private static int nextValidID = 0;
+    public static boolean forceStop = false;
 
     public TwsThread(StrategyData strategyData, HistoryData historyData, LiveData liveData, AlphaVantageData alphaVantageData, AccountData accountData, PositionData positionData) {
         TwsThread.strategyData = strategyData;
@@ -47,6 +48,7 @@ public class TwsThread implements Runnable {
 
     public boolean startMarketAdapter () {
 
+        forceStop = false;
         if (twsOutputAdapter == null){
             return false;
         }
@@ -73,6 +75,7 @@ public class TwsThread implements Runnable {
 
     public boolean stopMarketAdapter () {
 
+        forceStop = true;
         if (twsOutputAdapter == null){
             return false;
         }

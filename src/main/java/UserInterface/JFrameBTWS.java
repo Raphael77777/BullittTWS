@@ -405,7 +405,6 @@ public class JFrameBTWS extends JFrame {
 
     public boolean start() {
 
-        //TODO : START TWS
         if (tws.startMarketAdapter()){
             System.out.println("> TWS HAS BEEN STARTED !");
             backgroundScreen.engineStarted();
@@ -419,7 +418,6 @@ public class JFrameBTWS extends JFrame {
 
     public boolean stop() {
 
-        //TODO : STOP TWS
         if (tws.stopMarketAdapter()){
             System.out.println("> TWS HAS BEEN STOPPED !");
             backgroundScreen.engineStopped();
