@@ -42,8 +42,14 @@ public class RiskManager {
             return false;
         }
 
-        if (tp.lmtPrice() <= sl.auxPrice()){
-            return false;
+        if (parent.getAction().equals("BUY")){
+            if (tp.lmtPrice() <= sl.auxPrice()){
+                return false;
+            }
+        }else if (parent.getAction().equals("SELL")){
+            if (tp.lmtPrice() >= sl.auxPrice()){
+                return false;
+            }
         }
 
         return true;

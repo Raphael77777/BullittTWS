@@ -91,9 +91,11 @@ public class OutputAdapterIB {
             onCancelPnLSingle();
         }
 
-        idOnReqPnLSingle = TwsIB.getNextValidID();
-        m_client.reqPnLSingle(idOnReqPnLSingle, TwsIB.positionData.getAccount(), "", TwsIB.positionData.getContract().conid());
-        statusReqPnLSingle = true;
+        if (m_client != null){
+            idOnReqPnLSingle = TwsIB.getNextValidID();
+            m_client.reqPnLSingle(idOnReqPnLSingle, TwsIB.positionData.getAccount(), "", TwsIB.positionData.getContract().conid());
+            statusReqPnLSingle = true;
+        }
     }
     public void onCancelPnLSingle() {
         m_client.cancelPnLSingle(idOnReqPnLSingle);

@@ -51,7 +51,6 @@ public class JFrameBTWS extends JFrame {
 
         ImageIcon img = new ImageIcon(getClass().getResource("/FAV-512.png"));
         setIconImage(img.getImage());
-        setVisible(true);
 
         /* DESERIALIZE STRATEGY_DATA */
         try {
@@ -78,6 +77,7 @@ public class JFrameBTWS extends JFrame {
 
         /* SHOW WelcomeScreen9001 */
         showWelcomeScreen();
+        setVisible(true);
     }
 
     public static JFrameBTWS getInstance() {

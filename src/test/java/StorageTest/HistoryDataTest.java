@@ -27,9 +27,7 @@ public class HistoryDataTest {
         TwsIB.strategyData = strategyData;
 
         List<Order> orders = OrderManager.BracketOrder(Types.Action.BUY, 100, 1.0, 1.5, 0.5);
-        TransactionDTO transactionDTO = new TransactionDTO(orders);
-
-        historyData.addTransactions(transactionDTO);
+        historyData.addTransactions(new TransactionDTO(orders));
 
         List<TransactionDTO> transactions = historyData.getTransactions();
         assertEquals(1, transactions.size());

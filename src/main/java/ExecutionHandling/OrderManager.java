@@ -166,7 +166,7 @@ public class OrderManager {
         }
     }
 
-    private double round (double d){
+    public double round (double d){
         return Math.round(d * 20.0) / 20.0;
     }
 }
