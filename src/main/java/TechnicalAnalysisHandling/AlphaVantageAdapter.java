@@ -9,7 +9,7 @@ import UserInterface.Screen.Observer;
 
 public abstract class AlphaVantageAdapter implements Observer {
 
-    private AlphaVantageData alphaVantageData;
+    private final AlphaVantageData alphaVantageData;
 
     protected String API_KEY = "";
 

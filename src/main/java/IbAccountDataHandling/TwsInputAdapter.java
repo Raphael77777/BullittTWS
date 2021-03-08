@@ -56,7 +56,7 @@ public class TwsInputAdapter implements EWrapper {
 
         if (field == 2){ // askPrice
 
-            TwsThread.marketAdapter.tickPrice(tickerId, field, price, attribs);
+            TwsThread.marketAdapter.tickPrice(price);
 
             //String msg = EWrapperMsgGenerator.tickPrice( tickerId, field, price, attribs);
             //System.out.println(msg);
@@ -97,7 +97,7 @@ public class TwsInputAdapter implements EWrapper {
                 TwsThread.historyData.getTransaction(orderId).setStatus(status);
                 TwsThread.historyData.getTransaction(orderId).setAvgFillPrice(avgFillPrice);
                 TwsThread.historyData.update();
-            }else if (parentId != 0){
+            }else {
                 if (TwsThread.historyData.getTransaction(parentId).getOrderId_tp() == orderId){ //tp
                     TwsThread.historyData.getTransaction(parentId).setStatus_tp(status);
                     TwsThread.historyData.getTransaction(parentId).setAvgFillPrice_tp(avgFillPrice);

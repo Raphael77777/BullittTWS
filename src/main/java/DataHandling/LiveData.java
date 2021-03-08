@@ -1,6 +1,5 @@
 package DataHandling;
 
-import IbAccountDataHandling.TwsThread;
 import UserInterface.Screen.Observer;
 
 import java.math.BigDecimal;
@@ -11,7 +10,7 @@ import java.util.ArrayList;
 
 public class LiveData implements Subject{
 
-    private ArrayList<Observer> observers = new ArrayList<>();
+    private final ArrayList<Observer> observers = new ArrayList<>();
 
     private double dailyPNL;
     private double unrealizedPNL;
@@ -19,7 +18,7 @@ public class LiveData implements Subject{
     private int sumOrder;
     private int sumAnalysis;
     private double analysisTime;
-    private ArrayList<Double> averageAnalysisTime = new ArrayList<>();
+    private final ArrayList<Double> averageAnalysisTime = new ArrayList<>();
     private double minAnalysisTime;
     private double maxAnalysisTime;
     private LocalTime timeSinceStart = new Time(-7200000).toLocalTime();

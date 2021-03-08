@@ -1,7 +1,6 @@
 package DataHandling;
 
 import java.sql.Time;
-import java.time.LocalTime;
 
 public class ChronoLiveData implements Runnable {
 

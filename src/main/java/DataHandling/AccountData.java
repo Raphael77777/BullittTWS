@@ -2,7 +2,6 @@ package DataHandling;
 
 import UserInterface.Screen.Observer;
 
-import java.io.*;
 import java.util.ArrayList;
 
 public class AccountData implements Subject {

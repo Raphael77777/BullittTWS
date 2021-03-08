@@ -3,7 +3,6 @@ package IbAccountDataHandling;
 import com.ib.client.Contract;
 import com.ib.client.EClientSocket;
 import com.ib.client.Order;
-import com.ib.client.TagValue;
 
 import java.util.ArrayList;
 
@@ -107,7 +106,7 @@ public class TwsOutputAdapter {
         }
 
         idOnReqMktData = TwsThread.getNextValidID();
-        m_client.reqMktData(idOnReqMktData, initializeContract(), "221", false, false, new ArrayList<TagValue>());
+        m_client.reqMktData(idOnReqMktData, initializeContract(), "221", false, false, new ArrayList<>());
     }
     public void onCancelMktData() {
         m_client.cancelMktData(idOnReqMktData);
@@ -132,12 +131,5 @@ public class TwsOutputAdapter {
         nq.secType("CASH");
         nq.exchange("IDEALPRO");
         return nq;
-    }
-
-
-    //TODO : reqAllOpenOrders();
-    //TODO : IS NECESSARY ?
-    public void reqAllOpenOrders() {
-        m_client.reqAllOpenOrders();
     }
 }

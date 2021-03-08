@@ -1,14 +1,11 @@
 package ExecutionHandling;
 
-import CustomException.MarketClosedException;
-import CustomException.MissingApiKeyException;
-import CustomException.NoNetworkException;
-import CustomException.OverloadApiUseException;
 import DataHandling.TransactionDTO;
 import IbAccountDataHandling.TwsThread;
 import RiskHandling.RiskManagementSystem;
-import com.ib.client.*;
-import com.ib.controller.ApiController;
+import com.ib.client.Order;
+import com.ib.client.OrderType;
+import com.ib.client.Types;
 
 import java.util.ArrayList;
 import java.util.List;

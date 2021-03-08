@@ -4,13 +4,8 @@ import IbAccountDataHandling.TwsThread;
 
 public class EntrySignalA {
 
-    private OrderHandlerTWS orderHandler;
-
-    private long startMs;
-    private long stopMS;
-
     public EntrySignalA(double price){
-        this.orderHandler = new OrderHandlerTWS();
+        OrderHandlerTWS orderHandler = new OrderHandlerTWS();
 
         /* Technical analysis */
         double SMA_200 = TwsThread.SMA_200;
@@ -19,7 +14,7 @@ public class EntrySignalA {
 
         if(price != 0.0 && SMA_200 != 0.0 && RSI_2 != 0.0 && SMA_5 != 0.0) {
 
-            startMs = System.currentTimeMillis();
+            long startMs = System.currentTimeMillis();
 
             TwsThread.liveData.setSumAnalysis(TwsThread.liveData.getSumAnalysis()+1);
             TwsThread.liveData.setCurrentPrice(price);
@@ -62,7 +57,7 @@ public class EntrySignalA {
                 System.out.println("> SELL ORDER HAS BEEN PLACED NOW");
             }
 
-            stopMS = System.currentTimeMillis();
+            long stopMS = System.currentTimeMillis();
             TwsThread.liveData.setAnalysisTime(stopMS - startMs);
             TwsThread.liveData.update();
         }

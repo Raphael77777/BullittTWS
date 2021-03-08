@@ -58,7 +58,9 @@ public class AlphaVantageData implements Subject, Serializable {
             e.printStackTrace();
         }finally {
             try {
-                oos.close();
+                if (oos != null) {
+                    oos.close();
+                }
             } catch (IOException e) {
                 e.printStackTrace();
             }

@@ -2,7 +2,6 @@ package MarketDataHandling;
 
 import ExecutionHandling.EntrySignalA;
 import IbAccountDataHandling.TwsThread;
-import com.ib.client.TickAttrib;
 
 import java.sql.Time;
 import java.time.LocalTime;
@@ -24,7 +23,7 @@ public class MarketAdapter {
         TwsThread.liveData.update();
     }
 
-    public void tickPrice(int tickerId, int field, double price, TickAttrib attribs) {
+    public void tickPrice(double price) {
 
         /* Launch signal according to timescale using strategy_data */
         if (price == -1.0){

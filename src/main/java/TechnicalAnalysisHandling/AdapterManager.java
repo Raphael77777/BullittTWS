@@ -5,15 +5,13 @@ import DataHandling.StrategyData;
 import IbAccountDataHandling.TwsThread;
 
 import java.sql.Time;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
 
 public class AdapterManager implements Runnable {
 
     private volatile boolean exit = false;
     private volatile boolean init = true;
 
-    private StrategyData strategyData;
+    private final StrategyData strategyData;
 
     public static AdapterSMA adapterSMA;
     public static AdapterRSI adapterRSI;

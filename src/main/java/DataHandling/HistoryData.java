@@ -9,7 +9,7 @@ public class HistoryData implements Subject {
 
     private ArrayList<Observer> observers;
 
-    private Map<Integer, TransactionDTO> transactions;
+    private final Map<Integer, TransactionDTO> transactions;
 
     public HistoryData() {
         transactions = new LinkedHashMap<>();

@@ -1,7 +1,7 @@
 package TechnicalAnalysisHandling;
 
-import CustomException.MissingApiKeyException;
 import CustomException.MarketClosedException;
+import CustomException.MissingApiKeyException;
 import CustomException.NoNetworkException;
 import CustomException.OverloadApiUseException;
 import DataHandling.AlphaVantageData;
@@ -13,11 +13,10 @@ import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.UnknownHostException;
-import java.text.SimpleDateFormat;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.*;
+import java.util.Map;
+import java.util.Scanner;
 
 public class AdapterSMA extends AlphaVantageAdapter {
 
@@ -43,9 +42,9 @@ public class AdapterSMA extends AlphaVantageAdapter {
                 throw new RuntimeException("HttpResponseCode: " + responsecode);
             else {
                 Scanner sc = new Scanner(url.openStream());
-                String inline = "";
+                StringBuilder inline = new StringBuilder();
                 while (sc.hasNext()) {
-                    inline += sc.nextLine();
+                    inline.append(sc.nextLine());
                 }
                 sc.close();
                 conn.disconnect();
@@ -53,7 +52,7 @@ public class AdapterSMA extends AlphaVantageAdapter {
                 JSONParser jsonParser = new JSONParser();
 
                 try {
-                    Object obj = jsonParser.parse(inline);
+                    Object obj = jsonParser.parse(inline.toString());
 
                     DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
                     LocalDateTime localDate = null;
@@ -61,20 +60,17 @@ public class AdapterSMA extends AlphaVantageAdapter {
 
                     JSONObject skr = (JSONObject) obj;
                     Map analysis = ((Map) skr.get("Technical Analysis: SMA"));
-                    Iterator<Map.Entry> itr1 = analysis.entrySet().iterator();
-                    while (itr1.hasNext()) {
-                        Map.Entry pair = itr1.next();
-
+                    for (Map.Entry pair : (Iterable<Map.Entry>) analysis.entrySet()) {
                         LocalDateTime tempLocalDate = LocalDateTime.parse(pair.getKey().toString(), formatter);
 
-                        if (localDate == null){
+                        if (localDate == null) {
                             localDate = tempLocalDate;
-                            SMA =  Double.parseDouble((String) ((JSONObject) pair.getValue()).get("SMA"));
+                            SMA = Double.parseDouble((String) ((JSONObject) pair.getValue()).get("SMA"));
                         }
 
-                        if (tempLocalDate.isAfter(localDate)){
+                        if (tempLocalDate.isAfter(localDate)) {
                             localDate = tempLocalDate;
-                            SMA =  Double.parseDouble((String) ((JSONObject) pair.getValue()).get("SMA"));
+                            SMA = Double.parseDouble((String) ((JSONObject) pair.getValue()).get("SMA"));
                         }
                     }
                     return SMA;
