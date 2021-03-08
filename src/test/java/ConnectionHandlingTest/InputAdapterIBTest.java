@@ -54,11 +54,10 @@ public class InputAdapterIBTest {
 
         InputAdapterIB inputAdapterIB = new InputAdapterIB();
         inputAdapterIB.nextValidId(4);
-        assertEquals(4, TwsIB.getNextValidID());
         assertEquals(5, TwsIB.getNextValidID());
         assertEquals(6, TwsIB.getNextValidID());
         assertEquals(7, TwsIB.getNextValidID());
-        assertEquals(8, TwsIB.getNextValidIDOrder());
+        assertEquals(10, TwsIB.getNextValidIDOrder());
         assertEquals(11, TwsIB.getNextValidID());
     }
 
