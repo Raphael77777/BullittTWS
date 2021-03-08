@@ -1,7 +1,7 @@
 package UserInterface.Screen;
 
-import DataHandling.HistoryData;
-import DataHandling.TransactionDTO;
+import StorageHandling.HistoryData;
+import StorageHandling.TransactionDTO;
 import UserInterface.Component.Panel.TransactionPanel;
 
 import javax.swing.*;

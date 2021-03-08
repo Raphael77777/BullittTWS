@@ -1,6 +1,6 @@
 package UserInterface.Screen;
 
-import DataHandling.LiveData;
+import StorageHandling.LiveData;
 import UserInterface.Component.Enum.EnumType;
 import UserInterface.Component.Panel.InfoPanel;
 

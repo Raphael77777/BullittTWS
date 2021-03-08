@@ -1,4 +1,4 @@
-package DataHandling;
+package StorageHandling;
 
 import UserInterface.Screen.Observer;
 import com.ib.client.Contract;

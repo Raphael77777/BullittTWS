@@ -1,12 +1,12 @@
-package RiskHandling;
+package ExecutionHandling;
 
-import IbAccountDataHandling.TwsThread;
+import ConnectionHandling.TwsIB;
 import com.ib.client.Order;
 import com.ib.client.OrderType;
 
 import java.util.List;
 
-public class RiskManagementSystem {
+public class RiskManager {
     public static boolean verifyOrder (List<Order> bracketOrder) {
 
         /* Order Integrity Verification */
@@ -30,11 +30,11 @@ public class RiskManagementSystem {
             return false;
         }
 
-        if (parent.orderType() == OrderType.LMT && TwsThread.strategyData.getOrder().equals("Market")){
+        if (parent.orderType() == OrderType.LMT && TwsIB.strategyData.getOrder().equals("Market")){
             return false;
         }
 
-        if (parent.orderType() == OrderType.MKT && TwsThread.strategyData.getOrder().equals("Limit")){
+        if (parent.orderType() == OrderType.MKT && TwsIB.strategyData.getOrder().equals("Limit")){
             return false;
         }
 

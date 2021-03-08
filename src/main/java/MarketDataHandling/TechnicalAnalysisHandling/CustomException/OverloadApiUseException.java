@@ -1,4 +1,4 @@
-package CustomException;
+package MarketDataHandling.TechnicalAnalysisHandling.CustomException;
 
 public class OverloadApiUseException extends Exception {
     public OverloadApiUseException() {

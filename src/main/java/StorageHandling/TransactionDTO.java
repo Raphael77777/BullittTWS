@@ -1,6 +1,6 @@
-package DataHandling;
+package StorageHandling;
 
-import IbAccountDataHandling.TwsThread;
+import ConnectionHandling.TwsIB;
 import com.ib.client.Order;
 import com.ib.client.OrderType;
 import com.ib.client.Types;
@@ -43,7 +43,7 @@ public class TransactionDTO {
 
         orderId = parentOrder.orderId()+1;
         action = parentOrder.action();
-        asset = TwsThread.strategyData.getAsset();
+        asset = TwsIB.strategyData.getAsset();
         quantity = parentOrder.totalQuantity();
         type = parentOrder.orderType();
         limitPrice = parentOrder.lmtPrice();

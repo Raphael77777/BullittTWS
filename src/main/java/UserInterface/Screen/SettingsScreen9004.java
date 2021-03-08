@@ -1,6 +1,6 @@
 package UserInterface.Screen;
 
-import DataHandling.StrategyData;
+import StorageHandling.StrategyData;
 import UserInterface.Component.Enum.EnumType;
 import UserInterface.Component.Input.InputCombo;
 import UserInterface.Component.Input.InputDouble;

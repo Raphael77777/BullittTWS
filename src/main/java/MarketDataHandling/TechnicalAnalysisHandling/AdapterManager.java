@@ -1,8 +1,8 @@
-package TechnicalAnalysisHandling;
+package MarketDataHandling.TechnicalAnalysisHandling;
 
-import DataHandling.AlphaVantageData;
-import DataHandling.StrategyData;
-import IbAccountDataHandling.TwsThread;
+import StorageHandling.AlphaVantageData;
+import StorageHandling.StrategyData;
+import ConnectionHandling.TwsIB;
 
 import java.sql.Time;
 
@@ -50,12 +50,12 @@ public class AdapterManager implements Runnable {
                 e.printStackTrace();
             }
 
-            TwsThread.SMA_200 = SMA_200;
-            TwsThread.RSI_2 = RSI_2;
-            TwsThread.SMA_5 = SMA_5;
+            TwsIB.SMA_200 = SMA_200;
+            TwsIB.RSI_2 = RSI_2;
+            TwsIB.SMA_5 = SMA_5;
 
-            if (init && !TwsThread.forceStop){
-                TwsThread.initMktAdapter();
+            if (init && !TwsIB.forceStop){
+                TwsIB.initMktAdapter();
                 init = false;
             }
 

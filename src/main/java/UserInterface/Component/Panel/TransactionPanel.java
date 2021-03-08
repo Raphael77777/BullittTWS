@@ -1,6 +1,6 @@
 package UserInterface.Component.Panel;
 
-import DataHandling.TransactionDTO;
+import StorageHandling.TransactionDTO;
 import UserInterface.STATIC.GraphicalTheme;
 import com.ib.client.Types;
 

@@ -1,4 +1,4 @@
-package IbAccountDataHandling;
+package ConnectionHandling;
 
 import com.ib.client.*;
 
@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-public class TwsInputAdapter implements EWrapper {
+public class InputAdapterIB implements EWrapper {
 
     private final EJavaSignal m_signal = new EJavaSignal();
     private final EClientSocket m_client = new EClientSocket( this, m_signal);
@@ -32,9 +32,7 @@ public class TwsInputAdapter implements EWrapper {
 
         m_reader.start();
 
-        new Thread(() -> {
-            processMessages();
-        }).start();
+        new Thread(this::processMessages).start();
 
         return m_client;
     }
@@ -56,7 +54,7 @@ public class TwsInputAdapter implements EWrapper {
 
         if (field == 2){ // askPrice
 
-            TwsThread.marketAdapter.tickPrice(price);
+            TwsIB.marketAdapter.tickPrice(price);
 
             //String msg = EWrapperMsgGenerator.tickPrice( tickerId, field, price, attribs);
             //System.out.println(msg);
@@ -94,18 +92,18 @@ public class TwsInputAdapter implements EWrapper {
         try {
             /* UPDATE Transaction within history data */
             if (parentId == 0){ //parent
-                TwsThread.historyData.getTransaction(orderId).setStatus(status);
-                TwsThread.historyData.getTransaction(orderId).setAvgFillPrice(avgFillPrice);
-                TwsThread.historyData.update();
+                TwsIB.historyData.getTransaction(orderId).setStatus(status);
+                TwsIB.historyData.getTransaction(orderId).setAvgFillPrice(avgFillPrice);
+                TwsIB.historyData.update();
             }else {
-                if (TwsThread.historyData.getTransaction(parentId).getOrderId_tp() == orderId){ //tp
-                    TwsThread.historyData.getTransaction(parentId).setStatus_tp(status);
-                    TwsThread.historyData.getTransaction(parentId).setAvgFillPrice_tp(avgFillPrice);
-                    TwsThread.historyData.update();
-                } else if (TwsThread.historyData.getTransaction(parentId).getOrderId_sl() == orderId){ //sl
-                    TwsThread.historyData.getTransaction(parentId).setStatus_sl(status);
-                    TwsThread.historyData.getTransaction(parentId).setAvgFillPrice_sl(avgFillPrice);
-                    TwsThread.historyData.update();
+                if (TwsIB.historyData.getTransaction(parentId).getOrderId_tp() == orderId){ //tp
+                    TwsIB.historyData.getTransaction(parentId).setStatus_tp(status);
+                    TwsIB.historyData.getTransaction(parentId).setAvgFillPrice_tp(avgFillPrice);
+                    TwsIB.historyData.update();
+                } else if (TwsIB.historyData.getTransaction(parentId).getOrderId_sl() == orderId){ //sl
+                    TwsIB.historyData.getTransaction(parentId).setStatus_sl(status);
+                    TwsIB.historyData.getTransaction(parentId).setAvgFillPrice_sl(avgFillPrice);
+                    TwsIB.historyData.update();
                 }
             }
         }catch (NullPointerException e){
@@ -122,15 +120,15 @@ public class TwsInputAdapter implements EWrapper {
         try {
             /* UPDATE Transaction within history data */
             if (order.parentId() == 0) { //parent
-                TwsThread.historyData.getTransaction(order.orderId()).setStatus(orderState.getStatus());
-                TwsThread.historyData.update();
+                TwsIB.historyData.getTransaction(order.orderId()).setStatus(orderState.getStatus());
+                TwsIB.historyData.update();
             } else if (order.parentId() != 0) {
                 if (order.orderType() == OrderType.LMT) { //tp
-                    TwsThread.historyData.getTransaction(order.parentId()).setStatus_tp(orderState.getStatus());
-                    TwsThread.historyData.update();
+                    TwsIB.historyData.getTransaction(order.parentId()).setStatus_tp(orderState.getStatus());
+                    TwsIB.historyData.update();
                 } else if (order.orderType() == OrderType.STP) { //sl
-                    TwsThread.historyData.getTransaction(order.parentId()).setStatus_sl(orderState.getStatus());
-                    TwsThread.historyData.update();
+                    TwsIB.historyData.getTransaction(order.parentId()).setStatus_sl(orderState.getStatus());
+                    TwsIB.historyData.update();
                 }
             }
         }catch (NullPointerException e){
@@ -171,7 +169,7 @@ public class TwsInputAdapter implements EWrapper {
     @Override
     public void nextValidId(int i) {
 
-        TwsThread.setNextValidID(i);
+        TwsIB.setNextValidID(i);
 
         //System.out.println("nextValidID : "+i);
     }
@@ -219,8 +217,8 @@ public class TwsInputAdapter implements EWrapper {
     @Override
     public void managedAccounts(String accountsList) {
 
-        TwsThread.accountData.setAccountId(accountsList);
-        TwsThread.accountData.update();
+        TwsIB.accountData.setAccountId(accountsList);
+        TwsIB.accountData.update();
 
         //String msg = EWrapperMsgGenerator.managedAccounts(accountsList);
         //System.out.println(msg);
@@ -289,18 +287,18 @@ public class TwsInputAdapter implements EWrapper {
     @Override
     public void position(String account, Contract contract, double pos, double avgCost) {
 
-        if (!contract.localSymbol().equals(TwsThread.strategyData.getAsset())){
+        if (!contract.localSymbol().equals(TwsIB.strategyData.getAsset())){
             return;
         }
 
-        TwsThread.positionData.setAccount(account);
-        TwsThread.positionData.setContract(contract);
-        TwsThread.positionData.setPos(pos);
-        TwsThread.positionData.setAvgCost(avgCost);
-        TwsThread.positionData.update();
+        TwsIB.positionData.setAccount(account);
+        TwsIB.positionData.setContract(contract);
+        TwsIB.positionData.setPos(pos);
+        TwsIB.positionData.setAvgCost(avgCost);
+        TwsIB.positionData.update();
 
-        if (!TwsOutputAdapter.statusReqPnLSingle){
-            TwsThread.twsOutputAdapter.onReqPnLSingle();
+        if (!OutputAdapterIB.statusReqPnLSingle){
+            TwsIB.outputAdapterIB.onReqPnLSingle();
         }
 
         //String msg = EWrapperMsgGenerator.position(account, contract, pos, avgCost);
@@ -319,26 +317,26 @@ public class TwsInputAdapter implements EWrapper {
 
         switch (tag){
             case "NetLiquidation":
-                TwsThread.accountData.setNetLiquidationValue(Double.parseDouble(value));
+                TwsIB.accountData.setNetLiquidationValue(Double.parseDouble(value));
                 break;
             case "BuyingPower":
-                TwsThread.accountData.setBuyingPower(Double.parseDouble(value));
+                TwsIB.accountData.setBuyingPower(Double.parseDouble(value));
                 break;
             case "AvailableFunds":
-                TwsThread.accountData.setAvailableFunds(Double.parseDouble(value));
-                TwsThread.accountData.setCurrency(currency);
+                TwsIB.accountData.setAvailableFunds(Double.parseDouble(value));
+                TwsIB.accountData.setCurrency(currency);
                 break;
             case "Cushion":
                 BigDecimal cushion = new BigDecimal(value);
                 cushion = cushion.setScale(2, RoundingMode.HALF_UP);
-                TwsThread.accountData.setCushion(cushion.doubleValue()*100);
+                TwsIB.accountData.setCushion(cushion.doubleValue()*100);
                 break;
             case "FullInitMarginReq":
-                TwsThread.accountData.setMarginReq(Double.parseDouble(value));
+                TwsIB.accountData.setMarginReq(Double.parseDouble(value));
                 break;
         }
 
-        TwsThread.accountData.update();
+        TwsIB.accountData.update();
 
         //String msg = EWrapperMsgGenerator.accountSummary(reqId, account, tag, value, currency);
         //System.out.println(msg);
@@ -541,20 +539,20 @@ public class TwsInputAdapter implements EWrapper {
 
         BigDecimal dPNL = new BigDecimal(Double.toString(dailyPnL));
         dPNL = dPNL.setScale(2, RoundingMode.HALF_UP);
-        TwsThread.accountData.setDailyPNL(dPNL.doubleValue());
-        TwsThread.liveData.setDailyPNL(dPNL.doubleValue());
+        TwsIB.accountData.setDailyPNL(dPNL.doubleValue());
+        TwsIB.liveData.setDailyPNL(dPNL.doubleValue());
 
         BigDecimal uPNL = new BigDecimal(Double.toString(unrealizedPnL));
         uPNL = uPNL.setScale(2, RoundingMode.HALF_UP);
-        TwsThread.accountData.setUnrealizedPNL(uPNL.doubleValue());
-        TwsThread.liveData.setUnrealizedPNL(uPNL.doubleValue());
+        TwsIB.accountData.setUnrealizedPNL(uPNL.doubleValue());
+        TwsIB.liveData.setUnrealizedPNL(uPNL.doubleValue());
 
         BigDecimal rPNL = new BigDecimal(Double.toString(realizedPnL));
         rPNL = rPNL.setScale(2, RoundingMode.HALF_UP);
-        TwsThread.accountData.setRealizedPNL(rPNL.doubleValue());
-        TwsThread.liveData.setRealizedPNL(rPNL.doubleValue());
-        TwsThread.accountData.update();
-        TwsThread.liveData.update();
+        TwsIB.accountData.setRealizedPNL(rPNL.doubleValue());
+        TwsIB.liveData.setRealizedPNL(rPNL.doubleValue());
+        TwsIB.accountData.update();
+        TwsIB.liveData.update();
 
         //String msg = EWrapperMsgGenerator.pnl(reqId, dailyPnL, unrealizedPnL, realizedPnL);
         //System.out.println(msg);
@@ -564,37 +562,37 @@ public class TwsInputAdapter implements EWrapper {
     public void pnlSingle(int reqId, int pos, double dailyPnL, double unrealizedPnL, double realizedPnL, double value) {
 
         if (dailyPnL == Double.MAX_VALUE){
-            TwsThread.positionData.setDailyPnL(0.0);
+            TwsIB.positionData.setDailyPnL(0.0);
         }else {
             BigDecimal dPNL = new BigDecimal(Double.toString(dailyPnL));
             dPNL = dPNL.setScale(2, RoundingMode.HALF_UP);
-            TwsThread.positionData.setDailyPnL(dPNL.doubleValue());
+            TwsIB.positionData.setDailyPnL(dPNL.doubleValue());
         }
 
         if (unrealizedPnL == Double.MAX_VALUE){
-            TwsThread.positionData.setUnrealizedPnL(0.0);
+            TwsIB.positionData.setUnrealizedPnL(0.0);
         }else {
             BigDecimal uPNL = new BigDecimal(Double.toString(unrealizedPnL));
             uPNL = uPNL.setScale(2, RoundingMode.HALF_UP);
-            TwsThread.positionData.setUnrealizedPnL(uPNL.doubleValue());
+            TwsIB.positionData.setUnrealizedPnL(uPNL.doubleValue());
         }
 
         if (realizedPnL == Double.MAX_VALUE){
-            TwsThread.positionData.setRealizedPnL(0.0);
+            TwsIB.positionData.setRealizedPnL(0.0);
         }else {
             BigDecimal rPNL = new BigDecimal(Double.toString(realizedPnL));
             rPNL = rPNL.setScale(2, RoundingMode.HALF_UP);
-            TwsThread.positionData.setRealizedPnL(rPNL.doubleValue());
+            TwsIB.positionData.setRealizedPnL(rPNL.doubleValue());
         }
 
         if (value == Double.MAX_VALUE){
-            TwsThread.positionData.setValue(0.0);
+            TwsIB.positionData.setValue(0.0);
         }else {
             BigDecimal val = new BigDecimal(Double.toString(value));
             val = val.setScale(2, RoundingMode.HALF_UP);
-            TwsThread.positionData.setValue(val.doubleValue());
+            TwsIB.positionData.setValue(val.doubleValue());
         }
-        TwsThread.positionData.update();
+        TwsIB.positionData.update();
 
         //String msg = EWrapperMsgGenerator.pnlSingle(reqId, pos, dailyPnL, unrealizedPnL, realizedPnL, value);
         //System.out.println(msg);

@@ -1,6 +1,6 @@
 package UserInterface.Screen;
 
-import DataHandling.AccountData;
+import StorageHandling.AccountData;
 import UserInterface.Component.Enum.EnumType;
 import UserInterface.Component.Panel.AccountPanel;
 import UserInterface.Component.Panel.InfoPanel;

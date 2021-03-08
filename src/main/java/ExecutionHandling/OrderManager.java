@@ -1,8 +1,7 @@
 package ExecutionHandling;
 
-import DataHandling.TransactionDTO;
-import IbAccountDataHandling.TwsThread;
-import RiskHandling.RiskManagementSystem;
+import StorageHandling.TransactionDTO;
+import ConnectionHandling.TwsIB;
 import com.ib.client.Order;
 import com.ib.client.OrderType;
 import com.ib.client.Types;
@@ -10,12 +9,12 @@ import com.ib.client.Types;
 import java.util.ArrayList;
 import java.util.List;
 
-public class OrderHandlerTWS {
+public class OrderManager {
 
     /* Create bracket orders */
     private static List<Order> BracketOrder(Types.Action action, int quantity, double limitPrice, double takeProfitLimitPrice, double stopLossPrice) {
 
-        int parentOrderId = TwsThread.getNextValidIDOrder();
+        int parentOrderId = TwsIB.getNextValidIDOrder();
 
         /* PARENT ORDER */
         Order parent = new Order();
@@ -24,7 +23,7 @@ public class OrderHandlerTWS {
         parent.totalQuantity(quantity);
 
         /* Adapt order type using strategy_data */
-        switch (TwsThread.strategyData.getOrder()){
+        switch (TwsIB.strategyData.getOrder()){
             case "Market":
                 parent.orderType(OrderType.MKT);
                 break;
@@ -67,11 +66,11 @@ public class OrderHandlerTWS {
     public void placeBuyOrder(double price) {
 
         /* Adapt quantity to multiplier using strategy_data */
-        int multiplier = TwsThread.strategyData.getMultiplier();
+        int multiplier = TwsIB.strategyData.getMultiplier();
         int quantity = 20000 * multiplier;
 
         /* Adapt order to type using strategy_data */
-        String order = TwsThread.strategyData.getOrder();
+        String order = TwsIB.strategyData.getOrder();
         double limitPrice = 0;
         switch (order){
             case "Market":
@@ -83,15 +82,15 @@ public class OrderHandlerTWS {
         }
 
         /* Adapt takeProfitLimitPrice to strategy_data */
-        double takeProfit = TwsThread.strategyData.getTake_profit();
+        double takeProfit = TwsIB.strategyData.getTake_profit();
         double takeProfitLimitPrice = price * (1.0+(takeProfit/100.0));
 
         /* Adapt stopLossPrice to strategy_data */
-        double stopLoss = TwsThread.strategyData.getStop_loss();
+        double stopLoss = TwsIB.strategyData.getStop_loss();
         double stopLossPrice = price * (1.0-(stopLoss/100.0));
 
         /* Adapt stop loss to SMA_5 => stopLossPrice > SMA(5) */
-        double SMA_5 = TwsThread.SMA_5;
+        double SMA_5 = TwsIB.SMA_5;
         if (stopLossPrice > SMA_5){
             stopLossPrice = SMA_5;
         }
@@ -112,11 +111,11 @@ public class OrderHandlerTWS {
     public void placeSellOrder(double price){
 
         /* Adapt quantity to multiplier using strategy_data */
-        int multiplier = TwsThread.strategyData.getMultiplier();
+        int multiplier = TwsIB.strategyData.getMultiplier();
         int quantity = 20000 * multiplier;
 
         /* Adapt order to type using strategy_data */
-        String order = TwsThread.strategyData.getOrder();
+        String order = TwsIB.strategyData.getOrder();
         double limitPrice = 0;
         switch (order){
             case "Market":
@@ -128,15 +127,15 @@ public class OrderHandlerTWS {
         }
 
         /* Adapt takeProfitLimitPrice to strategy_data */
-        double takeProfit = TwsThread.strategyData.getTake_profit();
+        double takeProfit = TwsIB.strategyData.getTake_profit();
         double takeProfitLimitPrice = price * (1.0-(takeProfit/100.0));
 
         /* Adapt stopLossPrice to strategy_data */
-        double stopLoss = TwsThread.strategyData.getStop_loss();
+        double stopLoss = TwsIB.strategyData.getStop_loss();
         double stopLossPrice = price * (1.0+(stopLoss/100.0));
 
         /* Adapt stop loss to SMA_5 => stopLossPrice < SMA(5) */
-        double SMA_5 = TwsThread.SMA_5;
+        double SMA_5 = TwsIB.SMA_5;
         if (stopLossPrice < SMA_5){
             stopLossPrice = SMA_5;
         }
@@ -155,12 +154,12 @@ public class OrderHandlerTWS {
 
     /* Place order on market */
     private void placeBracketOrder (List<Order> bracketOrder) {
-        if (RiskManagementSystem.verifyOrder(bracketOrder)) {
+        if (RiskManager.verifyOrder(bracketOrder)) {
             for (Order o : bracketOrder) {
-                TwsThread.twsOutputAdapter.onPlaceOrder(o);
+                TwsIB.outputAdapterIB.onPlaceOrder(o);
             }
             /* ADD TRANSACTIONS TO HISTORY */
-            TwsThread.historyData.addTransactions(new TransactionDTO(bracketOrder));
+            TwsIB.historyData.addTransactions(new TransactionDTO(bracketOrder));
             System.out.println("> The risk management system agreed a transaction.");
         } else {
             System.out.println("> The risk management system blocked a transaction.");

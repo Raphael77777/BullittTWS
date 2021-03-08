@@ -1,7 +1,7 @@
 package UserInterface.Screen;
 
-import DataHandling.AccountData;
-import DataHandling.PositionData;
+import StorageHandling.AccountData;
+import StorageHandling.PositionData;
 import UserInterface.Component.Enum.EnumType;
 import UserInterface.Component.Panel.AccountPanel;
 import UserInterface.Component.Panel.InfoPanel;

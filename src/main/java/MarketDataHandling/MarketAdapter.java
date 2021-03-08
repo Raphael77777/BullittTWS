@@ -1,7 +1,7 @@
 package MarketDataHandling;
 
-import ExecutionHandling.EntrySignalA;
-import IbAccountDataHandling.TwsThread;
+import EventProcessingHandling.StrategyEngine;
+import ConnectionHandling.TwsIB;
 
 import java.sql.Time;
 import java.time.LocalTime;
@@ -14,13 +14,13 @@ public class MarketAdapter {
     public MarketAdapter() {
         referenceMS = System.currentTimeMillis();
 
-        String timescale = TwsThread.strategyData.getTimescale();
+        String timescale = TwsIB.strategyData.getTimescale();
         String delayString = timescale.replace(" sec","");
         delayMS = Long.parseLong(delayString)*1000;
 
         LocalTime startTime = new Time(System.currentTimeMillis()).toLocalTime();
-        TwsThread.liveData.setStartTime(startTime);
-        TwsThread.liveData.update();
+        TwsIB.liveData.setStartTime(startTime);
+        TwsIB.liveData.update();
     }
 
     public void tickPrice(double price) {
@@ -33,7 +33,7 @@ public class MarketAdapter {
         long currentMS = System.currentTimeMillis();
         if ((currentMS - referenceMS) >= delayMS){
             referenceMS = currentMS;
-            new EntrySignalA(price); //Check for signal
+            new StrategyEngine(price); //Check for signal
         }
     }
 }

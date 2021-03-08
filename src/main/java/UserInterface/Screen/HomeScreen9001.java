@@ -1,6 +1,6 @@
 package UserInterface.Screen;
 
-import DataHandling.HistoryData;
+import StorageHandling.HistoryData;
 import UserInterface.Component.Enum.EnumType;
 import UserInterface.Component.Panel.ButtonPanel;
 import UserInterface.Component.Panel.InfoPanel;

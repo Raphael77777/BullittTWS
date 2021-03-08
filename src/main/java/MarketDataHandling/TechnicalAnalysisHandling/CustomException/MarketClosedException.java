@@ -1,4 +1,4 @@
-package CustomException;
+package MarketDataHandling.TechnicalAnalysisHandling.CustomException;
 
 public class MarketClosedException extends Exception {
     public MarketClosedException() {

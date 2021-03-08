@@ -1,4 +1,4 @@
-package IbAccountDataHandling;
+package ConnectionHandling;
 
 import com.ib.client.Contract;
 import com.ib.client.EClientSocket;
@@ -6,7 +6,7 @@ import com.ib.client.Order;
 
 import java.util.ArrayList;
 
-public class TwsOutputAdapter {
+public class OutputAdapterIB {
 
     private EClientSocket m_client;
 
@@ -18,10 +18,10 @@ public class TwsOutputAdapter {
     public static boolean statusReqPnLSingle = false;
 
     public void init() throws InterruptedException {
-        TwsInputAdapter twsInputAdapter = new TwsInputAdapter();
+        InputAdapterIB inputAdapterIB = new InputAdapterIB();
 
         /* onConnect() */
-        m_client = twsInputAdapter.onConnect();
+        m_client = inputAdapterIB.onConnect();
 
         /* onReqManagedAccts, onRequestPositions, onRequestAccountSummary */
         onReqManagedAccts();
@@ -58,7 +58,7 @@ public class TwsOutputAdapter {
             onCancelAccountSummary();
         }
 
-        idOnRequestAccountSummary = TwsThread.getNextValidID();
+        idOnRequestAccountSummary = TwsIB.getNextValidID();
         m_client.reqAccountSummary(idOnRequestAccountSummary, "All", "NetLiquidation,BuyingPower,AvailableFunds,Cushion,FullInitMarginReq");
     }
     public void onCancelAccountSummary() {
@@ -66,7 +66,7 @@ public class TwsOutputAdapter {
     }
 
     public boolean onReqPnL() {
-        if(TwsThread.accountData.getAccountId().equals("")){
+        if(TwsIB.accountData.getAccountId().equals("")){
             return false;
         }
 
@@ -74,8 +74,8 @@ public class TwsOutputAdapter {
             onCancelPnL();
         }
 
-        idOnReqPnL = TwsThread.getNextValidID();
-        m_client.reqPnL(idOnReqPnL, TwsThread.accountData.getAccountId(), "");
+        idOnReqPnL = TwsIB.getNextValidID();
+        m_client.reqPnL(idOnReqPnL, TwsIB.accountData.getAccountId(), "");
         return true;
     }
     public void onCancelPnL() {
@@ -83,7 +83,7 @@ public class TwsOutputAdapter {
     }
 
     public void onReqPnLSingle() {
-        if(TwsThread.positionData.getAccount().equals("") || TwsThread.positionData.getContract() == null || TwsThread.positionData.getContract().conid() == 0){
+        if(TwsIB.positionData.getAccount().equals("") || TwsIB.positionData.getContract() == null || TwsIB.positionData.getContract().conid() == 0){
             statusReqPnLSingle = false;
         }
 
@@ -91,8 +91,8 @@ public class TwsOutputAdapter {
             onCancelPnLSingle();
         }
 
-        idOnReqPnLSingle = TwsThread.getNextValidID();
-        m_client.reqPnLSingle(idOnReqPnLSingle, TwsThread.positionData.getAccount(), "", TwsThread.positionData.getContract().conid());
+        idOnReqPnLSingle = TwsIB.getNextValidID();
+        m_client.reqPnLSingle(idOnReqPnLSingle, TwsIB.positionData.getAccount(), "", TwsIB.positionData.getContract().conid());
         statusReqPnLSingle = true;
     }
     public void onCancelPnLSingle() {
@@ -105,7 +105,7 @@ public class TwsOutputAdapter {
             onCancelMktData();
         }
 
-        idOnReqMktData = TwsThread.getNextValidID();
+        idOnReqMktData = TwsIB.getNextValidID();
         m_client.reqMktData(idOnReqMktData, initializeContract(), "221", false, false, new ArrayList<>());
     }
     public void onCancelMktData() {
@@ -117,14 +117,14 @@ public class TwsOutputAdapter {
     }
 
     public void onPlaceOrder(Order order) {
-        m_client.placeOrder(TwsThread.getNextValidID(), initializeContract(), order );
+        m_client.placeOrder(TwsIB.getNextValidID(), initializeContract(), order );
     }
 
     /*  Initialize Contract */
     public static Contract initializeContract(){
 
         /* Get asset from strategy_data */
-        String asset = TwsThread.strategyData.getAsset();
+        String asset = TwsIB.strategyData.getAsset();
 
         Contract nq = new Contract();
         nq.localSymbol(asset);

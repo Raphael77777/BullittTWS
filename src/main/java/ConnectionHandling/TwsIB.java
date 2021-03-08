@@ -1,13 +1,13 @@
-package IbAccountDataHandling;
+package ConnectionHandling;
 
-import DataHandling.*;
+import StorageHandling.*;
 import MarketDataHandling.MarketAdapter;
-import TechnicalAnalysisHandling.AdapterManager;
+import MarketDataHandling.TechnicalAnalysisHandling.AdapterManager;
 import com.ib.client.Order;
 import com.ib.client.OrderType;
 import com.ib.client.Types;
 
-public class TwsThread implements Runnable {
+public class TwsIB implements Runnable {
 
     public static StrategyData strategyData;
     public static HistoryData historyData;
@@ -21,26 +21,26 @@ public class TwsThread implements Runnable {
     public static double SMA_5 = 0.0;
 
     public static MarketAdapter marketAdapter;
-    public static TwsOutputAdapter twsOutputAdapter = new TwsOutputAdapter();
+    public static OutputAdapterIB outputAdapterIB = new OutputAdapterIB();
 
     private ChronoLiveData chronoLiveData;
     private AdapterManager adapterManager;
     private static int nextValidID = 0;
     public static boolean forceStop = false;
 
-    public TwsThread(StrategyData strategyData, HistoryData historyData, LiveData liveData, AlphaVantageData alphaVantageData, AccountData accountData, PositionData positionData) {
-        TwsThread.strategyData = strategyData;
-        TwsThread.historyData = historyData;
-        TwsThread.liveData = liveData;
-        TwsThread.alphaVantageData = alphaVantageData;
-        TwsThread.accountData = accountData;
-        TwsThread.positionData = positionData;
+    public TwsIB(StrategyData strategyData, HistoryData historyData, LiveData liveData, AlphaVantageData alphaVantageData, AccountData accountData, PositionData positionData) {
+        TwsIB.strategyData = strategyData;
+        TwsIB.historyData = historyData;
+        TwsIB.liveData = liveData;
+        TwsIB.alphaVantageData = alphaVantageData;
+        TwsIB.accountData = accountData;
+        TwsIB.positionData = positionData;
     }
 
     @Override
     public void run() {
         try {
-            twsOutputAdapter.init();
+            outputAdapterIB.init();
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
@@ -49,34 +49,34 @@ public class TwsThread implements Runnable {
     public boolean startMarketAdapter () {
 
         forceStop = false;
-        if (twsOutputAdapter == null){
+        if (outputAdapterIB == null){
             return false;
         }
 
         /* RESET DATA BEFORE STARTING */
-        TwsThread.liveData.reset();
-        TwsThread.historyData.reset();
-        TwsOutputAdapter.statusReqPnLSingle = false;
+        TwsIB.liveData.reset();
+        TwsIB.historyData.reset();
+        OutputAdapterIB.statusReqPnLSingle = false;
 
-        TwsThread.marketAdapter = new MarketAdapter();
-        chronoLiveData = new ChronoLiveData(TwsThread.liveData);
+        TwsIB.marketAdapter = new MarketAdapter();
+        chronoLiveData = new ChronoLiveData(TwsIB.liveData);
         Thread t = new Thread(chronoLiveData);
         t.start();
 
-        adapterManager = new AdapterManager(TwsThread.alphaVantageData, TwsThread.strategyData);
+        adapterManager = new AdapterManager(TwsIB.alphaVantageData, TwsIB.strategyData);
         Thread t1 = new Thread(adapterManager);
         t1.start();
 
         return true;
     }
     public static void initMktAdapter () {
-        twsOutputAdapter.onReqMktData();
+        outputAdapterIB.onReqMktData();
     }
 
     public boolean stopMarketAdapter () {
 
         forceStop = true;
-        if (twsOutputAdapter == null){
+        if (outputAdapterIB == null){
             return false;
         }
 
@@ -85,10 +85,10 @@ public class TwsThread implements Runnable {
         adapterManager.stop();
 
         /* Stop market data */
-        twsOutputAdapter.onCancelMktData();
+        outputAdapterIB.onCancelMktData();
 
         /* Clear open orders */
-        twsOutputAdapter.onGlobalCancel();
+        outputAdapterIB.onGlobalCancel();
 
         /* Clear open positions */
         if (positionData.getContract() != null && strategyData.getAsset().equals(positionData.getContract().localSymbol())){
@@ -103,14 +103,14 @@ public class TwsThread implements Runnable {
             order.orderType(OrderType.MKT);
             order.totalQuantity(Math.abs(position));
             order.transmit(true);
-            twsOutputAdapter.onPlaceOrder(order);
+            outputAdapterIB.onPlaceOrder(order);
         }
 
         return true;
     }
 
     public static void setNextValidID(int nextValidID) {
-        TwsThread.nextValidID = nextValidID;
+        TwsIB.nextValidID = nextValidID;
     }
     public static int getNextValidID() {
         nextValidID++;

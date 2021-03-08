@@ -1,4 +1,4 @@
-package DataHandling;
+package StorageHandling;
 
 import java.sql.Time;
 

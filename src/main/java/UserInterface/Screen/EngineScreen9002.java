@@ -1,7 +1,7 @@
 package UserInterface.Screen;
 
-import DataHandling.AlphaVantageData;
-import DataHandling.StrategyData;
+import StorageHandling.AlphaVantageData;
+import StorageHandling.StrategyData;
 import UserInterface.Component.ImageLabel;
 import UserInterface.Component.Panel.ButtonPanel;
 import UserInterface.Component.Panel.InfoPanel;

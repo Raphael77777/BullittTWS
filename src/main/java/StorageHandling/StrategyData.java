@@ -1,4 +1,4 @@
-package DataHandling;
+package StorageHandling;
 
 import UserInterface.JFrameBTWS;
 import UserInterface.Screen.Observer;

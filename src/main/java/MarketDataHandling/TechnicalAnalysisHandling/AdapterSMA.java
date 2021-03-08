@@ -1,10 +1,10 @@
-package TechnicalAnalysisHandling;
+package MarketDataHandling.TechnicalAnalysisHandling;
 
-import CustomException.MarketClosedException;
-import CustomException.MissingApiKeyException;
-import CustomException.NoNetworkException;
-import CustomException.OverloadApiUseException;
-import DataHandling.AlphaVantageData;
+import MarketDataHandling.TechnicalAnalysisHandling.CustomException.MarketClosedException;
+import MarketDataHandling.TechnicalAnalysisHandling.CustomException.MissingApiKeyException;
+import MarketDataHandling.TechnicalAnalysisHandling.CustomException.NoNetworkException;
+import MarketDataHandling.TechnicalAnalysisHandling.CustomException.OverloadApiUseException;
+import StorageHandling.AlphaVantageData;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
