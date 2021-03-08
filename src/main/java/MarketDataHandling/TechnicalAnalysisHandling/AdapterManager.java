@@ -59,8 +59,7 @@ public class AdapterManager implements Runnable {
                 init = false;
             }
 
-            // TODO : TO REMOVE
-            System.out.println("TECHNICAL ANALYSIS GET AT "+new Time(System.currentTimeMillis()).toString());
+            System.out.println("> TECHNICAL ANALYSIS GET AT "+new Time(System.currentTimeMillis()).toString());
 
             try {
                 Thread.sleep(60000);

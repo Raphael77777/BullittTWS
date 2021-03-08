@@ -1,7 +1,9 @@
 package ConnectionHandling;
 
+import UserInterface.JFrameBTWS;
 import com.ib.client.*;
 
+import javax.swing.*;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.List;
@@ -380,28 +382,30 @@ public class InputAdapterIB implements EWrapper {
     @Override
     public void error(Exception e) {
 
-        //TODO : CATCH ERROR
         e.printStackTrace();
     }
 
     @Override
     public void error(String s) {
 
-        //TODO : CATCH ERROR
         System.err.println(s);
     }
 
     @Override
     public void error(int i, int i1, String s) {
 
-        //TODO : CATCH ERROR
         System.err.println(i+" / "+i1+" / "+s);
+
+        /* Kill the system if no connection is made */
+        if (s.equals("Not connected") || s.equals("Bad Message Length null")){
+            JOptionPane.showMessageDialog(JFrameBTWS.getInstance().getRootPane(), "The system failed to connect to the trading workstation. Please ensure that the trading workstation is active and operational before restarting the algorithm.");
+            System.exit(-1);
+        }
     }
 
     @Override
     public void connectionClosed() {
 
-        //TODO : SHOW MESSAGE IF CONNECTION IS CLOSED
         String msg = EWrapperMsgGenerator.connectionClosed();
         System.out.println(msg);
     }

@@ -28,7 +28,7 @@ public class StrategyEngine {
             TwsIB.liveData.update();
 
             //TODO : TO REMOVE
-            if (TwsIB.liveData.getSumAnalysis() == 3){
+            if (TwsIB.liveData.getSumAnalysis() == 1){
                 orderHandler.placeBuyOrder(price);
             }
 
@@ -67,11 +67,11 @@ public class StrategyEngine {
 
     public void print(){
         // TODO: Show technical analysis
-        System.out.println("* START ******************************************");
-        System.out.println("PRICE : "+price);
-        System.out.println("SMA200 : "+SMA_200);
-        System.out.println("RSI2 : "+RSI_2);
-        System.out.println("SMA_5 : "+SMA_5);
-        System.out.println("* END ********************************************");
+        System.out.println("\n**** START ****");
+        System.out.println(" > PRICE : "+price);
+        System.out.println(" > SMA200 : "+SMA_200);
+        System.out.println(" > RSI2 : "+RSI_2);
+        System.out.println(" > SMA_5 : "+SMA_5);
+        System.out.println("***** END *****\n");
     }
 }

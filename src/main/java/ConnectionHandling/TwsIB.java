@@ -113,13 +113,11 @@ public class TwsIB implements Runnable {
         TwsIB.nextValidID = nextValidID;
     }
     public static int getNextValidID() {
-        int temp = nextValidID;
         nextValidID++;
-        return temp;
+        return nextValidID;
     }
     public static int getNextValidIDOrder() {
-        int temp = nextValidID;
         nextValidID+=3;
-        return temp;
+        return nextValidID;
     }
 }

@@ -25,6 +25,9 @@ public class MarketAdapter {
 
     public void tickPrice(double price) {
 
+        //TODO : REMOVE
+        new StrategyEngine(1.28); //Check for signal
+
         /* Launch signal according to timescale using strategy_data */
         if (price == -1.0){
             return;
@@ -33,6 +36,7 @@ public class MarketAdapter {
         long currentMS = System.currentTimeMillis();
         if ((currentMS - referenceMS) >= delayMS){
             referenceMS = currentMS;
+            System.out.println("> ANALYSIS DONE AT "+new Time(System.currentTimeMillis()).toString());
             new StrategyEngine(price); //Check for signal
         }
     }

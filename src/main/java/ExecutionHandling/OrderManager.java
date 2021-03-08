@@ -96,12 +96,12 @@ public class OrderManager {
         }
 
         // TODO : Show buy order
-        System.out.println("\n\n**** BUY ORDER ****"+
+        System.out.println("\n**** BUY ORDER ****"+
                 "\n > Quantity : "+quantity+" <"+
                 "\n > Limit Price : "+limitPrice+" <"+
                 "\n > TakeProfit Limit Price : "+takeProfitLimitPrice+" <"+
                 "\n > StopLoss Limit Price : "+stopLossPrice+" <"+
-                "\n******* END ******* ");
+                "\n******* END ******* \n");
 
         List<Order> orders = BracketOrder(Types.Action.BUY, quantity, round(limitPrice), round(takeProfitLimitPrice), round(stopLossPrice));
         placeBracketOrder(orders);
@@ -141,12 +141,12 @@ public class OrderManager {
         }
 
         // TODO : Show sell order
-        System.out.println("\n\n**** SELL ORDER ****"+
+        System.out.println("\n**** SELL ORDER ****"+
                 "\n > Quantity : "+quantity+" <"+
                 "\n > Limit Price : "+limitPrice+" <"+
                 "\n > TakeProfit Limit Price : "+takeProfitLimitPrice+" <"+
                 "\n > StopLoss Limit Price : "+stopLossPrice+" <"+
-                "\n******* END ******* ");
+                "\n******* END ******* \n");
 
         List<Order> orders = BracketOrder(Types.Action.SELL, quantity, round(limitPrice), round(takeProfitLimitPrice), round(stopLossPrice));
         placeBracketOrder(orders);
