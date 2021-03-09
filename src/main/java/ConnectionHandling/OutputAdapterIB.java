@@ -8,27 +8,31 @@ import java.util.ArrayList;
 
 public class OutputAdapterIB {
 
+    /* TWS API ENDPOINT */
     private EClientSocket m_client;
 
+    /* REQUEST ID */
     private int idOnRequestAccountSummary = 0;
     private int idOnReqMktData = 0;
     private int idOnReqPnL = 0;
     private int idOnReqPnLSingle = 0;
+
+    /* REQUEST STATUS */
     private boolean reqPos = false;
     public static boolean statusReqPnLSingle = false;
 
     public void init() throws InterruptedException {
         InputAdapterIB inputAdapterIB = new InputAdapterIB();
 
-        /* onConnect() */
+        /* REQUEST onConnect */
         m_client = inputAdapterIB.onConnect();
 
-        /* onReqManagedAccts, onRequestPositions, onRequestAccountSummary */
+        /* REQUEST onReqManagedAccts, onRequestPositions, onRequestAccountSummary */
         onReqManagedAccts();
         onRequestPositions();
         onRequestAccountSummary();
 
-        /* onReqPnL */
+        /* REQUEST onReqPnL */
         boolean statusReqPnL = false;
         while (!statusReqPnL){
             Thread.sleep(3000);
@@ -36,6 +40,7 @@ public class OutputAdapterIB {
         }
     }
 
+    /* API REQUEST METHOD */
     public void onReqManagedAccts() {
         m_client.reqManagedAccts();
     }
@@ -122,10 +127,10 @@ public class OutputAdapterIB {
         m_client.placeOrder(TwsIB.getNextValidID(), initializeContract(), order );
     }
 
-    /*  Initialize Contract */
+    /*  INITIALIZE CONTRACT */
     public static Contract initializeContract(){
 
-        /* Get asset from strategy_data */
+        /* GET ASSET FROM strategy_data */
         String asset = TwsIB.strategyData.getAsset();
 
         Contract nq = new Contract();

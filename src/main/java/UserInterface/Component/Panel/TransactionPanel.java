@@ -10,20 +10,21 @@ import java.awt.geom.Line2D;
 
 public class TransactionPanel extends JPanel {
 
-    /* Values */
+    /* VALUES */
     private TransactionDTO transactionDTO;
 
+    /* COLORS */
     private Color color_parent;
     private Color color_child;
 
     public TransactionPanel(TransactionDTO transactionDTO) {
-
         setBounds(0, 0, 769, 363);
         setOpaque(false);
         setLayout(null);
 
         this.transactionDTO = transactionDTO;
 
+        /* ASSIGN COLORS */
         if (transactionDTO.getAction() == Types.Action.BUY){
             color_parent = GraphicalTheme.primary_color;
             color_child = GraphicalTheme.secondary_color;
@@ -31,17 +32,18 @@ public class TransactionPanel extends JPanel {
             color_parent = GraphicalTheme.secondary_color;
             color_child = GraphicalTheme.primary_color;
         }
-
     }
 
     @Override
     protected void paintComponent(Graphics g) {
+        /* DISPLAY VALUES */
         Graphics2D g2d=(Graphics2D) g;
         int w = getWidth();
         int h = getHeight();
 
         g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING,RenderingHints.VALUE_ANTIALIAS_ON);
 
+        /* DISPLAY BORDERS */
         g2d.setColor(color_parent);
         g2d.setStroke(new BasicStroke(3));
         g2d.draw(new Line2D.Float(0, 0, 30, 0));
@@ -96,7 +98,7 @@ public class TransactionPanel extends JPanel {
             g2d.fillPolygon(new int[] {x, 15+x, 30+x}, new int[] {y, 30+y, y}, 3);
         }
 
-        /* parent */
+        /* DISPLAY PARENT */
         g.setFont(GraphicalTheme.font_header1);
         g.setColor(color_parent);
         g.drawString(transactionDTO.getAsset(), 60, 57);
@@ -120,7 +122,7 @@ public class TransactionPanel extends JPanel {
         width = g.getFontMetrics().stringWidth(transactionDTO.getTime().toString());
         g.drawString(transactionDTO.getTime().toString(), w-width-20, (int ) (h*0.36));
 
-        /* child tp */
+        /* DISPLAY CHILD TP */
         g.setFont(GraphicalTheme.font_header1);
         g.setColor(color_child);
         g.drawString("TP", 110, 205);
@@ -137,7 +139,7 @@ public class TransactionPanel extends JPanel {
         Types.Action action = ((transactionDTO.getAction() == Types.Action.BUY) ? Types.Action.SELL : Types.Action.BUY);
         g.drawString(action +" "+quantity+"K UNIT", 70, 240);
 
-        /* child sl */
+        /* DISPLAY CHILD SL */
         g.setFont(GraphicalTheme.font_header1);
         g.setColor(color_child);
         g.drawString("SL", 110, 310);
@@ -152,6 +154,5 @@ public class TransactionPanel extends JPanel {
         g.drawString("@ "+transactionDTO.getStopLossPrice(), (w-widthM)/2+65, 310);
         g.drawString(transactionDTO.getStatus_sl(), 160, 310);
         g.drawString(action +" "+quantity+"K UNIT", 70, 345);
-
     }
 }

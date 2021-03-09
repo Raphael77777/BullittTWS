@@ -11,7 +11,7 @@ public class WelcomeScreen9000 extends AbstractScreen {
 
     @Override
     public void init() {
-
+        /* DISPLAY COMPONENTS */
         ImageLabel logoImg = new ImageLabel("FAV-1750.png");
         logoImg.setBounds(114, -50, 600, 600);
         add(logoImg);

@@ -8,30 +8,27 @@ import java.awt.geom.Line2D;
 
 public class AccountPanel extends JPanel {
 
-    /* Values */
+    /* VALUES */
     private String account;
     private String currency;
 
     public AccountPanel(String account, String currency) {
-
         setBounds(0, 0, 786, 110);
         setOpaque(false);
         setLayout(null);
 
         this.account = account;
         this.currency = currency;
-
     }
 
     public void update (String account, String currency) {
-
         this.account = account;
         this.currency = currency;
-
     }
 
     @Override
     protected void paintComponent(Graphics g) {
+        /* DISPLAY VALUES */
         Graphics2D g2d=(Graphics2D) g;
         int w = getWidth();
         int h = getHeight();

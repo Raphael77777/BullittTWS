@@ -11,9 +11,10 @@ import java.util.List;
 
 public class OrderManager {
 
-    /* Create bracket orders */
+    /* CREATE BRACKET ORDER (PARENT, TP, SL) */
     public static List<Order> BracketOrder(Types.Action action, int quantity, double limitPrice, double takeProfitLimitPrice, double stopLossPrice) {
 
+        /* GET ID FROM TWS IB */
         int parentOrderId = TwsIB.getNextValidIDOrder();
 
         /* PARENT ORDER */
@@ -21,7 +22,6 @@ public class OrderManager {
         parent.orderId(parentOrderId);
         parent.action(action);
         parent.totalQuantity(quantity);
-
         /* Adapt order type using strategy_data */
         switch (TwsIB.strategyData.getOrder()){
             case "Market":
@@ -34,7 +34,7 @@ public class OrderManager {
         }
         parent.transmit(false);
 
-        /* TP ORDER */
+        /* TAKE-PROFIT(TP) ORDER */
         Order takeProfit = new Order();
         takeProfit.parentId(parentOrderId+1);
         takeProfit.orderId(parentOrderId+2);
@@ -44,7 +44,7 @@ public class OrderManager {
         takeProfit.lmtPrice(takeProfitLimitPrice);
         takeProfit.transmit(false);
 
-        /* SL ORDER */
+        /* STOP-LOSS(SL) ORDER */
         Order stopLoss = new Order();
         stopLoss.parentId(parentOrderId+1);
         stopLoss.orderId(parentOrderId+3);
@@ -62,9 +62,8 @@ public class OrderManager {
         return orders;
     }
 
-    /* Create buy order */
+    /* CREATE BUY ORDER */
     public void placeBuyOrder(double price) {
-
         /* Adapt quantity to multiplier using strategy_data */
         int multiplier = TwsIB.strategyData.getMultiplier();
         int quantity = 20000 * multiplier;
@@ -95,7 +94,7 @@ public class OrderManager {
             stopLossPrice = SMA_5;
         }
 
-        // TODO : Show buy order
+        /* Show buy order */
         System.out.println("\n**** BUY ORDER ****"+
                 "\n > Quantity : "+quantity+" <"+
                 "\n > Limit Price : "+limitPrice+" <"+
@@ -103,13 +102,15 @@ public class OrderManager {
                 "\n > StopLoss Limit Price : "+stopLossPrice+" <"+
                 "\n******* END ******* \n");
 
+        /* Get bracket order */
         List<Order> orders = BracketOrder(Types.Action.BUY, quantity, round(limitPrice), round(takeProfitLimitPrice), round(stopLossPrice));
+
+        /* Transmit bracket order */
         placeBracketOrder(orders);
     }
 
-    /* Create sell order */
+    /* CREATE SELL ORDER */
     public void placeSellOrder(double price){
-
         /* Adapt quantity to multiplier using strategy_data */
         int multiplier = TwsIB.strategyData.getMultiplier();
         int quantity = 20000 * multiplier;
@@ -140,7 +141,7 @@ public class OrderManager {
             stopLossPrice = SMA_5;
         }
 
-        // TODO : Show sell order
+        /* Show sell order */
         System.out.println("\n**** SELL ORDER ****"+
                 "\n > Quantity : "+quantity+" <"+
                 "\n > Limit Price : "+limitPrice+" <"+
@@ -148,13 +149,18 @@ public class OrderManager {
                 "\n > StopLoss Limit Price : "+stopLossPrice+" <"+
                 "\n******* END ******* \n");
 
+        /* Get bracket order */
         List<Order> orders = BracketOrder(Types.Action.SELL, quantity, round(limitPrice), round(takeProfitLimitPrice), round(stopLossPrice));
+
+        /* Transmit bracket order */
         placeBracketOrder(orders);
     }
 
-    /* Place order on market */
+    /* PLACE ORDER */
     private void placeBracketOrder (List<Order> bracketOrder) {
+        /* VERIFY BRACKET ORDER */
         if (RiskManager.verifyOrder(bracketOrder)) {
+            /* TRANSMIT ORDER TO MARKET */
             for (Order o : bracketOrder) {
                 TwsIB.outputAdapterIB.onPlaceOrder(o);
             }
@@ -167,6 +173,7 @@ public class OrderManager {
     }
 
     public double round (double d){
+        /* ROUND TO 0.05 FOR MARKET ADAPTATION */
         return Math.round(d * 20.0) / 20.0;
     }
 }

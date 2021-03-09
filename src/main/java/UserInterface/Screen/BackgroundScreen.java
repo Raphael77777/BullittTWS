@@ -15,12 +15,15 @@ import java.io.IOException;
 
 public class BackgroundScreen extends JPanel {
 
+    /* MENU */
     private final JButton [] jButtons = new JButton[7];
 
+    /* COMPONENTS */
     private final ImageLabel logoImg ;
     private final ImageLabel emergency ;
 
     public void paintComponent(Graphics g) {
+        /* PAINT BACKGROUND */
         try {
             Image image = ImageIO.read(getClass().getResource("/background2.jpg"));
             g.setColor(Color.black);
@@ -36,12 +39,13 @@ public class BackgroundScreen extends JPanel {
     }
 
     public BackgroundScreen(){
-
         setBounds(0, 0, 1100, 600);
         setLayout(null);
 
+        /* CLEAN PANEL */
         removeAll();
 
+        /* DISPLAY MENU */
         String[] label = new String[]{"HOME", "ENGINE", "MONITOR", "SETTINGS", "HISTORY", "ACCOUNTS", "POSITIONS"};
         for (int i = 0; i< label.length; i++){
             jButtons[i] = new JButton(label[i]);
@@ -54,24 +58,28 @@ public class BackgroundScreen extends JPanel {
             add(jButtons[i]);
         }
 
+        /* DISPLAY MINIMIZE BUTTON */
         ImageLabel minimizeImg = new ImageLabel("minimize.png");
         minimizeImg.setBounds(1015,0, 50,50);
         BackgroundScreen.minimizeAction minimizeAction = new minimizeAction();
         minimizeImg.addMouseListener(minimizeAction);
         add(minimizeImg);
 
+        /* DISPLAY CLOSE BUTTON */
         ImageLabel closeImg = new ImageLabel("close.png");
         closeImg.setBounds(1050,0, 50,50);
         BackgroundScreen.closeAction closeAction = new closeAction();
         closeImg.addMouseListener(closeAction);
         add(closeImg);
 
+        /* DISPLAY LOGO */
         logoImg = new ImageLabel("TITLE-1750.png");
         logoImg.setBounds(16, 20, 240, 69);
         BackgroundScreen.welcomeAction welcomeAction = new welcomeAction();
         logoImg.addMouseListener(welcomeAction);
         add(logoImg);
 
+        /* DISPLAY EMERGENCY BUTTON */
         emergency = new ImageLabel("emergency.png");
         BackgroundScreen.emergencyAction emergencyAction = new emergencyAction();
         emergency.addMouseListener(emergencyAction);
@@ -80,6 +88,7 @@ public class BackgroundScreen extends JPanel {
     }
 
     public void engineStarted(){
+        /* DISPLAY EMERGENCY BUTTON */
         remove(logoImg);
 
         logoImg.setBounds(85, 30, 170, 49);
@@ -90,8 +99,8 @@ public class BackgroundScreen extends JPanel {
 
         repaint();
     }
-
     public void engineStopped(){
+        /* HIDE EMERGENCY BUTTON */
         remove(logoImg);
         remove(emergency);
 
@@ -102,6 +111,7 @@ public class BackgroundScreen extends JPanel {
     }
 
     private static class closeAction extends MouseAdapter {
+        /* CLOSE ACTION */
         @Override
         public void mouseClicked(MouseEvent e) {
             JFrameBTWS.getInstance().setVisible(false);
@@ -109,12 +119,14 @@ public class BackgroundScreen extends JPanel {
         }
     }
     private static class minimizeAction extends MouseAdapter {
+        /* MINIMIZE ACTION */
         @Override
         public void mouseClicked(MouseEvent e) {
             JFrameBTWS.getInstance().setState(Frame.ICONIFIED);
         }
     }
     private class welcomeAction extends MouseAdapter {
+        /* WELCOME ACTION */
         @Override
         public void mouseClicked(MouseEvent e) {
             String target = "WELCOME";
@@ -123,6 +135,7 @@ public class BackgroundScreen extends JPanel {
         }
     }
     private class emergencyAction extends MouseAdapter {
+        /* EMERGENCY ACTION */
         @Override
         public void mouseClicked(MouseEvent e) {
             String target = "EMERGENCY";
@@ -132,23 +145,25 @@ public class BackgroundScreen extends JPanel {
     }
 
     public class buttonAction implements ActionListener {
+        /* MENU ACTION */
         @Override
         public void actionPerformed(ActionEvent e) {
-
             String target = ((JButton)e.getSource()).getText();
             JFrameBTWS.getInstance().changeScreen(target);
             changeScreen(target);
 
         }
     }
-    public void changeScreen(String target) {
 
+    public void changeScreen(String target) {
         if (target.equals("EMERGENCY")){
             return;
         }
 
+        /* RESET BUTTON COLOR */
         for (JButton jButton : jButtons) jButton.setBackground(GraphicalTheme.primary_color);
 
+        /* SET PRESSED BUTTON COLOR */
         switch (target){
             case "HOME":
                 jButtons[0].setBackground(GraphicalTheme.secondary_color);

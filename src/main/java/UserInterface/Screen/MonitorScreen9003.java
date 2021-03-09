@@ -6,24 +6,32 @@ import UserInterface.Component.Panel.InfoPanel;
 
 public class MonitorScreen9003 extends AbstractScreen implements Observer {
 
+    /* COMPONENTS */
     private final InfoPanel [] infoPanels = new InfoPanel[15];
 
+    /* DATA SUBJECT */
     private final LiveData liveData;
 
+    /* DATA TO DISPLAY */
     private final String [] IP_texts = new String[]{"Daily P&L", "Unrealized P&L", "#Order", "#Analysis", "Compelling analysis", "Realized P&L", "Analysis time", "Average analysis time", "Min. analysis time", "Max. analysis time", "Time since start", "Start time", "Start price", "Current price", "Var. start"};
     private final String [] IP_values = new String[]{"--", "--", "--", "--", "--", "--", "--", "--", "--", "--", "--", "--", "--", "--", "--"};
     private final EnumType[] IP_types = new EnumType[]{EnumType.NO_ICON, EnumType.NO_ICON, EnumType.NO_ICON, EnumType.NO_ICON, EnumType.NO_ICON, EnumType.NO_ICON, EnumType.NO_ICON, EnumType.NO_ICON, EnumType.NO_ICON, EnumType.NO_ICON, EnumType.GREEN, EnumType.GREEN, EnumType.NO_ICON, EnumType.NO_ICON, EnumType.NO_ICON};
 
     public MonitorScreen9003(LiveData liveData) {
         this.liveData = liveData;
+
+        /* REGISTER TO RECEIVE UPDATE */
         this.liveData.registerObserver(this);
+
+        update();
     }
 
     @Override
     public void init() {
-
+        /* CLEAN PANEL */
         removeAll();
 
+        /* DISPLAY COMPONENTS */
         int idx = 0;
         for (int i = 0; i < 3; i++){
             for (int j = 0; j < 5; j++){
@@ -39,9 +47,7 @@ public class MonitorScreen9003 extends AbstractScreen implements Observer {
 
     @Override
     public void update() {
-
-        /* CALL METHOD OF liveData to update IP_values and IP_types */
-
+        /* CALL METHOD OF liveData TO UPDATE IP_values AND IP_types */
         double dailyPNL = liveData.getDailyPNL();
         IP_values[0] = String.valueOf(dailyPNL);
         IP_types[0] = EnumType.NO_ICON;
@@ -92,6 +98,7 @@ public class MonitorScreen9003 extends AbstractScreen implements Observer {
             IP_types[14] = EnumType.NEGATIVE;
         }
 
+        /* DISPLAY UPDATES ON SCREEN */
         init();
     }
 }

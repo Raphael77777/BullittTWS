@@ -11,7 +11,7 @@ import java.util.List;
 
 public class TransactionDTO {
 
-    /* PARENT ORDER */
+    /* PARENT ORDER VALUES */
     private int orderId;
     private Types.Action action;
     private String asset;
@@ -23,14 +23,14 @@ public class TransactionDTO {
     private Time time;
     private String status;
 
-    /* TAKE PROFIT ORDER */
+    /* TAKE PROFIT ORDER VALUES */
     private int orderId_tp;
     private OrderType type_tp;
     private double takeProfitLimitPrice;
     private String status_tp;
     private double avgFillPrice_tp;
 
-    /* STOP LOSS ORDER */
+    /* STOP LOSS ORDER VALUES */
     private int orderId_sl;
     private OrderType type_sl;
     private double stopLossPrice;
@@ -38,7 +38,8 @@ public class TransactionDTO {
     private double avgFillPrice_sl;
 
     public TransactionDTO (List<Order> bracketOrder){
-        /* Get parent order */
+        /* POPULATE VALUES FROM BRACKET ORDER */
+        // Get parent order
         Order parentOrder = bracketOrder.get(0);
 
         orderId = parentOrder.orderId()+1;
@@ -52,7 +53,7 @@ public class TransactionDTO {
         time = new Time(System.currentTimeMillis());
         status = "";
 
-        /* Get take profit order */
+        // Get take profit order
         Order takeProfitOrder = bracketOrder.get(1);
         orderId_tp = takeProfitOrder.orderId();
         type_tp = takeProfitOrder.orderType();
@@ -60,7 +61,7 @@ public class TransactionDTO {
         status_tp = "";
         avgFillPrice_tp = 0;
 
-        /* Get stop loss order */
+        // Get stop loss order
         Order stopLossOrder = bracketOrder.get(2);
         orderId_sl = stopLossOrder.orderId();
         type_sl = stopLossOrder.orderType();
@@ -69,6 +70,7 @@ public class TransactionDTO {
         avgFillPrice_sl = 0;
     }
 
+    /* TransactionDTO METHOD(GETTER AND SETTER) */
     public int getOrderId() {
         return orderId;
     }

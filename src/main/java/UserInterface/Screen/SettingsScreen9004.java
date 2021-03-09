@@ -11,14 +11,18 @@ import UserInterface.Component.Panel.InfoPanel;
 
 public class SettingsScreen9004 extends AbstractScreen implements Observer {
 
+    /* DATA SUBJECT */
     private final StrategyData strategyData;
 
+    /* STATIC DATA TO DISPLAY*/
     private final String[] IN_Description = new String[]{"Asset", "Accuracy", "Timescale", "Multiplier", "% Take Profit", "% Stop Loss", "Order"};
 
+    /* DROPDOWN POSSIBILITIES */
     private final String [] IN_DropV0 = new String[]{"AUD.CAD", "AUD.CHF", "AUD.CNH", "AUD.HKD", "AUD.JPY", "AUD.NZD", "AUD.SGD", "AUD.USD", "AUD.ZAR", "CAD.CHF", "CAD.CNH", "CAD.JPY", "CHF.CNH", "CHF.CZK", "CHF.DKK", "CHF.HUF", "CHF.JPY", "CHF.NOK", "CHF.PLN", "CHF.SEK", "CHF.TRY", "CHF.ZAR", "CNH.HKD", "CNH.JPY", "DKK.JPY", "DKK.NOK", "DKK.SEK", "EUR.AUD", "EUR.CAD", "EUR.CHF", "EUR.CNH", "EUR.CZK", "EUR.DKK", "EUR.GBP", "EUR.HKD", "EUR.HUF", "EUR.ILS", "EUR.JPY", "EUR.MXN", "EUR.NOK", "EUR.NZD", "EUR.PLN", "EUR.RUB", "EUR.SEK", "EUR.SGD", "EUR.TRY", "EUR.USD", "EUR.ZAR", "GBP.AUD", "GBP.CAD", "GBP.CHF", "GBP.CNH", "GBP.CZK", "GBP.DKK", "GBP.HKD", "GBP.HUF", "GBP.JPY", "GBP.MXN", "GBP.NOK", "GBP.NZD", "GBP.PLN", "GBP.SEK", "GBP.SGD", "GBP.TRY", "GBP.USD", "GBP.ZAR", "HKD.JPY", "KRW.AUD", "KRW.CAD", "KRW.CHF", "KRW.EUR", "KRW.GBP", "KRW.HKD", "KRW.JPY", "KRW.USD", "MXN.JPY", "NOK.JPY", "NOK.SEK", "NZD.CAD", "NZD.CHF", "NZD.JPY", "NZD.USD", "SEK.JPY", "SGD.CNH", "SGD.HKD", "SGD.JPY", "USD.CAD", "USD.CHF", "USD.CNH", "USD.CZK", "USD.DKK", "USD.HKD", "USD.HUF", "USD.ILS", "USD.JPY", "USD.KRW", "USD.MXN", "USD.NOK", "USD.PLN", "USD.RUB", "USD.SEK", "USD.SGD", "USD.TRY", "USD.ZAR", "ZAR.JPY"};
     private final String [] IN_DropV2 = new String[]{"10 sec", "20 sec", "40 sec", "50 sec", "60 sec", "70 sec", "80 sec", "90 sec"};
     private final String [] IN_DropV6 = new String[]{"Market", "Limit"};
 
+    /* COMPONENTS */
     private InputCombo asset;
     private InputCombo order;
     private InputCombo timescale;
@@ -29,6 +33,8 @@ public class SettingsScreen9004 extends AbstractScreen implements Observer {
 
     public SettingsScreen9004(StrategyData strategyData) {
         this.strategyData = strategyData;
+
+        /* REGISTER TO RECEIVE UPDATE */
         this.strategyData.registerObserver(this);
 
         update();
@@ -36,14 +42,27 @@ public class SettingsScreen9004 extends AbstractScreen implements Observer {
 
     @Override
     public void init() {
-
+        /* CLEAN PANEL */
         removeAll();
 
-        /* STATIC */
+        /* DISPLAY STATIC COMPONENTS */
         ButtonPanel strategy = new ButtonPanel(EnumType.NO_ICON, "RSI (2)", "Strategy", "NO BUTTON");
         strategy.setBounds(20, 20, 523, 110);
         add(strategy);
 
+        InfoPanel infoPanelRMS = new InfoPanel(EnumType.NO_ICON, "RMS", "Active");
+        infoPanelRMS.setBounds(546, 246, 260, 110);
+        add(infoPanelRMS);
+
+        InfoPanel infoPanelAKI = new InfoPanel(EnumType.NO_ICON, "Auto-kill", "Active");
+        infoPanelAKI.setBounds(546, 359, 260, 110);
+        add(infoPanelAKI);
+
+        ButtonPanel save = new ButtonPanel(EnumType.NO_ICON, "COMPILATION", "Save and update the strategy", "COMPIL");
+        save.setBounds(283, 472, 523, 110);
+        add(save);
+
+        /* DISPLAY COMPONENTS */
         asset = new InputCombo(IN_Description[0], IN_DropV0);
         asset.setBounds(546, 20, 260, 110);
         add(asset);
@@ -64,38 +83,23 @@ public class SettingsScreen9004 extends AbstractScreen implements Observer {
         take_profit.setBounds(20, 246, 523, 110);
         add(take_profit);
 
-        /* STATIC */
-        InfoPanel infoPanelRMS = new InfoPanel(EnumType.NO_ICON, "RMS", "Active");
-        infoPanelRMS.setBounds(546, 246, 260, 110);
-        add(infoPanelRMS);
-
         stop_loss = new InputDoubleL(EnumType.NEGATIVE, IN_Description[5], "Select a limit for stop loss order");
         stop_loss.setBounds(20, 359, 523, 110);
         add(stop_loss);
 
-        /* STATIC */
-        InfoPanel infoPanelAKI = new InfoPanel(EnumType.NO_ICON, "Auto-kill", "Active");
-        infoPanelAKI.setBounds(546, 359, 260, 110);
-        add(infoPanelAKI);
-
         order = new InputCombo(IN_Description[6], IN_DropV6);
         order.setBounds(20, 472, 260, 110);
         add(order);
-
-        /* STATIC */
-        ButtonPanel save = new ButtonPanel(EnumType.NO_ICON, "COMPILATION", "Save and update the strategy", "COMPIL");
-        save.setBounds(283, 472, 523, 110);
-        add(save);
 
         repaint();
     }
 
     @Override
     public void update() {
-
+        /* INIT COMPONENTS */
         init();
 
-        /* CALL METHOD OF strategyData to update following */
+        /* CALL METHOD OF strategyData TO UPDATE components */
         asset.setSelected(strategyData.getAsset());
         order.setSelected(strategyData.getOrder());
         timescale.setSelected(strategyData.getTimescale());
@@ -108,8 +112,7 @@ public class SettingsScreen9004 extends AbstractScreen implements Observer {
     }
 
     public void changeStrategy() {
-
-        /* UPDATE STRATEGY WITHIN strategyData with data following */
+        /* UPDATE strategyData WITH NEW VALUES */
         strategyData.setAsset(asset.getSelected());
         strategyData.setOrder(order.getSelected());
         strategyData.setTimescale(timescale.getSelected());
@@ -118,6 +121,7 @@ public class SettingsScreen9004 extends AbstractScreen implements Observer {
         strategyData.setTake_profit(take_profit.getNumber());
         strategyData.setStop_loss(stop_loss.getNumber());
 
+        /* PROPAGATE CHANGES */
         strategyData.compil();
     }
 }

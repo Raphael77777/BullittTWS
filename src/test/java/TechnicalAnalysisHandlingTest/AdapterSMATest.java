@@ -1,6 +1,5 @@
 package TechnicalAnalysisHandlingTest;
 
-import MarketDataHandling.TechnicalAnalysisHandling.AdapterRSI;
 import MarketDataHandling.TechnicalAnalysisHandling.AdapterSMA;
 import StorageHandling.AlphaVantageData;
 import UserInterface.JFrameBTWS;

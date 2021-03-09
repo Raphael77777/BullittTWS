@@ -7,26 +7,23 @@ import UserInterface.STATIC.GraphicalTheme;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.geom.Line2D;
 
 public class ButtonPanel extends JPanel {
 
+    /* VALUES */
     private EnumType type;
     private String header;
     private String text;
     private String target;
 
     public ButtonPanel(EnumType type, String header, String text, String target) {
-
         setBounds(0, 0, 523, 110);
         setOpaque(false);
         setLayout(null);
 
-        /* Values */
         this.type = type;
         this.header = header;
         this.text = text;
@@ -46,8 +43,8 @@ public class ButtonPanel extends JPanel {
 
     @Override
     protected void paintComponent(Graphics g) {
+        /* DISPLAY VALUES */
         Graphics2D g2d=(Graphics2D) g;
-        int w = getWidth();
         int h = getHeight();
 
         g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING,RenderingHints.VALUE_ANTIALIAS_ON);
@@ -79,18 +76,13 @@ public class ButtonPanel extends JPanel {
     }
 
     private void init (){
-
+        /* INIT COMPONENT */
         if (!target.equals("NO BUTTON")){
             JButton jButton = new JButton("GO");
             jButton.setBackground(GraphicalTheme.primary_color);
             jButton.setFont(GraphicalTheme.font_header1);
             jButton.setForeground(GraphicalTheme.light_color);
-            jButton.addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    JFrameBTWS.getInstance().changeScreen(target);
-                }
-            });
+            jButton.addActionListener(e -> JFrameBTWS.getInstance().changeScreen(target));
             jButton.setBounds(428, 15, 80, 80);
             add(jButton);
         }if (!target.equals("API BUTTONS")){
@@ -101,7 +93,8 @@ public class ButtonPanel extends JPanel {
         }
     }
 
-    private class updateAPIKEY extends MouseAdapter {
+    private static class updateAPIKEY extends MouseAdapter {
+        /* BUTTON ACTION */
         @Override
         public void mouseClicked(MouseEvent e) {
             JFrameBTWS.getInstance().setAPIKEY();

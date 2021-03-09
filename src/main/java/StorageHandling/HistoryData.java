@@ -7,8 +7,10 @@ import java.util.*;
 
 public class HistoryData implements Subject {
 
+    /* LIST OF OBSERVERS */
     private ArrayList<Observer> observers;
 
+    /* VALUES */
     private final Map<Integer, TransactionDTO> transactions;
 
     public HistoryData() {
@@ -42,8 +44,7 @@ public class HistoryData implements Subject {
         }
     }
 
-    /* HISTORY DATA METHOD */
-
+    /* HistoryData METHOD(GETTER AND SETTER) */
     public List<TransactionDTO> getTransactions (){
         List<TransactionDTO> transactionDTOS = new ArrayList<>();
 

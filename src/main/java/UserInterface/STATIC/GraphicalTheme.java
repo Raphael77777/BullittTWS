@@ -16,8 +16,8 @@ public class GraphicalTheme {
     public final static Color light_color = new Color(255, 255, 255);
     public final static Color dark_color = new Color(16, 16, 16);
 
+    /* FONTS */
     public final static Font font_header1 = new Font("Agency FB", Font.BOLD, 40);
     public final static Font font_header2 = new Font("Agency FB", Font.BOLD, 31);
     public final static Font font_header3 = new Font("Agency FB", Font.BOLD, 22);
-
 }

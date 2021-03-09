@@ -24,6 +24,7 @@ public class AdapterRSI extends AlphaVantageAdapter {
         super(alphaVantageData);
     }
 
+    /* GET Relative Strength Index Indicator */
     public double get(String symbol, String interval, String time_period, String series_type) throws MarketClosedException, OverloadApiUseException, MissingApiKeyException, NoNetworkException {
 
         if (API_KEY == null || API_KEY.length() != 16){
@@ -31,6 +32,7 @@ public class AdapterRSI extends AlphaVantageAdapter {
         }
 
         try {
+            /* REQUEST DATA */
             URL url = new URL("https://www.alphavantage.co/query?function=RSI&symbol=" + symbol + "&interval=" + interval + "&time_period=" + time_period + "&series_type=" + series_type + "&apikey=" + API_KEY);
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
             conn.setRequestMethod("GET");
@@ -60,6 +62,8 @@ public class AdapterRSI extends AlphaVantageAdapter {
 
                     JSONObject skr = (JSONObject) obj;
                     Map analysis = ((Map) skr.get("Technical Analysis: RSI"));
+
+                    /* FIND MORE RECENT ANALYSIS */
                     for (Map.Entry pair : (Iterable<Map.Entry>) analysis.entrySet()) {
                         LocalDateTime tempLocalDate = LocalDateTime.parse(pair.getKey().toString(), formatter);
 
@@ -85,6 +89,6 @@ public class AdapterRSI extends AlphaVantageAdapter {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        throw new MarketClosedException(); //MARKET CLOSED
+        throw new MarketClosedException(); //THE MARKET CLOSED
     }
 }

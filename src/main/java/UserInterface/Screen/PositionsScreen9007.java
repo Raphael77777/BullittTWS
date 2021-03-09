@@ -9,25 +9,32 @@ import UserInterface.Component.Panel.InfoPanelL;
 
 public class PositionsScreen9007 extends AbstractScreen implements Observer{
 
+    /* COMPONENTS */
     private final InfoPanel[] infoPanels = new InfoPanel[4];
     private final InfoPanelL[] infoPanelLS = new InfoPanelL[4];
 
+    /* DATA SUBJECT */
     private final PositionData positionData;
     private final AccountData accountData;
 
+    /* HEADER TO DISPLAY*/
     private String accountId = "DU985632";
     private String currency = "USD";
 
+    /* DATA TO DISPLAY */
     private final String [] IP_texts = new String[]{"Position", "Average Cost", "Value", "Type", "Symbol", "Daily P&L", "Unrealized P&L", "Realized P&L"};
     private final String [] IP_values = new String[]{"--", "--", "--", "--", "--", "--", "--", "--"};
     private final EnumType[] IP_types = new EnumType[]{EnumType.NO_ICON, EnumType.NO_ICON, EnumType.NO_ICON, EnumType.NO_ICON, EnumType.NO_ICON, EnumType.NO_ICON, EnumType.NO_ICON, EnumType.NO_ICON};
 
-
     public PositionsScreen9007(PositionData positionData, AccountData accountData) {
         this.positionData = positionData;
+
+        /* REGISTER TO RECEIVE UPDATE */
         this.positionData.registerObserver(this);
 
         this.accountData = accountData;
+
+        /* REGISTER TO RECEIVE UPDATE */
         this.accountData.registerObserver(this);
 
         update();
@@ -35,13 +42,15 @@ public class PositionsScreen9007 extends AbstractScreen implements Observer{
 
     @Override
     public void init() {
-
+        /* CLEAN PANEL */
         removeAll();
 
+        /* DISPLAY HEADER */
         AccountPanel accountPanel = new AccountPanel(accountId, currency);
         accountPanel.setBounds(20, 20, 786, 110);
         add(accountPanel);
 
+        /* DISPLAY COMPONENTS */
         for (int i = 0; i<infoPanelLS.length; i++){
             infoPanelLS[i] = new InfoPanelL(IP_types[i], IP_texts[i], IP_values[i]);
             infoPanelLS[i].setBounds(20, 133+i*113, 523, 110);
@@ -59,9 +68,7 @@ public class PositionsScreen9007 extends AbstractScreen implements Observer{
 
     @Override
     public void update() {
-
-        /* CALL METHOD OF positionData to update IP_values and IP_types */
-
+        /* CALL METHOD OF positionData, accountData TO UPDATE IP_values, IP_types and headers */
         accountId = accountData.getAccountId();
         currency = accountData.getCurrency();
 
@@ -103,6 +110,7 @@ public class PositionsScreen9007 extends AbstractScreen implements Observer{
         }
         IP_values[7] = String.valueOf(realizedPNL);
 
+        /* DISPLAY UPDATES ON SCREEN */
         init();
     }
 }

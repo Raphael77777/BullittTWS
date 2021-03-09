@@ -26,30 +26,34 @@ public class RiskManager {
             return false;
         }
 
-        if (parent.totalQuantity() != tp.totalQuantity() || parent.totalQuantity() != sl.totalQuantity()){
+        if (parent.totalQuantity() != tp.totalQuantity()
+                || parent.totalQuantity() != sl.totalQuantity()){
             return false;
         }
 
-        if (parent.orderType() == OrderType.LMT && TwsIB.strategyData.getOrder().equals("Market")){
+        if (parent.orderType() == OrderType.LMT
+                && TwsIB.strategyData.getOrder().equals("Market")){
             return false;
         }
 
-        if (parent.orderType() == OrderType.MKT && TwsIB.strategyData.getOrder().equals("Limit")){
+        if (parent.orderType() == OrderType.MKT
+                && TwsIB.strategyData.getOrder().equals("Limit")){
             return false;
         }
 
-        if (tp.lmtPrice() == 0 || sl.auxPrice() == 0){
+        if (tp.lmtPrice() == 0
+                || sl.auxPrice() == 0){
             return false;
         }
 
-        if (parent.getAction().equals("BUY")){
-            if (tp.lmtPrice() <= sl.auxPrice()){
-                return false;
-            }
-        }else if (parent.getAction().equals("SELL")){
-            if (tp.lmtPrice() >= sl.auxPrice()){
-                return false;
-            }
+        if (parent.getAction().equals("BUY")
+                && tp.lmtPrice() <= sl.auxPrice()){
+            return false;
+        }
+
+        if (parent.getAction().equals("SELL")
+                && tp.lmtPrice() >= sl.auxPrice()){
+            return false;
         }
 
         return true;

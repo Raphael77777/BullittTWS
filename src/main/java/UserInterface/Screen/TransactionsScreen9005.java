@@ -10,12 +10,16 @@ import java.util.List;
 
 public class TransactionsScreen9005 extends AbstractScreen implements Observer{
 
+    /* DATA SUBJECT */
     private final HistoryData historyData;
 
+    /* OBJECTS TO DISPLAY */
     private List<TransactionDTO> transactionDTOS;
 
     public TransactionsScreen9005(HistoryData historyData) {
         this.historyData = historyData;
+
+        /* REGISTER TO RECEIVE UPDATE */
         this.historyData.registerObserver(this);
 
         update();
@@ -23,17 +27,20 @@ public class TransactionsScreen9005 extends AbstractScreen implements Observer{
 
     @Override
     public void init() {
-
+        /* CLEAN PANEL */
         removeAll();
 
+        /* RETURN IF NO DATA TO DISPLAY */
         if (transactionDTOS == null || transactionDTOS.size() == 0){
             return;
         }
 
+        /* DISPLAY SCROLL PANE */
         JPanel transactions = new JPanel();
         transactions.setLayout(null);
         transactions.setPreferredSize(new Dimension(766,transactionDTOS.size()*368+5));
 
+        /* DISPLAY DATA ON SCROLL PANE */
         TransactionPanel[] transactionPanels = new TransactionPanel[transactionDTOS.size()];
         for (int i = 0; i< transactionPanels.length; i++){
             TransactionPanel transactionPanel = new TransactionPanel(transactionDTOS.get(i));
@@ -61,10 +68,10 @@ public class TransactionsScreen9005 extends AbstractScreen implements Observer{
 
     @Override
     public void update() {
-
-        /* CALL METHOD OF historyDATA to update arraylist */
+        /* CALL METHOD OF historyDATA TO UPDATE transactionDTOS */
         transactionDTOS = historyData.getTransactions();
 
+        /* DISPLAY UPDATES ON SCREEN */
         init();
     }
 }

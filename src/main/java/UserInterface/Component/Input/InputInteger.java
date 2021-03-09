@@ -8,14 +8,13 @@ import java.awt.geom.Line2D;
 
 public class InputInteger extends JPanel implements InputInterface {
 
-    /* Values */
-    private String DD_Header = "";
+    /* VALUES */
+    private final String DD_Header;
 
-    /* Components */
-    private JTextField jTextField;
+    /* COMPONENTS */
+    private final JTextField jTextField;
 
     public InputInteger(String DD_Header) {
-
         setBounds(0, 0, 260, 110);
         setOpaque(false);
         setLayout(null);
@@ -43,6 +42,7 @@ public class InputInteger extends JPanel implements InputInterface {
 
     @Override
     protected void paintComponent(Graphics g) {
+        /* PAINT BORDERS AND TEXTS */
         Graphics2D g2d=(Graphics2D) g;
         int w = getWidth();
         int h = getHeight();
@@ -68,10 +68,10 @@ public class InputInteger extends JPanel implements InputInterface {
 
     @Override
     public void init(){
+        /* INIT COMPONENT */
         jTextField.setFont(GraphicalTheme.font_header2);
         jTextField.setForeground(GraphicalTheme.light_color);
         jTextField.setOpaque(false);
-
         jTextField.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyReleased(java.awt.event.KeyEvent evt) {
                 try {
@@ -87,7 +87,6 @@ public class InputInteger extends JPanel implements InputInterface {
                 }
             }
         });
-
         jTextField.setBounds(20, 10, 220, 50);
         add(jTextField);
     }

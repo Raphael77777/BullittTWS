@@ -10,8 +10,10 @@ import java.util.ArrayList;
 
 public class LiveData implements Subject{
 
+    /* LIST OF OBSERVERS */
     private final ArrayList<Observer> observers = new ArrayList<>();
 
+    /* VALUES */
     private double dailyPNL;
     private double unrealizedPNL;
     private double realizedPNL;
@@ -43,8 +45,7 @@ public class LiveData implements Subject{
         }
     }
 
-    /* LIVE DATA METHOD */
-
+    /* LiveData METHOD(GETTER AND SETTER) */
     public double getDailyPNL() {
         return dailyPNL;
     }

@@ -9,22 +9,28 @@ import com.ib.client.Types;
 
 public class TwsIB implements Runnable {
 
+    /* STORAGE OBJECTS */
     public static StrategyData strategyData;
     public static HistoryData historyData;
     public static LiveData liveData;
     public static AlphaVantageData alphaVantageData;
     public static AccountData accountData;
     public static PositionData positionData;
+    private ChronoLiveData chronoLiveData;
 
+    /* TECHNICAL INDICATORS */
     public static double SMA_200 = 0.0;
     public static double RSI_2 = 0.0;
     public static double SMA_5 = 0.0;
 
+    /* TWS ADAPTER */
     public static MarketAdapter marketAdapter;
     public static OutputAdapterIB outputAdapterIB = new OutputAdapterIB();
 
-    private ChronoLiveData chronoLiveData;
+    /* TECHNICAL INDICATORS ADAPTER */
     private AdapterManager adapterManager;
+
+    /* STATUS AND NEXT ID */
     private static int nextValidID = 0;
     public static boolean forceStop = false;
 
@@ -39,6 +45,7 @@ public class TwsIB implements Runnable {
 
     @Override
     public void run() {
+        /* REQUEST CONNECTION TO IB */
         try {
             outputAdapterIB.init();
         } catch (InterruptedException e) {
@@ -47,7 +54,6 @@ public class TwsIB implements Runnable {
     }
 
     public boolean startMarketAdapter () {
-
         forceStop = false;
         if (outputAdapterIB == null){
             return false;
@@ -58,11 +64,13 @@ public class TwsIB implements Runnable {
         TwsIB.historyData.reset();
         OutputAdapterIB.statusReqPnLSingle = false;
 
+        /* START CHRONO */
         TwsIB.marketAdapter = new MarketAdapter();
         chronoLiveData = new ChronoLiveData(TwsIB.liveData);
         Thread t = new Thread(chronoLiveData);
         t.start();
 
+        /* REQUEST TECHNICAL INDICATORS */
         adapterManager = new AdapterManager(TwsIB.alphaVantageData, TwsIB.strategyData);
         Thread t1 = new Thread(adapterManager);
         t1.start();
@@ -70,27 +78,27 @@ public class TwsIB implements Runnable {
         return true;
     }
     public static void initMktAdapter () {
+        /* REQUEST MARKET DATA */
         outputAdapterIB.onReqMktData();
     }
 
     public boolean stopMarketAdapter () {
-
         forceStop = true;
         if (outputAdapterIB == null){
             return false;
         }
 
-        /* Stop thread */
+        /* STOP THREAD */
         chronoLiveData.stop();
         adapterManager.stop();
 
-        /* Stop market data */
+        /* STOP MARKET DATA */
         outputAdapterIB.onCancelMktData();
 
-        /* Clear open orders */
+        /* CLEAR OPEN ORDERS */
         outputAdapterIB.onGlobalCancel();
 
-        /* Clear open positions */
+        /* CLEAR OPEN POSITIONS */
         if (positionData.getContract() != null && strategyData.getAsset().equals(positionData.getContract().localSymbol())){
             double position = positionData.getPos();
             Order order = new Order();
@@ -109,6 +117,7 @@ public class TwsIB implements Runnable {
         return true;
     }
 
+    /* NextValidId METHOD(GETTER AND SETTER) */
     public static void setNextValidID(int nextValidID) {
         TwsIB.nextValidID = nextValidID;
     }

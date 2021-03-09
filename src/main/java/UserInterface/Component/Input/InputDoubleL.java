@@ -9,16 +9,15 @@ import java.awt.geom.Line2D;
 
 public class InputDoubleL extends JPanel implements InputInterface {
 
-    /* Values */
-    private String DD_Header;
-    private String DD_Description;
-    private EnumType DD_Type;
+    /* VALUES */
+    private final String DD_Header;
+    private final String DD_Description;
+    private final EnumType DD_Type;
 
-    /* Components */
-    private JTextField jTextField;
+    /* COMPONENTS */
+    private final JTextField jTextField;
 
     public InputDoubleL(EnumType DD_Type, String DD_Header, String DD_Description) {
-
         setBounds(0, 0, 523, 110);
         setOpaque(false);
         setLayout(null);
@@ -48,8 +47,8 @@ public class InputDoubleL extends JPanel implements InputInterface {
 
     @Override
     protected void paintComponent(Graphics g) {
+        /* PAINT BORDERS AND TEXTS */
         Graphics2D g2d=(Graphics2D) g;
-        int w = getWidth();
         int h = getHeight();
 
         g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING,RenderingHints.VALUE_ANTIALIAS_ON);
@@ -82,21 +81,25 @@ public class InputDoubleL extends JPanel implements InputInterface {
 
     @Override
     public void init (){
+        /* INIT COMPONENT */
         jTextField.setFont(GraphicalTheme.font_header2);
         jTextField.setForeground(GraphicalTheme.light_color);
         jTextField.setOpaque(false);
-
         jTextField.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyReleased(java.awt.event.KeyEvent evt) {
                 try {
                     double number = Double.parseDouble(jTextField.getText());
+
+                    if (number < 0 || number > 100){
+                        throw new Exception();
+                    }
+
                 } catch (Exception e) {
                     JOptionPane.showMessageDialog(getRootPane(), "Only Numbers Allowed");
                     jTextField.setText("");
                 }
             }
         });
-
         jTextField.setBounds(283, 10, 220, 50);
         add(jTextField);
     }

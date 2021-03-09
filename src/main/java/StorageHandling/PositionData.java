@@ -7,8 +7,10 @@ import java.util.ArrayList;
 
 public class PositionData implements Subject {
 
+    /* LIST OF OBSERVERS */
     private ArrayList<Observer> observers;
 
+    /* VALUES */
     private String account = "";
     private Contract contract;
     private double pos;
@@ -48,8 +50,7 @@ public class PositionData implements Subject {
         }
     }
 
-    /* PositionDATA METHOD */
-
+    /* PositionData METHOD(GETTER AND SETTER) */
     public String getAccount() {
         return account;
     }

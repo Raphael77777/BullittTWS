@@ -16,6 +16,10 @@ public class JFrameBTWS extends JFrame {
     private static final JFrameBTWS jFrameBTWS = new JFrameBTWS();
     private static BackgroundScreen backgroundScreen;
 
+    /* TWS THREAD */
+    private TwsIB tws;
+
+    /* TWS STATUS */
     private boolean twsInit = false;
     private boolean twsStarted = false;
 
@@ -27,7 +31,7 @@ public class JFrameBTWS extends JFrame {
     private final AccountData accountData = new AccountData();
     public PositionData positionData = new PositionData();
 
-    /* Screen 900X */
+    /* SCREENS 900X */
     private final WelcomeScreen9000 welcomeScreen9000 = new WelcomeScreen9000();
     private final HomeScreen9001 homeScreen9001 = new HomeScreen9001(historyData);
     private final EngineScreen9002 engineScreen9002;
@@ -36,9 +40,6 @@ public class JFrameBTWS extends JFrame {
     private final TransactionsScreen9005 transactionsScreen9005 = new TransactionsScreen9005(historyData);
     private final AccountsScreen9006 accountsScreen9006 = new AccountsScreen9006(accountData);
     private final PositionsScreen9007 positionsScreen9007 = new PositionsScreen9007(positionData, accountData);
-
-    /* TWS THREAD */
-    private TwsIB tws;
 
     private JFrameBTWS (){
         setLayout(null);
@@ -58,6 +59,7 @@ public class JFrameBTWS extends JFrame {
         }catch (IOException e){
             strategyData = new StrategyData();
         }
+
         /* DESERIALIZE ALPHA_VANTAGE_DATA */
         try {
             alphaVantageData = loadAlphaVantage();
@@ -69,7 +71,7 @@ public class JFrameBTWS extends JFrame {
         engineScreen9002 = new EngineScreen9002(strategyData, alphaVantageData);
         settingsScreen9004 = new SettingsScreen9004(strategyData);
 
-        /* INIT BACKGROUND, MENU, LOGO */
+        /* INIT BACKGROUND */
         backgroundScreen = new BackgroundScreen();
         backgroundScreen.setVisible(true);
         add(backgroundScreen);
@@ -81,12 +83,12 @@ public class JFrameBTWS extends JFrame {
     }
 
     public static JFrameBTWS getInstance() {
+        /* ACCESS SINGLETON */
         return jFrameBTWS;
     }
 
     private void disableScreens () {
-
-        /* Disable others screens */
+        /* DISABLE OTHERS SCREENS */
         welcomeScreen9000.setVisible(false);
         homeScreen9001.setVisible(false);
         engineScreen9002.setVisible(false);
@@ -95,13 +97,13 @@ public class JFrameBTWS extends JFrame {
         transactionsScreen9005.setVisible(false);
         accountsScreen9006.setVisible(false);
         positionsScreen9007.setVisible(false);
-
     }
 
     public void showWelcomeScreen() {
-
+        /* HIDE OTHERS SCREENS */
         disableScreens();
 
+        /* ENABLE WELCOME SCREEN */
         welcomeScreen9000.init();
         welcomeScreen9000.setVisible(true);
         backgroundScreen.add(welcomeScreen9000);
@@ -109,12 +111,12 @@ public class JFrameBTWS extends JFrame {
         repaint();
     }
     public void showHomeScreen() {
-
         /* INIT TWS */
         init();
-
+        /* HIDE OTHERS SCREENS */
         disableScreens();
 
+        /* ENABLE HOME SCREEN */
         homeScreen9001.init();
         homeScreen9001.setVisible(true);
         backgroundScreen.add(homeScreen9001);
@@ -122,12 +124,12 @@ public class JFrameBTWS extends JFrame {
         repaint();
     }
     public void showEngineScreen() {
-
         /* INIT TWS */
         init();
-
+        /* HIDE OTHERS SCREENS */
         disableScreens();
 
+        /* ENABLE ENGINE SCREEN */
         engineScreen9002.init();
         engineScreen9002.setVisible(true);
         backgroundScreen.add(engineScreen9002);
@@ -135,12 +137,12 @@ public class JFrameBTWS extends JFrame {
         repaint();
     }
     public void showMonitorScreen() {
-
         /* INIT TWS */
         init();
-
+        /* HIDE OTHERS SCREENS */
         disableScreens();
 
+        /* ENABLE MONITOR SCREEN */
         monitorScreen9003.init();
         monitorScreen9003.setVisible(true);
         backgroundScreen.add(monitorScreen9003);
@@ -148,52 +150,50 @@ public class JFrameBTWS extends JFrame {
         repaint();
     }
     public void showSettingsScreen() {
-
         /* INIT TWS */
         init();
-
+        /* HIDE OTHERS SCREENS */
         disableScreens();
 
+        /* ENABLE SETTINGS SCREEN */
         settingsScreen9004.setVisible(true);
         backgroundScreen.add(settingsScreen9004);
 
         repaint();
     }
     public void showTransactionsScreen() {
-
         /* INIT TWS */
         init();
-
+        /* HIDE OTHERS SCREENS */
         disableScreens();
 
+        /* ENABLE HISTORY SCREEN */
         transactionsScreen9005.init();
         transactionsScreen9005.setVisible(true);
         backgroundScreen.add(transactionsScreen9005);
 
         repaint();
     }
-
     public void showAccountsScreen() {
-
         /* INIT TWS */
         init();
-
+        /* HIDE OTHERS SCREENS */
         disableScreens();
 
+        /* ENABLE ACCOUNTS SCREEN */
         accountsScreen9006.init();
         accountsScreen9006.setVisible(true);
         backgroundScreen.add(accountsScreen9006);
 
         repaint();
     }
-
     public void showPositionsScreen() {
-
         /* INIT TWS */
         init();
-
+        /* HIDE OTHERS SCREENS */
         disableScreens();
 
+        /* ENABLE POSITIONS SCREEN */
         positionsScreen9007.init();
         positionsScreen9007.setVisible(true);
         backgroundScreen.add(positionsScreen9007);
@@ -202,7 +202,7 @@ public class JFrameBTWS extends JFrame {
     }
 
     public void changeScreen(String target) {
-
+        /* CHANGE SCREEN */
         switch (target){
             case "WELCOME":
                 showWelcomeScreen();
@@ -233,6 +233,7 @@ public class JFrameBTWS extends JFrame {
                 return;
         }
 
+        /* SAVE SETTINGS IF TWS NOT STARTED */
         if (target.equals("COMPIL")){
             if (twsStarted){
                 JOptionPane.showMessageDialog(getRootPane(), "Cannot change the strategy while it is running. Stop the engine before making any changes.");
@@ -242,10 +243,12 @@ public class JFrameBTWS extends JFrame {
             return;
         }
 
+        /* CHANGE PRESSED BUTTON */
         backgroundScreen.changeScreen(target);
     }
 
     public StrategyData loadStrategy () throws IOException {
+        /* DESERIALIZE strategy.bullitt FROM user.home */
         StrategyData strategyData = null;
 
         FileInputStream in = null;
@@ -273,8 +276,8 @@ public class JFrameBTWS extends JFrame {
 
         return strategyData;
     }
-
     public AlphaVantageData loadAlphaVantage() throws IOException {
+        /* DESERIALIZE alpha.bullitt FROM user.home */
         AlphaVantageData alphaVantageData = null;
 
         FileInputStream in = null;
@@ -304,7 +307,7 @@ public class JFrameBTWS extends JFrame {
     }
 
     public void setAPIKEY() {
-
+        /* DIALOG INPUT BOX FOR API KEY */
         String key = JOptionPane.showInputDialog(
                 this,
                 "Enter the secret API key",
@@ -312,58 +315,63 @@ public class JFrameBTWS extends JFrame {
                 JOptionPane.INFORMATION_MESSAGE
         );
 
+        /* API KEY CONTROL */
         if (key == null){
             return;
         }
 
+        /* API KEY CONTROL */
         if (key.length() != 16){
             JOptionPane.showMessageDialog(getRootPane(), "Wrong APIs key !");
             return;
         }
 
+        /* SAVE API KEY */
         alphaVantageData.setAPI_KEY(key);
     }
 
     public void init() {
-
-        //TODO : INIT TWS
-
+        /* IF ALREADY INIT THEN NOTHING */
         if (twsInit){
             return;
         }
         System.out.println("> TWS HAS BEEN INIT !");
 
+        /* START THREAD TWS */
         tws = new TwsIB(strategyData, historyData, liveData, alphaVantageData, accountData, positionData);
-        /* THREAD TWS */
         Thread threadTWS = new Thread(tws);
         threadTWS.start();
 
+        /* CHANGE TWS STATUS */
         twsInit = true;
     }
 
     public boolean start() {
-
+        /* IF MARKET ADAPTER NOT AVAILABLE THEN RETURN FALSE */
         if (tws.startMarketAdapter()){
             System.out.println("> TWS HAS BEEN STARTED !");
+
+            /* DISPLAY EMERGENCY BUTTON */
             backgroundScreen.engineStarted();
 
+            /* CHANGE TWS STATUS */
             twsStarted = true;
             return true;
         }
-
         return false;
     }
-
     public boolean stop() {
-
+        /* IF MARKET ADAPTER NOT AVAILABLE THEN RETURN FALSE */
         if (tws.stopMarketAdapter()){
             System.out.println("> TWS HAS BEEN STOPPED !");
+
+            /* HIDE EMERGENCY BUTTON */
             backgroundScreen.engineStopped();
 
+            /* CHANGE TWS STATUS */
             twsStarted = false;
             return true;
         }
-
         return false;
     }
 }

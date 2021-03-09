@@ -6,11 +6,12 @@ import java.util.ArrayList;
 
 public class AccountData implements Subject {
 
+    /* LIST OF OBSERVERS */
     private ArrayList<Observer> observers;
 
+    /* VALUES */
     private String accountId = "--";
     private String currency = "--";
-
     private double availableFunds;
     private double netLiquidationValue;
     private double buyingPower;
@@ -50,8 +51,7 @@ public class AccountData implements Subject {
         }
     }
 
-    /* AccountDATA METHOD */
-
+    /* AccountData METHOD(GETTER AND SETTER) */
     public String getAccountId() {
         return accountId;
     }

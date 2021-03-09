@@ -9,32 +9,30 @@ import java.awt.geom.Line2D;
 
 public class InfoPanel extends JPanel {
 
+    /* VALUES */
     private EnumType type;
     private String text;
     private String value;
 
     public InfoPanel(EnumType type, String text, String value) {
-
         setBounds(0, 0, 260, 110);
         setOpaque(false);
         setLayout(null);
 
-        /* Values */
         this.type = type;
         this.text = text;
         this.value = value;
-
     }
 
     public void update (EnumType type, String text, String value) {
         this.type = type;
         this.text = text;
         this.value = value;
-
     }
 
     @Override
     protected void paintComponent(Graphics g) {
+        /* DISPLAY VALUES */
         Graphics2D g2d=(Graphics2D) g;
         int w = getWidth();
         int h = getHeight();

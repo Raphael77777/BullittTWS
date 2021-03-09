@@ -8,20 +8,26 @@ import UserInterface.Component.Panel.InfoPanelL;
 
 public class AccountsScreen9006 extends AbstractScreen implements Observer {
 
+    /* COMPONENTS */
     private final InfoPanel [] infoPanels = new InfoPanel[4];
     private final InfoPanelL[] infoPanelLS = new InfoPanelL[4];
 
+    /* DATA SUBJECT */
     private final AccountData accountData;
 
+    /* HEADER TO DISPLAY*/
     private String accountId ;
     private String currency ;
 
+    /* DATA TO DISPLAY */
     private final String [] IP_texts = new String[]{"Available Funds", "Net Liquidation Value", "Buying Power", "Margin Requirement", "Daily P&L", "Unrealized P&L", "Realized P&L", "Cushion"};
     private final String [] IP_values = new String[]{"--", "--", "--", "--", "--", "--", "--", "--"};
     private final EnumType[] IP_types = new EnumType[]{EnumType.NO_ICON, EnumType.NO_ICON, EnumType.NO_ICON, EnumType.NO_ICON, EnumType.NO_ICON, EnumType.NO_ICON, EnumType.NO_ICON, EnumType.NO_ICON};
 
     public AccountsScreen9006(AccountData accountData) {
         this.accountData = accountData;
+
+        /* REGISTER TO RECEIVE UPDATE */
         this.accountData.registerObserver(this);
 
         update();
@@ -29,9 +35,10 @@ public class AccountsScreen9006 extends AbstractScreen implements Observer {
 
     @Override
     public void init() {
-
+        /* CLEAN PANEL */
         removeAll();
 
+        /* DISPLAY COMPONENTS */
         AccountPanel accountPanel = new AccountPanel(accountId, currency);
         accountPanel.setBounds(20, 20, 786, 110);
         add(accountPanel);
@@ -53,9 +60,7 @@ public class AccountsScreen9006 extends AbstractScreen implements Observer {
 
     @Override
     public void update() {
-
-        /* CALL METHOD OF accountData to update IP_values and IP_types */
-
+        /* CALL METHOD OF accountData TO UPDATE IP_values AND IP_types */
         accountId = accountData.getAccountId();
         currency = accountData.getCurrency();
 
@@ -93,6 +98,7 @@ public class AccountsScreen9006 extends AbstractScreen implements Observer {
 
         IP_values[7] = accountData.getCushion()+"%";
 
+        /* DISPLAY UPDATES ON SCREEN */
         init();
     }
 }

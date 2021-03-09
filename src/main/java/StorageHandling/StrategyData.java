@@ -9,8 +9,11 @@ import java.util.ArrayList;
 public class StrategyData implements Subject, Serializable {
 
     private static final long serialVersionUID = -7985850416102010819L;
+
+    /* LIST OF OBSERVERS */
     private transient ArrayList<Observer> observers;
 
+    /* VALUES */
     private String asset ="--";
     private String order ="--";
     private String timescale ="--";
@@ -50,7 +53,7 @@ public class StrategyData implements Subject, Serializable {
     }
 
     public void serialize() {
-
+        /* SERIALIZE strategy.bullitt IN user.home */
         ObjectOutputStream oos = null;
         try {
             String home = System.getProperty("user.home");
@@ -74,8 +77,7 @@ public class StrategyData implements Subject, Serializable {
         }
     }
 
-    /* STRATEGY METHOD */
-
+    /* StrategyData METHOD(GETTER AND SETTER) */
     public String getAsset() {
         return asset;
     }

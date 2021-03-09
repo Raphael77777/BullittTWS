@@ -16,28 +16,38 @@ import java.awt.event.MouseListener;
 
 public class EngineScreen9002 extends AbstractScreen implements Observer {
 
+    /* COMPONENTS */
     private final InfoPanel[] infoPanels = new InfoPanel[9];
     private final ButtonPanel[] buttonPanels = new ButtonPanel[2];
 
+    /* DATA SUBJECT */
     private final StrategyData strategyData;
     private final AlphaVantageData alphaVantageData;
+
+    /* TOOLS TO START TWS */
     private final MouseListener mouseListener = new startAndStop();
     private String state = "stop";
     private boolean apiKeyAvailable = false;
 
+    /* DATA TO DISPLAY */
     private final String [] IP_texts = new String[]{"Asset", "Strategy", "Accuracy", "Timescale", "Exposure", "Order", "Take profit", "Stop loss", "APIs key"};
     private final String [] IP_values = new String[]{"JPY/USD", "RSI(2)", "0.7", "60 sec", "90%", "Limit", "7.5%", "5%", "Inactive"};
     private final EnumType[] IP_types = new EnumType[]{EnumType.NO_ICON, EnumType.NO_ICON, EnumType.NEUTRAL, EnumType.NEUTRAL, EnumType.NEUTRAL, EnumType.NEUTRAL, EnumType.POSITIVE, EnumType.NEGATIVE, EnumType.NO_ICON };
 
+    /* STATIC DATA TO DISPLAY*/
     private final String [] BT_Header = new String[]{"1. STRATEGY", "2. MONITOR"};
     private final String [] BT_Description = new String[]{"Modify or view the strategy", "View live data"};
     private final String [] BT_Target = new String[]{"SETTINGS", "MONITOR"};
 
     public EngineScreen9002(StrategyData strategyData, AlphaVantageData alphaVantageData) {
         this.strategyData = strategyData;
+
+        /* REGISTER TO RECEIVE UPDATE */
         this.strategyData.registerObserver(this);
 
         this.alphaVantageData = alphaVantageData;
+
+        /* REGISTER TO RECEIVE UPDATE */
         this.alphaVantageData.registerObserver(this);
 
         update();
@@ -45,9 +55,10 @@ public class EngineScreen9002 extends AbstractScreen implements Observer {
 
     @Override
     public void init() {
-
+        /* CLEAN PANEL */
         removeAll();
 
+        /* DISPLAY COMPONENTS */
         int idx = 0;
         for (int i = 0; i < 3; i++){
             for (int j = 0; j < 3; j++){
@@ -76,9 +87,7 @@ public class EngineScreen9002 extends AbstractScreen implements Observer {
 
     @Override
     public void update() {
-
-        /* CALL METHOD OF strategyData to update IP_values */
-
+        /* CALL METHOD OF strategyData, alphaVantageData TO UPDATE IP_values AND IP_types */
         IP_values[0] = strategyData.getAsset();
         IP_values[2] = String.valueOf(strategyData.getAccuracy());
         IP_values[3] = strategyData.getTimescale();
@@ -97,10 +106,12 @@ public class EngineScreen9002 extends AbstractScreen implements Observer {
             apiKeyAvailable = true;
         }
 
+        /* DISPLAY UPDATES ON SCREEN */
         init();
     }
 
     public void startAndStop () {
+        /* START ONLY IF API KEY IS AVAILABLE */
         if (!apiKeyAvailable){
             JOptionPane.showMessageDialog(getRootPane(), "APIs key missing !");
             return;
@@ -108,21 +119,25 @@ public class EngineScreen9002 extends AbstractScreen implements Observer {
 
         if (state.equals("stop")){
             if (JFrameBTWS.getInstance().start()){
+                /* CHANGE STATUS AND DISPLAY NOTIFICATION */
                 state = "start";
                 display("ENGINE STARTED! Please do not switch off the computer and check the strategy settings.");
 
             }
         } else if (state.equals("start")){
             if (JFrameBTWS.getInstance().stop()){
+                /* CHANGE STATUS AND DISPLAY NOTIFICATION */
                 state = "stop";
                 display("ENGINE STOPPED! You can turn off the computer and check the results of the strategy.");
             }
         }
 
+        /* DISPLAY UPDATES ON SCREEN */
         init();
     }
 
     private class startAndStop extends MouseAdapter {
+        /* MOUSE ADAPTER FOR BUTTON */
         @Override
         public void mouseClicked(MouseEvent e) {
             startAndStop();
@@ -130,6 +145,7 @@ public class EngineScreen9002 extends AbstractScreen implements Observer {
     }
 
     private void display (String message){
+        /* DISPLAY NOTIFICATION ON WINDOWS COMPUTER */
         if (SystemTray.isSupported()) {
             try {
                 SystemTray tray = SystemTray.getSystemTray();
