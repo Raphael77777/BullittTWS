@@ -1,0 +1,22 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="BullittTWS:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/BullittTWS_jar</output-path>
+    <root id="archive" name="BullittTWS.jar">
+      <element id="directory" name="META-INF">
+        <element id="file-copy" path="$PROJECT_DIR$/META-INF/MANIFEST.MF" />
+      </element>
+      <element id="module-output" name="BullittTWS" />
+      <element id="module-test-output" name="BullittTWS" />
+      <element id="extracted-dir" path="$MAVEN_REPOSITORY$/junit/junit/4.10/junit-4.10.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$MAVEN_REPOSITORY$/org/junit/jupiter/junit-jupiter-api/5.5.2/junit-jupiter-api-5.5.2.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$MAVEN_REPOSITORY$/org/junit/platform/junit-platform-engine/1.5.2/junit-platform-engine-1.5.2.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$MAVEN_REPOSITORY$/org/hamcrest/hamcrest-core/1.1/hamcrest-core-1.1.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$MAVEN_REPOSITORY$/org/junit/jupiter/junit-jupiter-engine/5.5.2/junit-jupiter-engine-5.5.2.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$MAVEN_REPOSITORY$/org/apiguardian/apiguardian-api/1.1.0/apiguardian-api-1.1.0.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$MAVEN_REPOSITORY$/com/googlecode/json-simple/json-simple/1.1.1/json-simple-1.1.1.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/IB/TwsApi.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$MAVEN_REPOSITORY$/org/opentest4j/opentest4j/1.2.0/opentest4j-1.2.0.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$MAVEN_REPOSITORY$/org/junit/platform/junit-platform-commons/1.5.2/junit-platform-commons-1.5.2.jar" path-in-jar="/" />
+    </root>
+  </artifact>
+</component>
