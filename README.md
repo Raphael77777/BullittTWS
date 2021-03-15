@@ -1,9 +1,9 @@
 # BullittTWS
 
 ### Requirements
-The set-up needed to launch the application and the required 
-configurations will be published shortly by the author.
-
+The project requires the following dependencies: 
+ - Java 8
+ - Maven
 
 ### Instructions for installation
 Before we begin it is important to keep in mind that this setup has been designed to use only free data or tools that are generally available to most readers. In this way, a no-cost replication of this project setup is possible for almost anyone without prior investment.
@@ -97,7 +97,7 @@ If the application is closed and then reopened, there is no need to redefine the
 The use of this software is, by virtue of its MIT licence, free. However, we would like to remind you that this software has been developed for educational purposes and that it is strongly advised not to use a real account if the user does not have the necessary knowledge of the stock markets or the programming language used. We decline in advance any responsibility as for the use which could be made of this software.
 
 
-### License
+### License [MIT]
 
 Copyright (c) 2021 Raphaël Darbellay
 
