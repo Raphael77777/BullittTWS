@@ -1,5 +1,4 @@
 ![bullitt-git](https://user-images.githubusercontent.com/48348991/111176953-76477700-85b2-11eb-9616-068ae6612c32.jpg)
-# BullittTWS
 
 ### Requirements
 The project requires the following dependencies: 
