@@ -6,7 +6,7 @@ public class GraphicalTheme {
 
     /* VALUES */
     public final static String title = "BULLITT - TWS";
-    public final static String version = "1.0.2";
+    public final static String version = "1.1.0";
     public final static String author = "Raphaël Darbellay";
     public final static String copyright = "2021 BULLITT | ALL RIGHTS RESERVED";
 
