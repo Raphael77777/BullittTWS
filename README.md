@@ -4,6 +4,8 @@
 The project requires the following dependencies: 
  - Java 8
  - Maven
+ 
+ NB: This algorithmic trading software can be started when the markets are closed even on weekends and holidays. However, if there is no live quote, no analysis will be performed. Analysis will be available again when the market opens.  
 
 ### Instructions for installation
 Before we begin it is important to keep in mind that this setup has been designed to use only free data or tools that are generally available to most readers. In this way, a no-cost replication of this project setup is possible for almost anyone without prior investment.
